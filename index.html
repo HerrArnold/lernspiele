@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="de-CH">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Lernspiele – Klasse 3b</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#332d20;background:#edf1e4}
+*{box-sizing:border-box}
+html{min-height:100%}
+body{min-height:100vh;margin:0;background:linear-gradient(180deg,#e2f2f6 0%,#f6e5bd 100%);position:relative}
+body:before{content:"";position:fixed;inset:0;background:url("assets/hakuna_matata_banner.png") center / cover no-repeat;opacity:.21;pointer-events:none}
+.page{position:relative;max-width:1190px;margin:auto;padding:22px 28px 34px}
+.hero{background:rgba(255,252,243,.90);border-radius:26px;box-shadow:0 12px 35px #6b511d24;border:1px solid #fff9;overflow:hidden}
+.title-row{height:167px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:7px 38px 0}
+.title-text{text-align:center;flex:1;min-width:0}
+h1{margin:0;font-size:clamp(44px,5.3vw,70px);line-height:1.04;color:#6a441c;letter-spacing:-2px;font-weight:850}
+.tagline{font-size:clamp(17px,2vw,23px);color:#6d862f;font-weight:750;margin:10px 0 0}
+.mascot{display:block;width:auto;height:146px;object-fit:contain;filter:drop-shadow(0 7px 4px #684b2425)}
+.mascot.meerkat{height:158px}.mascot.warthog{height:137px}
+.welcome{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:0 30px 9px;margin-top:-4px;min-height:114px}
+.bubble{font-size:clamp(16px,1.85vw,22px);font-weight:750;line-height:1.25;color:#6d3a43;background:#fff;border:2px solid #edb2c1;border-radius:21px;padding:15px 21px;max-width:380px;position:relative;box-shadow:0 4px 15px #844a3a13;text-align:center}
+.bubble:after{content:"";position:absolute;right:-13px;top:42%;border-width:11px 0 11px 13px;border-style:solid;border-color:transparent transparent transparent #edb2c1}
+.welcome img{height:136px;width:100px;object-fit:contain;object-position:bottom;filter:drop-shadow(0 5px 3px #834b4b17)}
+.subject{margin-top:20px;background:#fff;padding:20px 23px 25px;border-radius:25px;box-shadow:0 15px 35px #48572c36}
+h2{font-size:35px;font-weight:850;color:#242424;line-height:1;margin:0 0 18px 8px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:19px}
+.game{background:#fffef9;border:2px solid #f3eacb;border-radius:21px;box-shadow:0 6px 18px #22331622;padding:19px 23px 21px;display:flex;flex-direction:column;align-items:center;gap:7px;text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s;min-height:275px}
+.game:hover,.game:focus-visible{transform:translateY(-3px);box-shadow:0 11px 23px #28331336;outline:0}
+h3{font-size:clamp(23px,2.5vw,31px);text-align:center;margin:0;font-weight:850;color:#3c341f}
+.notation{display:block;height:139px;width:min(100%,380px);margin:0 auto;overflow:visible}
+.game p{text-align:center;font-size:clamp(17px,1.75vw,21px);line-height:1.3;margin:0;color:#596c28;font-weight:750}
+@media(max-width:750px){.page{padding:13px}.title-row{height:auto;padding:19px 12px 5px}.mascot{height:96px!important}h1{font-size:clamp(33px,7vw,50px);letter-spacing:-1.5px}.tagline{font-size:16px}.welcome{padding:0 16px 9px}.welcome img{height:104px;width:77px}.bubble{font-size:16px;padding:11px 13px;max-width:270px}.subject{padding:17px 14px}.cards{grid-template-columns:1fr}.game{min-height:230px;padding:14px}.notation{height:126px}h2{font-size:29px}}
+@media(max-width:420px){.mascot{height:78px!important}.title-row{gap:2px}.bubble{max-width:230px}.welcome img{height:90px}}
+@media(prefers-reduced-motion:reduce){.game{transition:none}}
+
+/* Vier Spiele im Musikbereich */
+@media(min-width:751px){#music-games{grid-template-columns:repeat(2,minmax(0,1fr))}#music-games .game{min-height:264px;padding:17px 12px}#music-games h3{font-size:clamp(20px,2vw,26px)}#music-games .notation{height:135px}#music-games .game p{font-size:clamp(15px,1.4vw,18px)}}
+.rhythm-preview{width:100%;height:119px;display:flex;align-items:center;justify-content:center;gap:10px}
+.rhythm-preview svg{width:82px;height:76px}.rhythm-preview .equals{font-weight:900;color:#6d862f;font-size:25px}
+.math-subject{background:#5289bb;min-height:146px;margin-top:20px;display:flex;align-items:flex-start;padding:25px 28px}
+.math-subject h2{color:#fff;margin:0}
+@media(min-width:751px){#music-games .game{min-height:260px}#music-games h3{font-size:clamp(22px,2.4vw,30px)}#music-games .game p{font-size:clamp(16px,1.6vw,20px)}}
+
+/* Spielnahe Mini-Vorschauen für beide Rhythmusspiele */
+.rhythm-preview{height:auto;min-height:132px;width:100%;max-width:430px;margin:3px auto 0;display:block}
+.trio-mini{display:grid;grid-template-columns:1.08fr 1fr 1fr;gap:8px;align-items:stretch;padding:9px 3px}
+.trio-mini-col{background:#fff;border:1px solid #e5e5dc;border-radius:12px;padding:8px 5px 10px;box-shadow:0 3px 8px #4e622010;text-align:center;min-width:0}
+.trio-mini-label{font-size:12px;font-weight:800;color:#506344;margin-bottom:8px;white-space:nowrap}
+.trio-mini-tile{height:64px;display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid #e1e6df;border-radius:10px;font-size:clamp(13px,1.55vw,18px);font-weight:750;color:#293329;white-space:nowrap}
+.trio-mini-tile svg{height:54px;width:85px;max-width:100%}
+.profi-mini{padding:9px 13px;background:#fffdfa;border:2px solid #e4dfd2;border-radius:15px;box-shadow:0 5px 14px #4b5e3814;text-align:center;display:grid;justify-items:center;gap:6px}
+.profi-mini-prompt{font-size:15px;font-weight:850;color:#374d33}
+.profi-mini-note{width:100%;max-width:236px;height:65px;display:grid;place-items:center;background:#fcfcfa;border:1.5px solid #e6e5de;border-radius:11px}
+.profi-mini-note svg{width:112px;height:58px}
+.profi-mini-inputrow{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-weight:750;color:#4e6246;font-size:14px}
+.profi-mini-input{display:block;width:min(180px,75%);height:32px;background:#fff;border:2px solid #c7d0bf;border-radius:9px;box-shadow:inset 0 1px 2px #00000004}
+@media(max-width:750px){.rhythm-preview{max-width:420px}.trio-mini-label{font-size:12px}.trio-mini-tile{font-size:17px}}
+
+
+/* Vorschauen sind echte Ausschnitte der Spieloberflächen */
+.game-preview{display:block;width:100%;max-width:465px;height:158px;object-fit:contain;object-position:center;border-radius:13px;margin:2px auto;background:#fffdfa}
+#music-games .game{justify-content:flex-start;min-height:270px;gap:10px}
+#music-games .game h3{min-height:33px}
+@media(max-width:750px){.game-preview{height:135px}}
+
+/* Mathe-Spiele */
+.math-subject{display:block;min-height:0;background:#5289bb;padding:23px 24px 27px}
+.math-subject h2{color:#fff;margin:0 0 19px 7px}
+#math-games{grid-template-columns:repeat(2,minmax(0,1fr))}
+#math-games .game{min-height:240px;padding:19px 15px;gap:12px;justify-content:space-between;border-color:#d6e4ef}
+#math-games .game h3{font-size:clamp(21px,2.1vw,27px)}
+#math-games .game-preview{height:170px;object-fit:contain;background:#fffdfa}
+@media(max-width:750px){#math-games{grid-template-columns:1fr}#math-games .game{min-height:215px}#math-games .game-preview{height:145px}}
+
+/* Startseite: nur der Flamingo begrüsst oben; die beiden anderen Tiere stehen unten. */
+.title-row{height:112px;padding:12px 30px 0;justify-content:center}
+.title-text{flex:none}
+.welcome{justify-content:center;min-height:190px;gap:25px;margin:0;padding:0 24px 15px}
+.welcome img{height:188px;width:145px;flex:none}
+.bubble{max-width:565px;padding:22px 27px;display:flex;flex-direction:column;gap:9px}
+.welcome-highlight{font-size:clamp(25px,3.1vw,39px);font-weight:900;line-height:1.08;color:#733f4d}
+.welcome-subline{font-size:clamp(17px,1.75vw,22px);font-weight:650;line-height:1.3}
+ .animal-footer{display:flex;align-items:flex-end;justify-content:center;gap:22px;padding:28px 20px 6px;margin-top:18px}
+.footer-mascot{object-fit:contain;width:auto;max-height:148px;filter:drop-shadow(0 7px 8px #4f3f2c26)}
+.footer-mascot.warthog{max-height:136px}
+.animal-speech{border:2px solid #e1c37f;background:#fff9ec;border-radius:24px;padding:14px 24px;font-size:24px;font-weight:900;color:#745025;box-shadow:0 5px 15px #76552319;white-space:nowrap;position:relative}
+.animal-speech.shared:before,.animal-speech.shared:after{content:"";position:absolute;bottom:-10px;width:18px;height:18px;background:#fff9ec;border-bottom:2px solid #e1c37f;transform:rotate(45deg)}
+.animal-speech.shared:before{left:22px;border-left:2px solid #e1c37f}
+.animal-speech.shared:after{right:22px;border-right:2px solid #e1c37f}
+@media(max-width:750px){.title-row{height:86px}.welcome{gap:9px;min-height:145px;padding:0 9px 15px}.welcome img{height:130px;width:85px}.bubble{padding:14px 15px}.welcome-highlight{font-size:22px}.welcome-subline{font-size:14px}.animal-footer{gap:10px;padding:20px 0;align-items:center}.footer-mascot{max-height:95px}.footer-mascot.warthog{max-height:90px}.animal-speech{font-size:14px;padding:9px 12px}.animal-speech.shared:before{left:14px;bottom:-8px;width:14px;height:14px}.animal-speech.shared:after{right:14px;bottom:-8px;width:14px;height:14px}}
+
+/* Klarer Einstieg ohne zweiten Titel: nur Flamingo und Sprechblase. */
+.hero{padding:8px 12px}
+.welcome{min-height:240px;padding:12px 32px 13px;gap:25px}
+.welcome img{height:220px;width:155px}
+.welcome-lead{font-size:clamp(23px,2.6vw,31px);line-height:1.32;font-weight:750}
+.welcome-gameword{display:inline-block;font-size:1.34em;font-weight:950;color:#75453e;letter-spacing:-.7px}
+.welcome-subline{font-size:clamp(17px,1.8vw,23px);font-weight:700}
+@media(max-width:750px){.welcome{min-height:160px;padding:10px 5px;gap:8px}.welcome img{height:145px;width:90px}.welcome-lead{font-size:18px}.welcome-gameword{font-size:1.28em}.welcome-subline{font-size:15px}}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="hero">
+
+<div class="welcome"><div class="bubble"><div class="welcome-lead">Hier findest du <strong class="welcome-gameword">Lernspiele.</strong></div><div class="welcome-subline">Suche das Fach und wähle das Spiel aus.</div></div><img alt="Flamingo" src="assets/flamingo.png"/></div>
+</header>
+<section aria-labelledby="music-heading" class="subject">
+<h2 id="music-heading">Musik</h2>
+<div class="cards" id="music-games">
+<a class="game" href="spiele/solmisationsspiel.html"><h3>Solmisationsspiel</h3>
+<img alt="Vorschau aus dem Solmisationsspiel: Violinschlüssel und gesuchte Note" class="game-preview" loading="lazy" src="assets/preview-solmi.webp"/>
+<p>Do ist immer auf dem C.</p>
+</a>
+<a class="game" href="spiele/solmisationsspiel-profi.html"><h3>Solmisationsspiel schwer</h3>
+<img alt="Vorschau aus dem schweren Solmisationsspiel mit vorgegebenem Do" class="game-preview" loading="lazy" src="assets/preview-solmi-profi.webp"/>
+<p>Do ist auf verschiedenen Tönen.</p>
+</a>
+<a class="game" href="spiele/rhythmus-trio.html"><h3>Rhythmus-Trio</h3>
+<img alt="Originaler Ausschnitt aus dem Rhythmus-Trio mit drei Zuordnungsspalten" class="game-preview" loading="lazy" src="assets/preview-rhythm-trio.webp"/>
+<p>Drei passende Karten finden.</p>
+</a>
+<a class="game" href="spiele/rhythmus-trio-profi.html"><h3>Notenname · Notenbild · Rhythmussprache</h3>
+<img alt="Originaler Ausschnitt mit punktierter halber Note und Antwortfeld" class="game-preview" loading="lazy" src="assets/preview-rhythm-profi.webp"/>
+<p>Schreiben und zeichnen.</p>
+</a>
+</div>
+</section>
+<section aria-labelledby="math-heading" class="subject math-subject"><h2 id="math-heading">Mathe</h2>
+<div class="cards" id="math-games">
+<a class="game" href="spiele/finde-die-zahl.html"><h3>Finde die Zahl</h3><img alt="Vorschau: Tausenderbuch mit 100 Zahlen und Seitenpfeilen" class="game-preview" loading="lazy" src="assets/preview-finde-die-zahl.webp"/></a>
+<a class="game" href="spiele/stellentafel.html"><h3>Stellentafel</h3><img alt="Vorschau: Stellentafel mit H, Z und E" class="game-preview" loading="lazy" src="assets/preview-stellentafel.webp"/></a>
+<a class="game" href="spiele/hunderter-zehner-einer-zerlegen.html"><h3>Hunderter, Zehner und Einer zerlegen</h3><img alt="Vorschau: Zahl als Hunderterwert plus Zehnerwert plus Einerwert" class="game-preview" loading="lazy" src="assets/preview-hunderter-zehner-einer-zerlegen.webp"/></a>
+<a class="game" href="spiele/wie-viele-brauchst-du.html"><h3>Wie viele Hundertertafeln, Zehnerstangen und Einerwürfel?</h3><img alt="Vorschau: Hundertertafel, Zehnerstange und Einerwürfel" class="game-preview" loading="lazy" src="assets/preview-wie-viele-brauchst-du.webp"/></a>
+<a class="game" href="spiele/welche-zahl-ist-das.html"><h3>Welche Zahl ist das?</h3><img alt="Vorschau: Hundertertafeln, Zehnerstangen und Einerwürfel zählen" class="game-preview" loading="lazy" src="assets/preview-welche-zahl-ist-das.webp"/></a>
+</div></section>
+<div class="animal-footer"><img alt="Erdmännchen" class="footer-mascot meerkat" src="assets/erdmaennchen.png"/><div class="animal-speech shared">Hakuna Matata!</div><img alt="Warzenschwein" class="footer-mascot warthog" src="assets/warzenschwein.png"/></div></main>
+</body>
+</html>
