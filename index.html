@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lernspiele – Hakuna Matata</title>
+  <style>
+    :root {
+      --sand: #f6edd2;
+      --savanna: #f3c567;
+      --savanna-dark: #a96f1f;
+      --earth: #7b4e21;
+      --leaf: #718c2f;
+      --sky: #dff2ff;
+      --card: rgba(255,255,255,.92);
+      --shadow: 0 16px 40px rgba(88, 57, 13, 0.14);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Arial", sans-serif;
+      color: #2f2514;
+      background:
+        linear-gradient(180deg, rgba(223,242,255,.9) 0%, rgba(246,237,210,.96) 22%, rgba(244,220,165,.96) 100%);
+      min-width: 1100px;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('./assets/hakuna_matata_banner.png') center top / cover no-repeat;
+      opacity: .12;
+      pointer-events: none;
+      z-index: -2;
+    }
+    .page {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 28px 30px 60px;
+      position: relative;
+    }
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 26px;
+      align-items: center;
+      min-height: 330px;
+      margin-bottom: 28px;
+    }
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,250,237,.94));
+      border: 3px solid rgba(169,111,31,.15);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 30px 34px 26px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -50px;
+      bottom: -50px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle at center, rgba(243,197,103,.33) 0%, rgba(243,197,103,0) 68%);
+    }
+    .kicker {
+      display: inline-block;
+      background: #fff6dd;
+      border: 2px solid #efc56d;
+      color: var(--savanna-dark);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 66px;
+      line-height: 1;
+      margin: 0 0 14px;
+      color: var(--earth);
+      letter-spacing: .5px;
+      text-shadow: 0 2px 0 rgba(255,255,255,.7);
+    }
+    .subtitle {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--leaf);
+      margin-bottom: 16px;
+    }
+    .hero-text {
+      font-size: 22px;
+      line-height: 1.5;
+      max-width: 760px;
+    }
+    .speech-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+    }
+    .flamingo {
+      max-height: 290px;
+      width: auto;
+      filter: drop-shadow(0 12px 16px rgba(119,69,73,.18));
+    }
+    .speech {
+      position: absolute;
+      left: 0;
+      top: 14px;
+      max-width: 340px;
+      background: rgba(255,255,255,.98);
+      border: 3px solid #f5a4be;
+      border-radius: 28px;
+      padding: 18px 22px;
+      box-shadow: var(--shadow);
+      font-size: 24px;
+      line-height: 1.4;
+      font-weight: 700;
+      color: #8b3e5c;
+    }
+    .speech::after {
+      content: "";
+      position: absolute;
+      right: 24px;
+      bottom: -18px;
+      border-width: 18px 16px 0 16px;
+      border-style: solid;
+      border-color: #f5a4be transparent transparent transparent;
+      transform: rotate(18deg);
+    }
+    .speech::before {
+      content: "";
+      position: absolute;
+      right: 27px;
+      bottom: -12px;
+      border-width: 15px 13px 0 13px;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent;
+      z-index: 1;
+      transform: rotate(18deg);
+    }
+    .subject-section {
+      position: relative;
+      background: rgba(255,251,243,.84);
+      border: 3px solid rgba(123,78,33,.12);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px 24px 28px;
+      backdrop-filter: blur(2px);
+    }
+    .subject-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .subject-badge {
+      width: 18px;
+      height: 54px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--savanna), var(--savanna-dark));
+    }
+    h2 {
+      font-size: 42px;
+      color: var(--earth);
+      margin: 0;
+    }
+    .subject-note {
+      margin: 2px 0 8px 0;
+      font-size: 18px;
+      color: #5e543f;
+    }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 22px;
+      margin-top: 20px;
+    }
+    .game-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 24px;
+      border: 2px solid rgba(123,78,33,.12);
+      box-shadow: 0 12px 24px rgba(96, 71, 24, .09);
+      display: flex;
+      flex-direction: column;
+      min-height: 240px;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,243,204,.5), rgba(255,255,255,0) 55%);
+      pointer-events: none;
+    }
+    .pill {
+      align-self: flex-start;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      color: #7c601b;
+      background: #fff1bf;
+      border: 1px solid #efcb77;
+      border-radius: 999px;
+      padding: 7px 12px;
+      margin-bottom: 16px;
+    }
+    .game-card h3 {
+      font-size: 34px;
+      margin: 0 0 12px;
+      color: #3e2a10;
+    }
+    .game-card p {
+      font-size: 20px;
+      line-height: 1.5;
+      margin: 0 0 18px;
+      color: #4e4532;
+      flex-grow: 1;
+      max-width: 92%;
+    }
+    .game-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 20px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 18px rgba(123,78,33,.16);
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(180deg, #f8bf4b, #e79a25);
+      color: #362204;
+    }
+    .btn-secondary {
+      background: linear-gradient(180deg, #89b55b, #6f9545);
+      color: white;
+    }
+    .small-note {
+      font-size: 16px;
+      color: #675b44;
+    }
+    .decor {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .95;
+    }
+    .decor-warthog {
+      width: 170px;
+      left: -14px;
+      bottom: -32px;
+      transform: rotate(-2deg);
+    }
+    .decor-meerkat {
+      width: 126px;
+      right: 18px;
+      bottom: -10px;
+    }
+    .content-layer { position: relative; z-index: 2; }
+    .footer-note {
+      margin-top: 14px;
+      font-size: 16px;
+      color: #6c5f43;
+    }
+    .update-box {
+      margin-top: 24px;
+      background: rgba(255,255,255,.75);
+      border: 2px dashed rgba(123,78,33,.18);
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-size: 16px;
+      color: #5f543e;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-card content-layer">
+        <div class="kicker">Hakuna Matata</div>
+        <h1>Lernspiele</h1>
+        <div class="subtitle">Spielen, üben, entdecken</div>
+        <div class="hero-text">
+          Hier findest du unsere Lernspiele nach Fächern geordnet. Wähle ein Spiel aus und lege direkt los.
+        </div>
+      </div>
+      <div class="speech-wrap content-layer">
+        <div class="speech">Willkommen bei den Lernspielen, wähle das Spiel aus.</div>
+        <img class="flamingo" src="./assets/flamingo.png" alt="Flamingo als Begrüssung" />
+      </div>
+    </section>
+
+    <section class="subject-section">
+      <img class="decor decor-warthog" src="./assets/warzenschwein.png" alt="" />
+      <img class="decor decor-meerkat" src="./assets/erdmaennchen.png" alt="" />
+      <div class="content-layer">
+        <div class="subject-title">
+          <div class="subject-badge"></div>
+          <div>
+            <h2>Musik</h2>
+            <div class="subject-note">Wähle eines der Solmisationsspiele aus.</div>
+          </div>
+        </div>
+        <div id="gamesContainer" class="games-grid"></div>
+        <div class="update-box">
+          <strong>Zum Aktualisieren:</strong> In dieser Datei kannst du später weitere Fächer und Spiele ergänzen. Die Spiele werden unten aus einer kurzen Liste geladen.
+        </div>
+        <div class="footer-note">Tipp: Lade den ganzen Ordner auf deine Website hoch, damit Bilder und Spielseiten korrekt verlinkt sind.</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Hier kannst du später neue Fächer und Spiele ergänzen.
+    const subjects = [
+      {
+        title: 'Musik',
+        description: 'Wähle eines der Solmisationsspiele aus.',
+        games: [
+          {
+            category: 'Grundversion',
+            title: 'Herr Arnolds Solmisationsspiel',
+            description: 'Das bekannte Spiel mit festem Do. Höre innerlich mit, lies die Note und finde die passende Silbe und Farbe.',
+            button: 'Spiel starten',
+            href: './spiele/solmisationsspiel.html',
+            secondaryLabel: 'Direkt öffnen'
+          },
+          {
+            category: 'Profi',
+            title: 'Herr Arnolds Solmisationsspiel – Profi',
+            description: 'Die schwierigere Variante: Das Do ist vorgegeben und kann sich verschieben. So wird das relative Hören und Denken trainiert.',
+            button: 'Profi starten',
+            href: './spiele/solmisationsspiel-profi.html',
+            secondaryLabel: 'Direkt öffnen'
+          }
+        ]
+      }
+    ];
+
+    const container = document.getElementById('gamesContainer');
+    const subject = subjects[0];
+    container.innerHTML = subject.games.map(game => `
+      <article class="game-card">
+        <div class="pill">${game.category}</div>
+        <h3>${game.title}</h3>
+        <p>${game.description}</p>
+        <div class="game-actions">
+          <a class="btn btn-primary" href="${game.href}">${game.button}</a>
+          <span class="small-note">${game.secondaryLabel}</span>
+        </div>
+      </article>
+    `).join('');
+  </script>
+</body>
+</html>
