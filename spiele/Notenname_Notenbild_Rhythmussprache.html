@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f4e9">
+<title>Notenname, Notenbild, Rhythmussprache</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#283123;background:#fbf9f3;--green:#417547;--earth:#745127;--line:#dee5d9}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 5% 10%,#f5e5c3 0,transparent 35%),radial-gradient(circle at 95% 95%,#e0ead5 0,transparent 39%),#fbf9f3}
+button,input{font:inherit}button{cursor:pointer}
+.shell{max-width:1040px;margin:0 auto;padding:18px 25px 28px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:13px}
+.brand{display:flex;gap:13px;align-items:center}
+.logo{background:#e7edda;border-radius:15px;font-size:28px;width:54px;height:54px;display:grid;place-items:center}
+h1{font-size:clamp(25px,3vw,37px);line-height:1.08;margin:0;color:#3b6137;letter-spacing:-.9px}
+.sub{color:#71634c;margin-top:5px;font-weight:650;font-size:14px}
+.stats{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.streak{background:white;border:1px solid #dce3d5;border-radius:13px;padding:10px 14px;font-size:15px;font-weight:750;white-space:nowrap}
+.hearts{font-size:29px;letter-spacing:2px;white-space:nowrap;color:#d13d4f}
+.heart-empty{color:#c9cbcb}
+button.plain{background:#fff;border:1px solid #d6dfd0;color:#475841;border-radius:12px;padding:9px 12px;font-size:14px;font-weight:650}
+.board{background:#fffdfa;border:2px solid #e3dfd2;border-radius:25px;box-shadow:0 16px 40px #4b5e3818;padding:24px 34px 26px;min-height:560px}
+.feedback{min-height:42px;text-align:center;font-weight:850;font-size:24px;display:grid;place-items:center;margin-bottom:2px;color:#5d694f}
+.feedback.good{color:#25834d}.feedback.bad{color:#b84b3a}
+.prompt{text-align:center;font-size:clamp(22px,2.7vw,30px);font-weight:850;color:#374d33;margin:10px 0 12px}
+.sample{border:2px solid #e6e5de;border-radius:19px;background:#fcfcfa;min-height:142px;display:grid;place-items:center;max-width:660px;margin:0 auto 16px;padding:13px 20px}
+.sample .note-svg{height:119px;width:226px;max-width:100%}
+.sample-text{font-weight:850;font-size:clamp(29px,4.2vw,47px);line-height:1.15;text-align:center}
+.sample-mini{font-size:14px;color:#857d6d;margin-bottom:7px;font-weight:650}
+.answer{max-width:660px;margin:0 auto;text-align:center}
+.inputline{display:flex;gap:12px;align-items:center}
+.answer input{font-size:27px;width:100%;text-align:center;padding:13px 18px;border:2px solid #c7d0bf;border-radius:15px;outline:none;background:#fff}
+.answer input:focus{border-color:#619d5f;box-shadow:0 0 0 4px #8cc18335}
+.hint{color:#746b58;font-size:15px;margin:9px 0 11px}
+.drawbox{max-width:660px;margin:0 auto}
+.drawarea{height:238px;border:2px dashed #aabca5;border-radius:17px;position:relative;background:#fff;overflow:hidden;touch-action:none;cursor:crosshair}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.draw-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c0c9bc;font-size:18px;font-weight:700;pointer-events:none}
+.draw-tools{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px}
+.draw-tools span{font-size:14px;color:#766e5f}
+.actions{display:flex;justify-content:center;margin-top:15px;gap:12px}
+.action{border:0;border-radius:15px;background:#538850;color:#fff;font-size:23px;font-weight:850;min-width:290px;min-height:57px;padding:12px 24px;box-shadow:0 7px 14px #3c6b3c22}
+.action:hover{background:#416e3f}.action:disabled{background:#b5c6b0;cursor:not-allowed;box-shadow:none}
+.notice{font-size:14px;text-align:center;color:#7a6e5e;margin-top:13px;min-height:20px}
+.solution{max-width:820px;margin:0 auto}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.compare-card{border:2px solid #dfded7;border-radius:16px;background:#fff;padding:12px;min-height:139px;text-align:center;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px}
+.compare-card.right{border-color:#9dc79a;background:#f4fbf1}
+.compare-label{font-weight:800;color:#716b5b;font-size:14px}
+.compare-content{font-size:24px;font-weight:850;text-align:center}
+.compare-content .note-svg{width:130px;height:78px}
+.solution-note{font-size:16px;color:#6b6253;text-align:center;line-height:1.35;margin:12px auto 0;max-width:700px}
+.game-over{text-align:center;font-size:clamp(29px,5vw,50px);font-weight:900;color:#ab3641;margin:3px auto 12px}
+.done{color:#377b4b;font-size:24px;font-weight:900;text-align:center}
+.hide{display:none!important}
+@media(max-width:740px){.shell{padding:12px}.top{flex-wrap:wrap}.stats{margin-left:auto}.board{padding:14px 12px 17px;min-height:0}.logo{width:42px;height:42px;font-size:22px}.sample{min-height:115px}.sample .note-svg{height:95px}.prompt{margin:8px auto}.feedback{font-size:20px;min-height:34px}.drawarea{height:245px}.action{min-width:0;width:100%}.compare-card{min-height:120px;padding:7px}.compare-content{font-size:18px}.compare-content .note-svg{max-width:112px}.hearts{font-size:25px}}
+@media(max-height:790px) and (min-width:741px){.shell{padding:10px 18px}.top{margin-bottom:8px}.board{padding:13px 28px;min-height:0}.feedback{min-height:29px;font-size:21px}.prompt{margin:5px 0 7px;font-size:25px}.sample{min-height:110px;margin-bottom:10px;padding:5px}.sample .note-svg{height:96px}.drawarea{height:185px}.actions{margin-top:10px}.action{min-height:48px;font-size:20px}.notice{margin-top:7px}.compare-card{min-height:100px}}
+.self-grade{text-align:center;margin:12px auto 0}.self-grade p{margin:2px 0 12px;font-size:17px;font-weight:700;color:#5c654e}
+.grade-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}.grade-actions button{border:0;border-radius:13px;padding:13px 19px;font-size:18px;font-weight:800;color:white;min-width:210px}.grade-yes{background:#3e874f}.grade-no{background:#ae534a}.grade-actions button:hover{filter:brightness(.93)}
+@media(max-height:800px){.compare-card{min-height:105px}.compare-content img{height:102px!important}.self-grade{margin-top:6px}.self-grade p{margin-bottom:7px}.grade-actions button{padding:10px 16px}}
+@media(max-width:560px){h1{font-size:24px}.grade-actions button{min-width:0;flex:1;font-size:15px}.grade-actions{gap:7px}}
+</style>
+</head>
+<body><main class="shell">
+ <header class="top">
+  <div class="brand"><div class="logo" aria-hidden="true">🎵</div><div><h1>Notenname, Notenbild, Rhythmussprache</h1></div></div>
+  <div class="stats"><div id="streak" class="streak">In Folge richtig: 0</div><div id="hearts" class="hearts" aria-label="3 Herzen">♥ ♥ ♥</div><button id="restartTop" class="plain">Neu starten</button></div>
+ </header>
+ <section class="board" aria-live="polite">
+  <div class="feedback" id="feedback">&nbsp;</div>
+  <div id="playArea">
+   <div class="prompt" id="prompt">Schreibe den Notennamen.</div>
+   <div class="sample" id="sample"></div>
+   <div class="answer" id="answerText"><input id="answerInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Deine Antwort" placeholder="Deine Antwort"><div class="hint" id="textHint">Gib deine Antwort ein.</div></div>
+   <div class="drawbox hide" id="drawBox"><div class="drawarea" id="drawArea"><canvas id="drawCanvas" aria-label="Zeichne das gesuchte Notenbild"></canvas><div class="draw-hint" id="drawHint">Zeichne hier mit der Maus oder dem Finger</div></div><div class="draw-tools"><span>Zeichne das Notenbild möglichst gross.</span><button id="clearBtn" class="plain" type="button">↺ Neu zeichnen</button></div></div>
+   <div class="actions"><button class="action" id="checkBtn">Überprüfen</button></div>
+  </div>
+  <div id="solutionArea" class="solution hide">
+    <div id="gameOverTitle" class="game-over hide">Game Over!</div>
+    <div class="compare"><div class="compare-card"><div class="compare-label">Deine Antwort</div><div id="yourAnswer" class="compare-content"></div></div><div class="compare-card right"><div class="compare-label">Richtige Lösung</div><div id="correctAnswer" class="compare-content"></div></div></div>
+    <div id="solutionNote" class="solution-note"></div>
+    <div id="selfGrade" class="self-grade hide" aria-label="Beurteile deine Zeichnung">
+      <p>Vergleiche deine Zeichnung mit dem richtigen Notenbild.</p>
+      <div class="grade-actions"><button class="grade-yes" id="gradeCorrect" type="button">✓ Richtig gezeichnet</button><button class="grade-no" id="gradeWrong" type="button">✕ Falsch gezeichnet</button></div>
+    </div>
+    <div class="actions"><button id="nextBtn" class="action">Nächste Aufgabe</button></div>
+  </div>
+  <div class="notice" id="notice">Du hast pro Aufgabe einen Versuch. Richtig = ein Herz zurück.</div>
+ </section>
+</main>
+<script>
+'use strict';
+const rhythms = [
+{id:'whole',name:'Ganze Note',sound:'Ta-a-a-a',desc:'Leerer Notenkopf ohne Hals'},
+{id:'dotted',name:'Punktierte halbe Note',sound:'Ta-a-a',desc:'Leerer Notenkopf mit Hals und Punkt'},
+{id:'half',name:'Halbe Note',sound:'Ta-a',desc:'Leerer Notenkopf mit Hals'},
+{id:'quarter',name:'Viertelnote',sound:'Ta',desc:'Ausgefüllter Notenkopf mit Hals'},
+{id:'rest',name:'Viertelpause',sound:'Sa',desc:'Viertelpause als geschwungenes Zeichen'},
+{id:'eighth',name:'Zwei Achtelnoten',sound:'Ta-te',desc:'Zwei ausgefüllte Notenköpfe mit Hälsen und gemeinsamem Balken'}
+];
+function symbol(id){
+const head=(cx,cy,open=false,rx=11)=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="7.5" transform="rotate(-23 ${cx} ${cy})" fill="${open?'white':'#17221c'}" stroke="#17221c" stroke-width="3.2"/>`;
+const stem=(x,y)=>`<path d="M${x} ${y} V10" stroke="#17221c" stroke-width="3.6" stroke-linecap="round" fill="none"/>`;
+let draw='';if(id==='whole')draw=head(70,42,true,14);
+if(id==='dotted')draw=head(64,46,true)+stem(73,44)+`<circle cx="94" cy="45" r="3.8" fill="#17221c"/>`;
+if(id==='half')draw=head(70,46,true)+stem(79,44);
+if(id==='quarter')draw=head(70,46)+stem(79,44);
+if(id==='rest')draw=`<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG8AAAErCAYAAADQe92uAAAFUUlEQVR42u3dQY7bOBAFUJHwEQLMZu5/Tc5qMsEgSFtuScVPvgKyStC29Pyriu50u/34+69jshp/+Lt2qJ/Vg+DUxHgDbibekM78tgkwDG8A3Ct5ACfBs/5vmryt09cXuY4BL7t1DngA4QHcc+YBDF9YHB/Ct80mfXscFbYEnB3P/AtPHsDwtgkwfObZQDdbWJZOXxqe9hmePIDhbRNg+MzbHjB9YdkacIVtc9sjRD9UbPpWwduyfa6UvO0AV2ubWwGaecGAK+Jts31KXnD6VsVrOwCunLzlAbXNYEB4FpYtNs8BT/uEV3juG/AkEN7OgLvgtRUBJc9RQfuEBxDeLoA74bXVACUvGBBeMCA8RwVVkT54wYDwggHhBQPCCwaEZ9tUFemDFwwILxgQXjAgvGDA7kbZNlXBiwpeMCC8YMDuxuQ+T8kLBoRn21QV6etuRO7zlrxgQJ9oEnwNkhcM2KUu93okz1FB6iquS/KCAbvUaZuq4AXapU7ywBVcr7YpeVIHD9xWeNvCOSrAkzp44LbAAxeKB+6/ah2c5IGDB+7dlpmABy40eeD+kLqZ8cB9AXccx/GCpm2Cezh1syQP2gdwMyQP3Idw1XjgvgFX1TahXQBXkTxwF8E9jQfuQrgn8cBdDPcUHrgb4O5eWKDdCHdn8sDdDHcXHrgH4O7AA/cQ3NV44B6Eu3JhAfcg2pXJA1cAdwUeuCK477ZNcEVo300euGK4Ow/p4B6ol9TloX2aPHCTwJ3FAzcRnJkXDHcGT+omg5O8YDh4wXDv4mmZE8JJXjAcvGA4eMFw7+CZd5PCSV4w3Dt4jV8untTBAwcPHLydZl6TOskDV4TnyCB5UleFJ33hyWtSl902JTB85jWps7CoIrwmddnJM//C22aTuuyZJ4HhCwtA26aqwktIX4OnfS7bNgGGzzyA4QsLQNumF1MVnvSFJw9geNsEGD7zAIYvLABtm6oKT/rCkwcwvG0CDJ95AMMXFoC2zS9rwJM+eADXa5sAw2cewPCF5S7AAU/B0z7XTh7A8LZ5NeCAJ4HwimrAkz54APdpm1cBDngSCK8IcMADCE/th7dl+lZK3naAq7XNrTbQFWde2yV9qy4sWwDaNoMBV8ZbfoF53XxBbQLAcQFgS8YbN7xyWxBgZPLuvOjxIOh3AadM32uyXj9uxFwOsE8+pMcvf2ygX+DNPBvGBZhLbaDJR4VPIZcB7GnvKlwEuQTgiof0dyGX+VCMJc9Bb0BGvwe603ubd22tA15dGmPn3+7fVbgyjaMCbxwqsoX6fl4wILwFjgoqMH3wggHhBQPCCwaEFwwIz7apKtIHLxiwH348OBZQ8oIB4QUDwgsGhOeooCrS9+9/d0/+YYz29E27CbB9ircD1rtfZ6QAvjZEO/M4Y2bAXnBzZob73eO2hx9/rJK8NuFz8YMmYXC/S2N5+nyiybyI4yxeAzfVXBxJyUv/DscdiCNx5qUjliwsTeqmS+GQvMUWG3jBnaVP0sKaFEreqils8BZro32CVtYAfvZvXgIwDeDp37vWpWLKFL513yUveA72q7+geq5sm/DUzHhap+SpKjzpkzwviCo8N1vyVBWe9EmeSsfzuz4L8LTO8OQBNPNUFZ70SZ6qwpM+yVNVeNIneaoKT/o2TJ63yCbBkz4zT1XhSZ/kqSq8s+mztEyWPO1T21RVeGfSp3VKHjyzD95pQK1T24SnfcI7XVrnpHjSF568Jn3ZbVMCF982pW9iPOkLT16TvrUP6QAnxtM+w5OnfYa3TYALzjyAIXjmX3jyAIa3TYDhM69BzV5Yfv34FnD/q38AHPDnxN0MPa0AAAAASUVORK5CYII=" x="56" y="4" width="30" height="74" preserveAspectRatio="xMidYMid meet"/>`;
+if(id==='eighth')draw=head(48,48)+head(93,48)+stem(57,45)+stem(102,45)+`<path d="M57 10 H102 V18 H57Z" fill="#17221c"/>`;
+return `<svg class="note-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 82" aria-hidden="true">${draw}</svg>`;
+}
+const $=id=>document.getElementById(id);
+let hearts=3,streak=0,current=null,queue=[],prevKey='',phase='play';
+const canvas=$('drawCanvas'),ctx=canvas.getContext('2d');
+let strokes=[],drawing=false,active=null;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function nextQuestion(){
+if(!queue.length){queue=shuffle(rhythms.flatMap(r=>['name','sound','draw'].map(type=>({id:r.id,type}))));if(prevKey&&queue.length>1&&queue[0].id+queue[0].type===prevKey)queue.push(queue.shift());}
+current=queue.shift();prevKey=current.id+current.type;phase='play';
+const r=rhythms.find(x=>x.id===current.id),mode=current.type;
+$('playArea').classList.remove('hide');$('solutionArea').classList.add('hide');$('gameOverTitle').classList.add('hide');$('selfGrade').classList.add('hide');$('nextBtn').classList.remove('hide');
+$('feedback').textContent='Welche Antwort ist richtig?';$('feedback').className='feedback';
+$('drawBox').classList.toggle('hide',mode!=='draw');$('answerText').classList.toggle('hide',mode==='draw');
+let desc='',p='';
+if(mode==='name') {p='Schreibe den Notennamen.';desc=symbol(r.id);$('textHint').textContent='Wie heisst dieses Notenbild?';}
+if(mode==='sound'){p='Schreibe die Rhythmussprache.';desc=`<div class="sample-text">${r.name}</div>`;$('textHint').textContent='Wie sprichst du diesen Rhythmus?';}
+if(mode==='draw'){p='Zeichne das Notenbild.';desc=`<div class="sample-mini">${r.name}</div><div class="sample-text">${r.sound}</div>`;clearCanvas();requestAnimationFrame(sizeCanvas);}
+$('prompt').textContent=p;$('sample').innerHTML=desc;
+$('answerInput').value='';$('checkBtn').disabled=false;$('checkBtn').textContent='Überprüfen';
+$('notice').textContent= mode==='draw' ? 'Zeichne mit der Maus oder dem Finger. Anschliessend vergleichst du deine Zeichnung selbst mit der Lösung.' : 'Ein Versuch pro Aufgabe. Bei einem Fehler wird die Lösung angezeigt.';
+if(mode!=='draw')$('answerInput').focus({preventScroll:true});
+}
+function updateStats(){$('streak').textContent='In Folge richtig: '+streak;$('hearts').innerHTML=Array.from({length:3},(_,i)=>`<span class="${i<hearts?'':'heart-empty'}">${i<hearts?'♥':'♡'}</span>`).join(' ');$('hearts').setAttribute('aria-label',hearts+' von 3 Herzen');}
+function norm(x){return x.toLocaleLowerCase('de-CH').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[\s\-–—.,!?:;_()]/g,'');}
+function correctText(r,type,s){if(type==='name'){
+const aliases={whole:['ganze note','ganznote'],dotted:['punktierte halbe note','punktierte halbe','halbe note mit punkt','punktierte halbenote'],half:['halbe note','halbnote'],quarter:['viertelnote','viertel note'],rest:['viertelpause','viertel pause'],eighth:['zwei achtelnoten','2 achtelnoten','achtelnoten','zwei verbundene achtelnoten','2 verbundene achtelnoten','achtelpaar','achtelnotenpaar']};
+return aliases[r.id].some(a=>norm(a)===norm(s));}
+const aliases={whole:['ta-a-a-a','taaaa','ta a a a'],dotted:['ta-a-a','taaa','ta a a'],half:['ta-a','taa','ta a'],quarter:['ta'],rest:['sa'],eighth:['ta-te','tate','ta te']};
+return aliases[r.id].some(a=>norm(a)===norm(s));}
+function clearCanvas(){strokes=[];active=null;drawing=false;renderCanvas();}
+function sizeCanvas(){const b=canvas.getBoundingClientRect();const w=Math.max(10,Math.round(b.width)),h=Math.max(10,Math.round(b.height));const dpr=window.devicePixelRatio||1;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);renderCanvas();}
+function renderCanvas(){if(!canvas.width)return;const w=canvas.clientWidth,h=canvas.clientHeight;ctx.clearRect(0,0,w,h);ctx.strokeStyle='#24342b';ctx.fillStyle='#24342b';ctx.lineWidth=7;ctx.lineCap='round';ctx.lineJoin='round';for(const st of strokes){if(!st.length)continue;if(st.length===1){ctx.beginPath();ctx.arc(st[0].x,st[0].y,3.5,0,Math.PI*2);ctx.fill();continue;}ctx.beginPath();ctx.moveTo(st[0].x,st[0].y);for(let i=1;i<st.length;i++)ctx.lineTo(st[i].x,st[i].y);ctx.stroke();}}
+function pointerPoint(ev){const b=canvas.getBoundingClientRect();return {x:ev.clientX-b.left,y:ev.clientY-b.top};}
+canvas.addEventListener('pointerdown',ev=>{if(phase!=='play')return;ev.preventDefault();canvas.setPointerCapture(ev.pointerId);drawing=true;active=[pointerPoint(ev)];strokes.push(active);$('drawHint').classList.add('hide');renderCanvas();});
+canvas.addEventListener('pointermove',ev=>{if(!drawing||!active)return;ev.preventDefault();active.push(pointerPoint(ev));renderCanvas();});
+function stopDraw(){if(drawing){drawing=false;active=null;renderCanvas();}}
+canvas.addEventListener('pointerup',stopDraw);canvas.addEventListener('pointercancel',stopDraw);
+$('clearBtn').addEventListener('click',()=>{clearCanvas();$('drawHint').classList.remove('hide');$('notice').textContent='Du kannst die Zeichnung neu beginnen.';});
+window.addEventListener('resize',sizeCanvas);
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showFailure(r,userDisplay){$('selfGrade').classList.add('hide');$('nextBtn').classList.remove('hide');phase='result';hearts=Math.max(0,hearts-1);streak=0;updateStats();$('playArea').classList.add('hide');$('solutionArea').classList.remove('hide');
+$('feedback').textContent='Falsch – hier ist die richtige Lösung.';$('feedback').className='feedback bad';
+$('yourAnswer').innerHTML=userDisplay;$('correctAnswer').innerHTML= current.type==='draw' ?symbol(r.id):escapeHTML(current.type==='name'?r.name:r.sound);
+$('solutionNote').innerHTML=`<strong>${escapeHTML(r.name)}</strong> · ${escapeHTML(r.sound)}<br>${escapeHTML(r.desc)}`;
+if(hearts===0){$('gameOverTitle').classList.remove('hide');$('nextBtn').textContent='Neu starten';$('feedback').textContent='Drei Herzen verloren.';}else{$('nextBtn').textContent='Nächste Aufgabe';}
+$('notice').textContent='Bei jeder richtigen Antwort erhältst du ein Herz zurück.';
+}
+function showCorrect(){phase='correct';streak++;hearts=Math.min(3,hearts+1);updateStats();$('feedback').textContent='Richtig! Hier kommt die nächste Aufgabe!';$('feedback').className='feedback good';$('checkBtn').disabled=true;$('checkBtn').textContent='Richtig ✓';$('notice').textContent='Gut gemacht!';
+// Keine automatische Zeitsteuerung: bewusster Klick, damit Kinder die Rückmeldung lesen können.
+$('checkBtn').disabled=false;$('checkBtn').textContent='Nächste Aufgabe';
+}
+$('checkBtn').addEventListener('click',()=>{
+if(phase==='correct'){nextQuestion();return;}if(phase!=='play')return;
+const r=rhythms.find(x=>x.id===current.id);
+if(current.type==='draw'){
+if(!strokes.length || strokes.every(st=>st.length<2)){$('feedback').textContent='Zeichne zuerst das Notenbild.';$('feedback').className='feedback';return;}
+const url=canvas.toDataURL('image/png');
+phase='selfcheck';$('playArea').classList.add('hide');$('solutionArea').classList.remove('hide');
+$('selfGrade').classList.remove('hide');$('nextBtn').classList.add('hide');
+$('yourAnswer').innerHTML=`<img alt="Deine Zeichnung" src="${url}" style="max-width:100%;width:190px;height:125px;object-fit:contain">`;
+$('correctAnswer').innerHTML=symbol(r.id);
+$('solutionNote').innerHTML=`<strong>${escapeHTML(r.name)}</strong> · ${escapeHTML(r.sound)}`;
+$('feedback').textContent='Vergleiche die beiden Notenbilder.';$('feedback').className='feedback';
+$('notice').textContent='Entscheide selbst, ob deine Zeichnung richtig ist.';
+}else{
+const s=$('answerInput').value.trim();if(!s){$('feedback').textContent='Schreibe zuerst eine Antwort.';$('feedback').className='feedback';return;}
+if(correctText(r,current.type,s))showCorrect();else showFailure(r,escapeHTML(s));
+}
+});
+$('gradeCorrect').addEventListener('click',()=>{
+if(phase!=='selfcheck')return;
+phase='result';streak++;hearts=Math.min(3,hearts+1);updateStats();
+$('selfGrade').classList.add('hide');$('nextBtn').classList.remove('hide');
+$('nextBtn').textContent='Nächste Aufgabe';$('feedback').textContent='Richtig! Super gemacht!';$('feedback').className='feedback good';
+$('notice').textContent='Du bekommst ein Herz zurück, wenn noch eines fehlt.';
+});
+$('gradeWrong').addEventListener('click',()=>{
+if(phase!=='selfcheck')return;
+phase='result';streak=0;hearts=Math.max(0,hearts-1);updateStats();
+$('selfGrade').classList.add('hide');$('nextBtn').classList.remove('hide');
+$('feedback').textContent='Falsch – hier ist die richtige Lösung.';$('feedback').className='feedback bad';
+$('nextBtn').textContent=hearts===0?'Neu starten':'Nächste Aufgabe';
+if(hearts===0){$('gameOverTitle').classList.remove('hide');$('feedback').textContent='Drei Herzen verloren.';}
+$('notice').textContent='Beim nächsten Mal klappt es bestimmt!';
+});
+$('answerInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('checkBtn').click();});
+function restart(){hearts=3;streak=0;queue=[];prevKey='';phase='play';updateStats();nextQuestion();}
+$('restartTop').addEventListener('click',restart);
+$('nextBtn').addEventListener('click',()=>{if(hearts===0)restart();else nextQuestion();});
+sizeCanvas();restart();
+</script>
+</body></html>
