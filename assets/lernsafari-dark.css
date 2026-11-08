@@ -1,0 +1,216 @@
+/* LernSafari · Anthrazit-Darkmode, inspiriert vom Schnabel des Flamingos.
+   Oberfläche und Navigation dunkel; Lernmaterial, Notenfarben, Spielfiguren und
+   Schachbrett-Feldfarben bleiben zur Erkennbarkeit erhalten. */
+:root {
+ color-scheme:dark;
+ --ls-night:#111518;
+ --ls-charcoal:#191f23;
+ --ls-beak:#252d32;
+ --ls-beak-light:#313b42;
+ --ls-slate:#43505a;
+ --ls-border:#49535b;
+ --ls-text:#f1f3f4;
+ --ls-muted:#bac7ce;
+ --ls-pink:#f38aa9;
+ --ls-green:#a0d3aa;
+ --ls-gold:#f4d28c;
+ --pink:#f38aa9;
+ --pink-deep:#f2a6be;
+ --green:#609c70;
+ --leaf:#87b58b;
+ --sand:#283237;
+ --yellow:#f4d28c;
+ --brown:#d7b995;
+ --paper:#252d32;
+ --ink:#f1f3f4;
+ --muted:#bac7ce;
+ --line:#48555b;
+ --shadow:0 12px 34px #070b0d80;
+ --pine:#b8dbbe;
+ --mint:#2c4637;
+ --cream:#252d32;
+ --peach:#513f3e;
+ --gold:#f4d28c;
+ --blue:#9bc9ee;
+ --nmg-green:#8ec7a0;
+ --nmg-border:#45594f;
+ --nmg-text:#f1f3f4;
+}
+html { background:var(--ls-night); }
+body, body:has(.site-header), body:has(.safari-exit-bar) {
+ background:radial-gradient(circle at 12% 0%,#29323a 0%,transparent 42%),radial-gradient(circle at 92% 90%,#1e2e2a 0%,transparent 42%),var(--ls-night) !important;
+ color:var(--ls-text) !important;
+}
+body::before { opacity:.045 !important; }
+body,main,section,article,aside { scrollbar-color:#59616a #1b2226; }
+a { color:inherit; }
+button,input,select,textarea { accent-color:#f38aa9; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #f4b6c8 !important; outline-offset:3px; }
+::placeholder {color:#b1bbc2;}
+
+/* Hauptseite */
+.site-header,.site-header.compact { background:#191f23f7 !important; border-bottom-color:#505962 !important; box-shadow:0 8px 30px #060a0dcc !important; }
+.site-title,.site-title strong,.welcome-main,.welcome-login {color:var(--ls-text) !important;}
+.site-title em,.inline-login,.eyebrow{color:var(--ls-pink) !important;}
+.nav-link,.nav-trigger {color:#e0e9ed !important;}
+.nav-link:hover,.nav-trigger:hover,.nav-link.active,.nav-trigger.active {background:#37434b !important;border-color:#697780 !important;color:#fff !important;}
+.nav-drop-panel {background:#222a2f !important;border-color:#536069 !important;box-shadow:0 17px 38px #05080bd9 !important;}
+.nav-drop-panel a {color:#e8eef0 !important;}
+.nav-drop-panel a:hover,.nav-drop-panel a:focus-visible {background:#3a464d !important;}
+.hero-panel,.today-head,.daily-task,.subject-block,.category-row,.game-link,.portal-tile,.login-card,.admin-card,.admin-child-card,.week-overlay,.advent-overlay,.archive-empty,.admin-graph,.admin-state,.reserve-metrics,.metric,.highscore-banner {
+ background:#252d32 !important; color:var(--ls-text) !important; border-color:#49555d !important;box-shadow:0 10px 30px #060a0d55 !important;
+}
+.today-head{background:linear-gradient(130deg,#313a40,#222a2e) !important;}
+.daily-task.task-done {background:#23382e !important;border-color:#6dba84 !important;}
+.hero-panel h1,.today-head h2,.task-head h3,.section-heading,.game-name,.subject-block h2,.admin-card h2,.admin-child-card h3,.admin-graph h5,.today-meta,.progress-label {color:#e9eced !important;}
+.hero-panel p,.today-head p,.task-description,.game-desc,.task-tip,.admin-small,.subject-block p {color:#bbc6cc !important;}
+.speech{background:#333d43 !important;border-color:#dd8fa8 !important;color:#f5eff0 !important;}
+.speech::after{border-top-color:#dd8fa8 !important;}
+.day-pill,.task-count,.week-choice,.subject-empty {background:#3b474c !important;color:#f4d3de !important;border-color:#647077 !important;}
+.progress-track{background:#3c494e !important;}
+.preview-note,.reading-box,.admin-todo,.admin-unavailable,.week-hint,.task-tip,.admin-notes {background:#353f42 !important;color:#e8e7dd !important;border-color:#ad8a66 !important;}
+.question-row,.match-row,.fill-row,.order-line,.order-bank,.order-picked,.order-placeholder,.word-tile,.paint-swatch,.choice-button,.close-week,.clear-button,.login-close,.login-submit,.logout-btn,.admin-tab,.highscore-note {
+ background:#303a40 !important;color:#eff3f5 !important;border-color:#5a6871 !important;
+}
+.choice-button.picked,.paint-swatch.selected {background:#315742 !important;border-color:#9bc9a1 !important;}
+.check-button,.preview-note button,.login-submit,.game-check{background:#417b56 !important;color:#fff !important;}
+.check-button:hover,.game-check:hover{background:#529766 !important;}
+.admin-week-table,.admin-table {background:#222a2f !important;color:#e9eeee !important;}
+.admin-week-table th,.admin-table th {background:#39454b !important;color:#eff3f4 !important;}
+.admin-week-table td,.admin-table td,.admin-attempt,.admin-child-card details.admin-attempt {border-color:#505d63 !important;}
+.admin-attempt summary {color:#d3e6da !important;}
+.admin-graph svg text {fill:#e0e8ed !important;}
+.admin-graph svg line {stroke:#7a858a !important;}
+.secret-box,.admin-secret-box {background:#252d32 !important;border-color:#59656a !important;}
+.secret-box input,.admin-secret-box input,.login-card input,.login-card select,.admin-card input,.admin-card textarea,.admin-card select {background:#171e22 !important;color:#fff !important;border-color:#66737c !important;}
+/* Papier-/Schreibflächen bewusst hell: Lernaufgaben behalten einen hohen Kontrast. */
+.paint-cell:not(.painted),.sudoku-grid > *, .sudoku-grid > .sudoku-given {background:#f4f1e9 !important;color:#25302a !important;}
+.paint-cell.painted {color:#182020 !important;}
+
+/* Spielseiten – gemeinsame Oberfläche */
+.safari-exit-bar{background:#191f23f2 !important;border-color:#4b565d !important;}
+.safari-exit-bar>span {color:#c6d0d4 !important;}
+.safari-exit-bar>a{background:#ae5274 !important;color:#fff !important;}
+.safari-exit-bar>a:hover{background:#d76a8e !important;}
+body:has(.safari-exit-bar) :is(h1,h2,h3,h4){color:#e6eee7;}
+body:has(.safari-exit-bar) :is(.sub,.description,.hint,.tiny,.small,.note,.d-tasknote,.d-head p,.nmg-heading p){color:#bfcbd1 !important;}
+body:has(.safari-exit-bar) :is(.panel,.card,.board:not(.sq),.game-shell>.nmg-card,.nmg-card,.d-card,.d-head-tag,.d-chapter,.intro,.result-card,.info-card,.rule-info,.answer-panel,.side-card,.lesson-card,.setup-box,.setup-overlay,.complete,.challenge,.lesson-panel,.piece-list,.rules-nav,.rule-panel,.letter-paper,.move-list,.analysis-item,.analysis-box,.stat-card,.tray,.status-pill,.info-box,.mini,.mini-note,.startup-note,.result,.answer,.feedback,.compare-card,.solution,.review-card,.review-item,.box:not(.sq),.question-box,.intro-card,.container){
+ background:#252d32 !important;border-color:#4c5961 !important;color:#f0f3f5 !important;box-shadow:0 9px 27px #060a0d55 !important;
+}
+/* This excludes chess board squares and colored notation and music symbols. */
+body:has(.safari-exit-bar) :is(.d-scene,.nmg-illustration,.d-illustration,.question-row,.d-sortitem,.d-option,.nmg-option,.nmg-bin,.nmg-token-bank,.nmg-chip,.d-paper,.d-feedback,.d-resultcard,.nmg-results,.nmg-bird,.nmg-learn,.voicebox,.voicehint,.d-tipbox,.d-sort-example,.d-chip,.d-voice-key span,.nmg-pill,.nmg-status,.d-sortlist,.chapter,.d-chapter,.result-card,.stat-card){
+ background:#303b40 !important;border-color:#5b686d !important;color:#f2f3f5 !important;
+}
+body:has(.safari-exit-bar) :is(.d-option.selected,.nmg-option.selected,.opt.selected,.piece-btn.active,.rule-btn.active) {background:#304f43 !important;border-color:#9ecbaa !important;color:#fff !important;}
+body:has(.safari-exit-bar) :is(.d-option.right,.nmg-option.correct,.feedback.good,.d-feedback.good,.nmg-fb.good) {background:#284d37 !important;border-color:#75bb89 !important;color:#dcf4e0 !important;}
+body:has(.safari-exit-bar) :is(.d-option.wrong,.nmg-option.wrong,.feedback.bad,.d-feedback.bad,.nmg-fb.bad) {background:#503239 !important;border-color:#e78b89 !important;color:#fce5e4 !important;}
+body:has(.safari-exit-bar) :is(.d-head h1,.d-tasktitle,.d-quote,.d-option,.d-paper,.d-resultcard strong,.nmg-heading h1,.nmg-card h2,.nmg-question,.rule-info h3,.info-card h3,.rule-panel h2,.piece-list h2,.panel h2,.card h2,.result-main,.hero h1,.titlebox h1,.head h1,.top h1,.topline h1,.status-pill,.task-title,.prompt,.question){color:#edf3ef !important;}
+body:has(.safari-exit-bar) :is(.d-context,.d-tasknote,.d-resultcard span,.nmg-card p,.nmg-credit,.mini span,.small,.stat-card span,.d-sortitem small,.d-scene p,.voicehint,.nmg-fb,.d-feedback,.rule-info p,.info-card p,.head p,.hero p,.titlebox p){color:#c0cbd1 !important;}
+body:has(.safari-exit-bar) :is(.nmg-btn,.d-btn,.btn-primary,.action,.primary,.nmg-option.correct){color:#fff !important;}
+body:has(.safari-exit-bar) :is(.d-btn,.nmg-btn,.btn-primary,.action,.primary){background:#487c58 !important;}
+body:has(.safari-exit-bar) :is(.d-btn.secondary,.nmg-btn.ghost,.btn-secondary,.action.secondary,.secondary){background:#39464c !important;color:#e5eee9 !important;border-color:#65737a !important;}
+body:has(.safari-exit-bar) :is(.nmg-steps span,.d-chapter,.mode-btn,.entry-btn,.rule-btn,.piece-btn,.opt,.btn-secondary,.prompt-chip,.tag,.chip){background:#313c42 !important;border-color:#596871 !important;color:#ecf3f4 !important;}
+body:has(.safari-exit-bar) :is(.d-chapter.active,.nmg-steps span.active,.mode-btn.active,.entry-btn.active,.rule-btn.active){background:#3d6654 !important;border-color:#8fbd9c !important;color:#fff !important;}
+body:has(.safari-exit-bar) :is(input,select,textarea){background:#20292e;color:#f7f8f8;border-color:#65737a;}
+body:has(.safari-exit-bar) option {background:#283238;color:#f4f6f7;}
+body:has(.safari-exit-bar) :is(.progress,.subject-chip span,.d-chip,.nmg-pill,.nmg-status,.hint,.move-rule,.stat-card,.status-pill){background:#35454a !important;color:#dff1e4 !important;border-color:#56686d !important;}
+body:has(.safari-exit-bar) :is(.d-progress,.nmg-progress,.mini-progress,.progress-track){background:#3a4549 !important;}
+body:has(.safari-exit-bar) :is(.d-feedback.good,.nmg-fb.good){color:#a9dfb4 !important;}
+body:has(.safari-exit-bar) :is(.d-feedback.bad,.nmg-fb.bad){color:#ffb0a5 !important;}
+/* Schachbretter und Spielmaterial: explizit originale Feldfarben. */
+body:has(.safari-exit-bar) .sq.light {background:#f4e7c6 !important;}
+body:has(.safari-exit-bar) .sq.dark {background:#c49d68 !important;}
+body:has(.safari-exit-bar) .sq.checksq {background:#eeb5b5 !important;}
+body:has(.safari-exit-bar) .sq.last-from {background:#a5cfeb !important;}
+body:has(.safari-exit-bar) .sq.last-to {background:#6aaadf !important;}
+body:has(.safari-exit-bar) .piece-token.white {background:#fff !important;color:#111 !important;border-color:#515151 !important;}
+body:has(.safari-exit-bar) .piece-token.black {background:#222 !important;color:#fff !important;border-color:#f7f7f7 !important;}
+body:has(.safari-exit-bar) .board-frame .letters, body:has(.safari-exit-bar) .board-frame .numbers{color:#d6dfe0 !important;}
+/* Große farbige Unterrichtsflächen werden nicht umgefärbt. */
+body:has(.safari-exit-bar) :is(.staff,.notehead,.color-circle,.swatch,.rhythm-symbol,.piano-key,.music-note,.hundred,.ten,.dot,.one,.part,.book button,.paint-cell){filter:none !important;}
+/* Angemessen zurückhaltende helle Vorlagen statt blendender Vollweissflächen. */
+body:has(.safari-exit-bar) .letter-paper,body:has(.safari-exit-bar) .d-paper {background:#e5dfd2 !important;color:#2c3434 !important;border-color:#b5a996 !important;}
+body:has(.safari-exit-bar) .letter-paper strong,body:has(.safari-exit-bar) .d-paper strong {color:#273531 !important;}
+body:has(.safari-exit-bar) .letter-header{color:#536159 !important;}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto !important}}
+
+/* LernSafari · Anpassung 2026-11-08: sichtbares, abgedunkeltes Hakuna-Matata-Bild
+   und Fächerfarben. Nur Hauptseite; keine Änderungen an Lernspiel-Feldfarben. */
+body:has(.site-header)::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  opacity:1 !important;
+  pointer-events:none;
+  background-image:linear-gradient(180deg, rgba(8,12,16,.77), rgba(10,14,19,.82)), url('hakuna_matata_banner.png') !important;
+  background-position:center center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+body:has(.site-header) > .shell,
+body:has(.site-header) > main { position:relative; z-index:1; }
+/* Hauptmenü bleibt über allen Inhaltskarten. */
+body:has(.site-header) > .site-header {z-index:50;}
+/* Einheitliche Bereichsüberschriften für Aktuelle Spiele, Archiv und Portale. */
+body:has(.site-header) .section-heading {
+  background:#293238ee !important;
+  border:2px solid #54616a !important;
+  border-radius:24px;
+  box-shadow:0 12px 32px #080c10a1 !important;
+}
+body:has(.site-header) .section-heading h1 {
+  color:#f38aa9 !important;
+  text-shadow:0 1px 4px #151b21;
+}
+body:has(.site-header) .section-heading p {
+  color:#b6c2c9 !important; /* aufgehelltes Schnabelgrau für lesbaren Kontrast */
+}
+body:has(.site-header) .section-heading .eyebrow {color:#e9aabd !important;}
+
+/* Bunte Fächerhintergründe, schnabelgraue Spielkacheln. */
+body:has(.site-header) .subject-block.subject-allgemein {
+  --subject-bg:#43505a;--subject-border:#63737d;--subject-text:#fff;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block.subject-deutsch {
+  --subject-bg:#b93e50;--subject-border:#d86675;--subject-text:#fff;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block.subject-englisch {
+  --subject-bg:#f0ce66;--subject-border:#dbb94f;--subject-text:#252d32;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block.subject-mathe {
+  --subject-bg:#417cab;--subject-border:#6b9fc5;--subject-text:#fff;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block.subject-musik {
+  --subject-bg:#edf0f2;--subject-border:#c2cbd0;--subject-text:#252d32;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block.subject-nmg {
+  --subject-bg:#4f815c;--subject-border:#74a681;--subject-text:#fff;
+  background:var(--subject-bg) !important;border-color:var(--subject-border) !important;
+}
+body:has(.site-header) .subject-block > h3 {
+  color:var(--subject-text) !important;
+  text-shadow:none;
+}
+/* Vorschaukarten sind in allen Fachboxen einheitlich schnabelgrau. */
+body:has(.site-header) .subject-block .game-link,
+body:has(.site-header) .subject-block .subject-empty,
+body:has(.site-header) .archive-empty {
+  background:#252d32 !important;
+  color:#f1f3f4 !important;
+  border:2px solid #56636b !important;
+}
+body:has(.site-header) .subject-block .game-link .game-name,
+body:has(.site-header) .subject-block .subject-empty span { color:#f1f3f4 !important; }
+body:has(.site-header) .subject-block .game-link .game-desc {color:#c1cbd0 !important;}
+body:has(.site-header) .subject-block .game-link.game-check {background:#345044 !important;border-color:#77a48b !important;}
+body:has(.site-header) .game-preview {background:#252d32 !important;}
+/* For background image on smaller screens, keep the title and centre of the scene visible. */
+@media(max-width:770px){
+  body:has(.site-header)::before {background-position:50% center;background-size:auto 100%;}
+}
