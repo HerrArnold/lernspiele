@@ -1,0 +1,40 @@
+LernSafari – Fotoquellen für «Verschiedene Rabenvögel» und «Teste dein Wissen»
+
+Die zehn realen Vogelbilder werden aus Wikimedia Commons geladen. Zum Betrieb
+braucht der Browser eine Internetverbindung zu commons.wikimedia.org.
+Die jeweiligen Urheber und Lizenzen sind unten aufgeführt. Die Bilder bleiben
+unverändert; der Browser stellt die von Commons gelieferte verkleinerte Ansicht dar.
+
+Rabenkrähe: «Carrion Crow Corvus corone.jpg», Richard Bartz, CC BY-SA 2.5
+https://commons.wikimedia.org/wiki/File:Carrion_Crow_Corvus_corone.jpg
+Nebelkrähe: «Hooded Crow - Corvus cornix.jpg», John Haslam, CC BY 2.0
+https://commons.wikimedia.org/wiki/File:Hooded_Crow_-_Corvus_cornix.jpg
+Saatkrähe: «Rook-Corvus frugilegus.jpg», Andreas Trepte, CC BY-SA 2.5
+https://commons.wikimedia.org/wiki/File:Rook-Corvus_frugilegus.jpg
+Kolkrabe: «Corvus corax - Common raven.jpg», Zeynel Cebeci, CC BY-SA 4.0
+https://commons.wikimedia.org/wiki/File:Corvus_corax_-_Common_raven.jpg
+Dohle: «Western jackdaw - Coloeus monedula.jpg», Warrieboy, CC BY-SA 4.0
+https://commons.wikimedia.org/wiki/File:Western_jackdaw_-_Coloeus_monedula.jpg
+Alpendohle: «Pyrrhocorax graculus.jpg», Mai-Sachme, CC BY-SA / GFDL (Details siehe Commons)
+https://commons.wikimedia.org/wiki/File:Pyrrhocorax_graculus.jpg
+Alpenkrähe: «Red-billed chough (Pyrrhocorax pyrrhocorax).jpg», Urheber/Lizenz auf Commons-Dateiseite
+https://commons.wikimedia.org/wiki/File:Red-billed_chough_(Pyrrhocorax_pyrrhocorax).jpg
+Tannenhäher: «Nucifraga caryocatactes Davos 5.jpg», kuhnmi, CC BY 2.0
+https://commons.wikimedia.org/wiki/File:Nucifraga_caryocatactes_Davos_5.jpg
+Eichelhäher: «Eurasian jay (Garrulus glandarius).jpg», Georgi.petrov66, CC BY-SA 4.0
+https://commons.wikimedia.org/wiki/File:Eurasian_jay_(Garrulus_glandarius).jpg
+Elster: «Eurasian magpie (Pica pica) 2024.jpg», TRinaud, CC BY 4.0
+https://commons.wikimedia.org/wiki/File:Eurasian_magpie_(Pica_pica)_2024.jpg
+
+CC BY-SA 2.5: https://creativecommons.org/licenses/by-sa/2.5/
+CC BY-SA 3.0: https://creativecommons.org/licenses/by-sa/3.0/
+CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+CC BY 2.0: https://creativecommons.org/licenses/by/2.0/
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+Faktenquellen:
+Schweizerische Vogelwarte https://www.vogelwarte.ch/de/ratgeber/rabenvoegel-in-landwirtschaftlichen-kulturen/
+Schweizerische Vogelwarte, artspezifische Steckbriefe unter /de/voegel-der-schweiz/
+NABU, LBV, BirdLife Österreich, Pro Natura: artspezifische Grössen/Spannweiten.
+Grössen und Spannweiten sind ungefähre Bereiche und können je nach Quelle leicht
+abweichen. Bei in der Tabelle identischen Bereichswerten sind beide Antworten richtig.
