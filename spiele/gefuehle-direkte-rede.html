@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#191f23"><title>Gefühle und direkte Rede – LernSafari</title><link rel="stylesheet" href="../assets/game-theme.css"><link rel="stylesheet" href="../assets/deutsch-game.css"><script defer src="../assets/analytics-config.js"></script>
+<style>.d-photo{width:min(100%,340px);aspect-ratio:1/1;object-fit:cover;border-radius:20px;display:block;margin:0 auto;background:#eef0ea;box-shadow:0 12px 28px #00000010}.d-scene .d-context{margin-top:10px;text-align:center;color:#6b7462;font-weight:700}.d-scene .voicebox{background:#f4f7ef;border:1px solid #dbe4d6;border-radius:18px;padding:16px;display:grid;gap:12px}.d-scene .voicebox strong{font-size:20px;color:#3c5539}.d-scene .voicehint{background:#fff;border-radius:14px;padding:12px;color:#50604e;font-weight:700}</style><link rel="stylesheet" href="../assets/lernsafari-dark.css?v=3"></head>
+<body><div class="safari-exit-bar"><span>LernSafari · Deutsch</span><a href="../index.html#aktuelle--deutsch">✕ Spiel beenden</a></div>
+<main class="d-shell">
+<header class="d-head"><div><h1>🎭 Gefühle und direkte Rede</h1><p>Was fühlen die Menschen? Wie klingt ihre Stimme?</p></div><div class="d-head-tag">⭐ Üben ohne Herzen</div></header>
+<nav class="d-chapters" id="chapters" aria-label="Spielteile"><span class="d-chapter active">1 · Was fühlt die Person?</span><span class="d-chapter">2 · Gesicht erkennen</span><span class="d-chapter">3 · So klingt die Stimme</span></nav>
+<section class="d-card" id="exercise"><div class="d-progress"><span id="progress-bar" class="d-progress-fill"></span></div><div class="d-topline"><span class="d-chip" id="chapter-label">Teil 1</span><span class="d-count" id="counter">Aufgabe 1 von 8</span></div><h2 class="d-tasktitle" id="title"></h2><p class="d-tasknote" id="task-note"></p><div id="scene" class="d-scene"></div><div id="choices" class="d-choices"></div><div class="d-feedback d-hidden" id="feedback" role="status" aria-live="polite"></div><div class="d-actions"><button class="d-btn" id="check" type="button" disabled>Antwort prüfen</button><button class="d-btn d-hidden" id="next" type="button">Weiter</button></div></section>
+<section class="d-card d-finale d-hidden" id="finale"><div class="big">🎉</div><h2>Gefühlsdetektiv geschafft!</h2><p>Du hast direkte Rede, Gesichter und Stimmen erforscht.</p><div class="d-resultcards"><div class="d-resultcard"><strong id="final-score">0/24</strong><span>richtig beantwortet</span></div><div class="d-resultcard"><strong>3</strong><span>Teile abgeschlossen</span></div></div><div class="d-tipbox">Merke: Nicht nur die Wörter zeigen Gefühle. Auch <b>Mimik</b>, <b>Stimme</b> und <b>Situation</b> verraten viel.</div><button class="d-btn" type="button" id="again">Noch einmal spielen</button></section>
+</main>
+<script src="../assets/login-config.js"></script><script src="../assets/game-telemetry.js"></script>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const EMOTIONS={freude:['Freude','😊'],trauer:['Traurigkeit','😢'],wut:['Wut','😠'],angst:['Angst','😨'],ueberraschung:['Überraschung','😮'],stolz:['Stolz','😌'],scham:['Scham','😳'],ruhe:['Ruhe','😌']};
+const PHOTO={freude:'../assets/emotions/joy.png',trauer:'../assets/emotions/sadness.png',wut:'../assets/emotions/anger.png',angst:'../assets/emotions/fear.png',ueberraschung:'../assets/emotions/surprise.png',stolz:'../assets/emotions/pride.png',scham:'../assets/emotions/shame.png',ruhe:'../assets/emotions/calm.png'};
+const PART1=[
+ {text:'„Juhu! Wir haben gewonnen!“, jubelt Lina und hüpft.',answer:'freude',explain:'Lina jubelt und hüpft. Das zeigt Freude.'},
+ {text:'„Oh nein, mein Lieblingsbuch ist weg“, sagt Ben mit Tränen in den Augen.',answer:'trauer',explain:'Ben hat Tränen in den Augen. Er ist traurig.'},
+ {text:'„Hör sofort auf damit!“, ruft Mia mit zusammengezogenen Augenbrauen.',answer:'wut',explain:'Mia ruft laut und runzelt die Stirn. Sie ist wütend.'},
+ {text:'„I-ich glaube, da ist jemand“, flüstert Noa und zittert.',answer:'angst',explain:'Noa zittert und flüstert. Das zeigt Angst.'},
+ {text:'„Was? Für mich? Das hätte ich nie gedacht!“, ruft Amir mit grossen Augen.',answer:'ueberraschung',explain:'Amir hat grosse Augen. Er ist überrascht.'},
+ {text:'„Ich habe ganz allein einen Brief geschrieben!“, sagt Ella und strahlt.',answer:'stolz',explain:'Ella freut sich über das, was sie geschafft hat. Sie ist stolz.'},
+ {text:'„Ähm … das war ich“, murmelt Tim und wird rot im Gesicht.',answer:'scham',explain:'Tim wird rot und spricht leise. Er schämt sich.'},
+ {text:'„Wir schaffen das Schritt für Schritt“, sagt Sam mit ruhiger Stimme.',answer:'ruhe',explain:'Sam spricht gelassen und langsam. Das zeigt Ruhe.'}
+];
+const PART2=[
+ {emotion:'freude',tip:'Ein breites Lächeln und fröhliche Augen zeigen Freude.'},
+ {emotion:'trauer',tip:'Ein trauriger Mund und feuchte Augen können Traurigkeit zeigen.'},
+ {emotion:'wut',tip:'Zusammengezogene Augenbrauen und ein fester Mund können Wut zeigen.'},
+ {emotion:'angst',tip:'Grosse Augen und ein angespannter Mund können Angst zeigen.'},
+ {emotion:'ueberraschung',tip:'Offene Augen und ein runder Mund zeigen oft Überraschung.'},
+ {emotion:'stolz',tip:'Ein zufriedenes Lächeln und ein erhobenes Kinn können Stolz zeigen.'},
+ {emotion:'scham',tip:'Rote Wangen, ein kleiner Blick nach unten oder eingezogene Schultern können Scham zeigen.'},
+ {emotion:'ruhe',tip:'Entspannte Augen und ein sanfter Mund können Ruhe zeigen.'}
+];
+const PART3=[
+ {quote:'„Das ist ja wunderbar!“',voice:'laut und schnell · hohe Stimme',answer:'freude',tip:'Eine fröhliche Stimme klingt oft hell, lebhaft und schnell.'},
+ {quote:'„Ich vermisse meinen Hund.“',voice:'leise und langsam · Stimme stockt',answer:'trauer',tip:'Traurigkeit hört man oft an einer leisen oder langsamen Stimme.'},
+ {quote:'„Jetzt reicht es mir!“',voice:'laut und hart · sehr bestimmt',answer:'wut',tip:'Wut hört man oft an einer angespannten, harten Stimme.'},
+ {quote:'„Was war das für ein Geräusch?“',voice:'zitternd und leise · viele Pausen',answer:'angst',tip:'Bei Angst kann die Stimme zittern und unsicher klingen.'},
+ {quote:'„Oh! Du bist schon da?“',voice:'Stimme geht plötzlich nach oben',answer:'ueberraschung',tip:'Bei Überraschung wird die Stimme oft plötzlich höher.'},
+ {quote:'„Das habe ich selbst geschafft.“',voice:'sicher und zufrieden · klar',answer:'stolz',tip:'Wer stolz ist, spricht oft sicher und zufrieden.'},
+ {quote:'„Entschuldigung …“',voice:'sehr leise und unsicher · stockend',answer:'scham',tip:'Wenn man sich schämt, spricht man oft leise oder stockend.'},
+ {quote:'„Wir finden gemeinsam eine Lösung.“',voice:'gleichmässig und ruhig · langsam',answer:'ruhe',tip:'Eine ruhige Stimme klingt oft gleichmässig und entspannt.'}
+];
+const PARTS=[PART1,PART2,PART3]; let part=0,index=0,score=0,selection=null,locked=false;
+function optionsFor(answer){
+ const others=Object.keys(EMOTIONS).filter(x=>x!==answer); const chosen=[];
+ while(chosen.length<3){ const c=others[(index*3+part*5+chosen.length*2)%others.length]; if(!chosen.includes(c)) chosen.push(c); else { const free=others.find(x=>!chosen.includes(x)); if(free) chosen.push(free);} }
+ const arr=[answer,...chosen].map(key=>({key,label:EMOTIONS[key][0],emoji:EMOTIONS[key][1]}));
+ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+ return arr;
+}
+function choose(items,showEmoji){const box=$('choices'); box.innerHTML=''; items.forEach(e=>{ const b=document.createElement('button'); b.className='d-option'; b.type='button'; b.dataset.value=e.key; b.innerHTML=showEmoji?`<span class="d-opt-emoji">${e.emoji}</span><span>${e.label}</span>`:`<span>${e.label}</span>`; b.addEventListener('click',()=>{ if(locked)return; selection=e.key; box.querySelectorAll('.d-option').forEach(x=>x.classList.toggle('selected',x.dataset.value===selection)); $('check').disabled=false;}); box.append(b);}); }
+function setChapters(){[...$('chapters').children].forEach((el,i)=>{ el.classList.toggle('active',i===part); el.classList.toggle('complete',i<part);});}
+function render(){ const q=PARTS[part][index]; selection=null; locked=false; setChapters(); $('progress-bar').style.width=`${((part*8+index)/24)*100}%`; $('chapter-label').textContent=`Teil ${part+1} von 3`; $('counter').textContent=`Aufgabe ${index+1} von 8`; $('feedback').className='d-feedback d-hidden'; $('feedback').textContent=''; $('check').disabled=true; $('check').classList.remove('d-hidden'); $('next').classList.add('d-hidden'); if(part===0){ $('title').textContent='Welches Gefühl passt dazu?'; $('task-note').textContent='Lies die direkte Rede. Achte auch darauf, wie die Person spricht.'; $('scene').innerHTML=`<div><div class="d-quote">${q.text}</div><div class="d-context">💬 Wer spricht? Wie klingt es?</div></div>`; choose(optionsFor(q.answer),true);} else if(part===1){ $('title').textContent='Welches Gefühl zeigt diese Person?'; $('task-note').textContent='Schau auf Augen, Mund, Stirn und die Haltung.'; $('scene').innerHTML=`<img class="d-photo" src="${PHOTO[q.emotion]}" alt="Foto einer Person mit einem Gefühl"><div class="d-context">Welches Gefühl erkennst du?</div>`; choose(optionsFor(q.emotion),false);} else { $('title').textContent='Wie klingt diese Stimme?'; $('task-note').textContent='Lies die Hinweise zur Stimme. Wähle das passende Gefühl.'; $('scene').innerHTML=`<div class="voicebox"><strong>${q.quote}</strong><div class="voicehint">Hinweis zur Stimme: ${q.voice}</div></div>`; choose(optionsFor(q.answer),false);} }
+function check(){ if(selection===null||locked)return; locked=true; const q=PARTS[part][index]; const expected=part===0?q.answer:part===1?q.emotion:q.answer; const ok=selection===expected; if(ok)score++; $('choices').querySelectorAll('.d-option').forEach(btn=>{ btn.disabled=true; if(btn.dataset.value===expected)btn.classList.add('right'); else if(btn.dataset.value===selection&&!ok)btn.classList.add('wrong');}); const explain=part===0?q.explain:part===1?q.tip:q.tip; $('feedback').textContent=(ok?'✓ Richtig! ':'✕ Noch nicht ganz. ')+explain; $('feedback').className='d-feedback '+(ok?'good':'bad'); $('check').classList.add('d-hidden'); $('next').classList.remove('d-hidden'); $('next').textContent=(part===2&&index===7)?'Auswertung':'Weiter'; window.SafariTelemetry?.record({task:`Gefühle Teil ${part+1} Aufgabe ${index+1}`,correct:ok,answer:EMOTIONS[selection][0],expected:EMOTIONS[expected][0],details:part===0?q.text:part===1?'Gefühl auf Foto erkennen':q.quote}); }
+function next(){ index++; if(index>=8){ part++; index=0; } if(part>=3){ $('exercise').classList.add('d-hidden'); $('finale').classList.remove('d-hidden'); $('final-score').textContent=`${score}/24`; window.SafariTelemetry?.record({task:'Gefühle Abschluss',correct:score===24,correctCount:score,total:24,answer:`${score}/24`,expected:'24/24'}); } else render(); }
+$('check').addEventListener('click',check); $('next').addEventListener('click',next); $('again').addEventListener('click',()=>{part=0;index=0;score=0;$('exercise').classList.remove('d-hidden');$('finale').classList.add('d-hidden');render();}); render();
+})();
+</script></body></html>
