@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Herr Arnolds Solmisationsspiel – Profi</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#1d2430;background:#fff}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;}
+body{min-height:100dvh;display:grid;place-items:center;padding:clamp(10px,2vh,22px) 18px;background:white}
+main{width:min(100%,850px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(7px,1.3vh,13px)}
+.topline{width:100%;display:flex;justify-content:flex-end;align-items:center;min-height:19px}
+.highscore{font-size:15px;color:#657183;font-weight:650}
+h1{font-size:clamp(22px,3.5vh,31px);font-weight:750;letter-spacing:-.6px;margin:0;line-height:1.2}
+#status{min-height:clamp(26px,4vh,34px);font-weight:750;font-size:clamp(18px,2.8vh,23px);color:#263246;line-height:1.35}
+#status.good{color:#207c47}#status.bad{color:#aa3f28}#status.neutral{color:#687383}
+.staff-wrap{width:100%;border-radius:17px;background:#fafbfc;padding:clamp(8px,1.8vh,13px) 12px;margin:0}
+#staff{display:block;width:min(100%,650px);height:clamp(150px,25vh,208px);margin:auto;overflow:visible}
+.entry{width:100%;display:flex;justify-content:center;margin:0}
+input{width:min(100%,360px);height:clamp(47px,6.6vh,58px);text-align:center;font-size:22px;font-weight:650;border:2px solid #dce1e8;border-radius:14px;background:#fff;outline:0}
+input:focus{border-color:#596a86}input::placeholder{color:#a3aab5;font-size:18px;font-weight:450}
+.colors{display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;gap:clamp(9px,1.7vw,17px);width:100%;margin:0}
+.color{width:clamp(41px,6.7vh,59px);height:clamp(41px,6.7vh,59px);flex:none;border-radius:50%;background:var(--c);border:3px solid transparent;outline:none;cursor:pointer;box-shadow:0 2px 4px #00000014;transition:transform .15s,box-shadow .15s}
+.color:hover{transform:translateY(-2px)}.color:focus-visible{outline:3px solid #27364b;outline-offset:3px}.color.selected{box-shadow:0 0 0 3px white,0 0 0 6px #263246;transform:scale(1.04)}
+.lives{display:flex;gap:12px;align-items:center;justify-content:center;min-height:31px;margin:0}
+.heart{font-size:clamp(25px,3.8vh,30px);line-height:1;color:#e74c58}
+.heart.empty{color:#c8ccd3;opacity:.65}
+button.action{font:inherit;font-size:18px;font-weight:700;min-width:188px;border:0;border-radius:13px;padding:12px 26px;cursor:pointer;background:#243248;color:#fff}
+.action:focus-visible{outline:3px solid #8195b7;outline-offset:3px}.action:hover{background:#354760}
+#feedback{min-height:0;margin:0;font-size:16px;font-weight:650}#feedback:empty{display:none}
+#solution{display:none;width:100%;max-width:800px;margin:0;border:0;padding:0}
+#solution strong{font-size:21px;display:block;margin:0 0 8px}
+#scale{display:block;width:min(100%,690px);height:clamp(160px,24vh,215px);margin:0 auto 8px;overflow:visible}
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:clamp(9px,2vw,20px);margin:0 auto 8px;max-width:670px;text-align:center}
+.compare-card{background:#f7f8fa;border:1px solid #e2e5ea;border-radius:14px;padding:clamp(8px,1.5vh,13px) 10px}
+.compare-card.correct{background:#f5fbf6;border-color:#c8e7d0}
+.compare-title{font-size:clamp(13px,2.0vh,16px);font-weight:700;color:#697385;margin-bottom:5px}
+.compare-answer{display:flex;justify-content:center;align-items:center;gap:12px;font-size:clamp(19px,3.2vh,26px);font-weight:800;color:#263246}
+.compare-dot{display:inline-block;width:clamp(25px,4.3vh,35px);height:clamp(25px,4.3vh,35px);border-radius:50%;border:2px solid #00000016;background:var(--c);flex:none}
+.scale-label{font-size:14px;color:#637083;margin:3px 0 0;font-weight:600}
+#next{margin:0}#next[hidden],#check[hidden]{display:none}
+#gameover{display:none;margin:0;padding:12px 18px;max-width:540px;border:2px solid #e6e9ed;border-radius:16px;background:#fff}
+#gameover h2{font-size:clamp(24px,4vh,31px);margin:2px 0 5px}
+#gameover p{margin:0 0 12px;color:#606b7b;font-size:16px}
+body.show-solution .staff-wrap,body.show-solution .entry,body.show-solution .colors{display:none}
+body.show-solution #solution{display:block}
+body.show-solution #check{display:none}
+body.show-solution main{gap:clamp(7px,1.4vh,14px)}
+@media(max-width:600px){body{padding:12px}main{gap:10px}.colors{gap:clamp(5px,1.5vw,10px)}.color{width:clamp(34px,10vw,48px);height:clamp(34px,10vw,48px)}#staff{height:150px}#scale{height:165px}}
+@media(max-height:720px) and (min-width:601px){main{gap:6px}.staff-wrap{padding:6px 10px}#staff{height:132px}#status{min-height:25px}.color{width:40px;height:40px}.lives{min-height:27px}.heart{font-size:25px}button.action{padding:9px 23px}#scale{height:165px}}
+@media(max-width:410px){.compare-answer{font-size:19px;gap:5px}.compare-card{padding:8px 4px}.comparison{gap:7px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.mode{margin:-5px 0 0;font-size:14px;font-weight:600;color:#788393}
+.staff-wrap{background:#fafbfc}
+#staff{height:clamp(162px,27vh,220px)}
+@media(max-height:720px) and (min-width:601px){#staff{height:clamp(132px,23vh,172px)}.mode{font-size:12px}}
+@media(max-width:600px){#staff{height:160px}}
+
+/* Einheitliches Design mit den Rhythmusspielen; Notensystem und Spiellogik unverändert */
+:root{color:#283123;background:#fbf9f3}
+body{background:radial-gradient(circle at 5% 10%,#f5e5c3 0,transparent 35%),radial-gradient(circle at 95% 95%,#e0ead5 0,transparent 39%),#fbf9f3;color:#283123}
+main{width:min(100%,900px);background:#fffdfa;border:2px solid #e3dfd2;border-radius:25px;box-shadow:0 16px 40px #4b5e3818;padding:clamp(15px,2.4vh,26px) clamp(15px,3vw,34px);gap:clamp(8px,1.2vh,13px)}
+.topline{min-height:45px;justify-content:space-between;gap:15px;align-items:center;flex-wrap:nowrap}
+.topline h1{font-size:clamp(23px,2.7vw,35px);font-weight:850;color:#3b6137;text-align:left;line-height:1.12;margin:0}
+.hud{display:flex;align-items:center;gap:14px;justify-content:flex-end;flex-wrap:wrap}
+.highscore{border:1px solid #dce3d5;background:white;border-radius:13px;padding:9px 12px;color:#283123;font-size:14px;font-weight:750;white-space:nowrap}
+.hud .lives{margin:0;min-height:0;gap:4px}
+.hud .heart{font-size:27px}
+.staff-wrap{border:2px solid #e6e5de;background:#fcfcfa;border-radius:19px}
+input{border:2px solid #c7d0bf;border-radius:15px;color:#283123}
+input:focus{border-color:#619d5f;box-shadow:0 0 0 4px #8cc18335}
+.color.selected{box-shadow:0 0 0 3px white,0 0 0 6px #417547}
+button.action{background:#538850;border-radius:15px;font-size:21px;font-weight:850;min-height:52px}
+button.action:hover{background:#416e3f}
+.compare-card{border:2px solid #dfded7;background:#fff;border-radius:16px}
+.compare-card.correct{border-color:#9dc79a;background:#f4fbf1}
+#gameover{border:2px solid #e3dfd2;border-radius:19px}
+#status{font-size:clamp(18px,2.8vh,23px)}
+@media(max-height:790px) and (min-width:741px){main{padding:11px 24px;gap:6px}.topline{min-height:37px}.staff-wrap{padding:6px 10px}#staff{height:clamp(122px,21vh,160px)}#scale{height:clamp(135px,22vh,175px)}.color{width:clamp(38px,5.3vh,48px);height:clamp(38px,5.3vh,48px)}.mode{margin:-4px 0 0}}
+@media(max-width:600px){main{padding:12px 10px}.topline{flex-direction:column;align-items:center}.topline h1{text-align:center}.hud{justify-content:center}.hud .heart{font-size:22px}}
+</style><link rel="stylesheet" href="../assets/game-theme.css">
+<script defer src="../assets/analytics-config.js"></script>
+</head>
+<body>
+<div class="safari-exit-bar"><span>Lernsafari</span><a href="../index.html#aktuelle">✕ Spiel beenden</a></div><main><div class="topline"><h1>Solmisationsspiel schwer</h1><div class="hud"><div id="highscore" class="highscore">Richtig: 0</div><div id="lives" class="lives" aria-label="3 Herzen verbleiben"></div></div></div><p class="mode">Das Do ist vorgegeben.</p><div id="status" role="status" aria-live="polite"></div>
+<div class="staff-wrap"><svg id="staff" viewBox="0 30 450 160" role="img" aria-label="Notensystem mit vorgegebenem Do und gesuchter Note"></svg></div>
+<div class="entry"><input id="syllable" aria-label="Solmisationssilbe" placeholder="Silbe eingeben" maxlength="12" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+<div id="colors" class="colors" role="group" aria-label="Farbe auswählen"></div>
+<button class="action" id="check" type="button">Überprüfen</button>
+<div id="feedback" role="status" aria-live="polite"></div>
+<section id="solution" aria-label="Lösung und Tonleiter"><div class="comparison" aria-label="Vergleich deiner Antwort mit der richtigen Lösung"><div class="compare-card"><div class="compare-title">Deine Antwort</div><div class="compare-answer"><span id="submitted-syllable"></span><span id="submitted-color" class="compare-dot"></span></div></div><div class="compare-card correct"><div class="compare-title">Richtige Lösung</div><div class="compare-answer"><span id="correct-syllable"></span><span id="correct-color" class="compare-dot"></span></div></div></div><div class="scale-label">Zähle vom vorgegebenen Do aus:</div><svg id="scale" viewBox="0 8 560 180" role="img" aria-label="Tonleiter vom vorgegebenen Do bis zur gesuchten Note"></svg><button type="button" class="action" id="next" hidden>Nächster Ton</button></section>
+<div id="gameover"><h2>Game Over!</h2><p>Du hast toll geübt! Starte eine neue Runde.</p><button class="action" id="restart" type="button">Noch einmal spielen</button></div>
+</main>
+<script>
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+const CLEF_PATH='M314 801Q300 854 291.0 906.0Q282 958 282 1012Q282 1059 288.5 1100.5Q295 1142 307 1177Q320 1217 341.0 1252.5Q362 1288 385.5 1311.0Q409 1334 427 1334Q451 1334 493 1249Q514 1206 524.0 1156.0Q534 1106 534 1049Q534 978 515.0 907.5Q496 837 459.5 775.0Q423 713 372 666L407 498Q422 500 432.0 501.0Q442 502 447 502Q508 502 556.0 467.5Q604 433 632.5 377.0Q661 321 661 254Q661 177 621.5 115.5Q582 54 503 25Q508 8 532 -117Q538 -147 541.0 -164.5Q544 -182 545.0 -195.0Q546 -208 546 -225Q546 -275 521.5 -314.5Q497 -354 455.5 -376.0Q414 -398 363 -398Q311 -398 271.0 -378.5Q231 -359 208.0 -324.5Q185 -290 185 -245Q185 -197 211.5 -165.0Q238 -133 287 -133Q329 -133 355.5 -163.5Q382 -194 382 -236Q382 -272 357.0 -299.0Q332 -326 292 -326H282Q308 -365 364 -365Q433 -365 472.0 -320.0Q511 -275 511 -205Q511 -188 507.0 -159.5Q503 -131 493 -91Q483 -51 477.5 -25.0Q472 1 470 12Q436 2 390 2Q304 2 222 52Q142 102 96.0 184.0Q50 266 50 361Q50 451 91 530Q132 609 192.5 675.0Q253 741 314 801ZM341 826Q364 838 390.0 870.5Q416 903 440.0 945.0Q464 987 479.0 1029.5Q494 1072 494 1106Q494 1142 483.0 1163.0Q472 1184 445 1184Q421 1184 398.5 1162.0Q376 1140 358.5 1103.5Q341 1067 331.0 1022.0Q321 977 321 930Q321 898 327.5 872.0Q334 846 341 826ZM398 379Q371 373 347.0 353.5Q323 334 308.5 306.5Q294 279 294 248Q294 223 307.0 196.5Q320 170 339 154Q352 142 365 136Q380 129 380 123Q380 120 370 117Q332 126 301.5 151.0Q271 176 253.5 211.5Q236 247 236 287Q236 330 253.5 370.0Q271 410 302.5 442.0Q334 474 374 490L345 641Q229 547 174.5 456.5Q120 366 120 277Q120 212 154.0 156.0Q188 100 247.0 65.5Q306 31 380 31Q400 31 420.5 35.0Q441 39 464 45ZM495 55Q593 97 593 227Q593 270 571.0 305.5Q549 341 512.0 362.0Q475 383 429 383Z';
+const NOTES=[
+ {pitch:'c′',syllable:'Do',color:'rot',hex:'#e52b2d'},
+ {pitch:'d′',syllable:'Re',color:'orange',hex:'#f49b18'},
+ {pitch:'e′',syllable:'Mi',color:'gelb',hex:'#eacb17'},
+ {pitch:'f′',syllable:'Fa',color:'hellgrün',hex:'#82d63c'},
+ {pitch:'g′',syllable:'So',color:'dunkelgrün',hex:'#258838'},
+ {pitch:'a′',syllable:'La',color:'blau',hex:'#168de0'},
+ {pitch:'h′',syllable:'Ti',color:'violett',hex:'#8a30c4'},
+ {pitch:'c″',syllable:'Do',color:'rot',hex:'#e52b2d'}
+];
+const colorOptions=[
+ {id:'rot',hex:'#e52b2d'}, {id:'orange',hex:'#f49b18'}, {id:'gelb',hex:'#eacb17'},
+ {id:'hellgrün',hex:'#82d63c'}, {id:'dunkelgrün',hex:'#258838'}, {id:'blau',hex:'#168de0'},
+ {id:'violett',hex:'#8a30c4'}
+];
+const staff=document.querySelector('#staff'),scale=document.querySelector('#scale'),input=document.querySelector('#syllable'),colors=document.querySelector('#colors'),feedback=document.querySelector('#feedback'),solution=document.querySelector('#solution'),check=document.querySelector('#check'),next=document.querySelector('#next');
+const submittedSyllable=document.querySelector('#submitted-syllable'),submittedColor=document.querySelector('#submitted-color'),correctSyllable=document.querySelector('#correct-syllable'),correctColor=document.querySelector('#correct-color');
+const status=document.querySelector('#status'),livesEl=document.querySelector('#lives'),highscoreEl=document.querySelector('#highscore'),gameover=document.querySelector('#gameover'),restart=document.querySelector('#restart');
+// Alle Kombinationen aus einem vorgegebenen Do (c′ bis g′) und einem Zielton
+// von diesem Do an aufwärts bis c″. Jede Kombination wird abgefragt, bevor
+// sie erneut in den Zufallstopf gelangt.
+let bag=[],current=-1,tonic=0,selected=null,locked=false,nextTimer=null,lastKey='',lives=3,streak=0,gameEnded=false;
+const SYLLABLES=['Do','Re','Mi','Fa','So','La','Ti'];
+function answerDegree(){return (current-tonic)%7;}
+function answer(){const degree=answerDegree();return {syllable:SYLLABLES[degree],color:colorOptions[degree].id,hex:colorOptions[degree].hex};}
+
+function showStatus(message,type=''){status.textContent=message;status.className=type;}
+function updateHud(){livesEl.replaceChildren();for(let i=0;i<3;i++){const h=document.createElement('span');h.className='heart'+(i>=lives?' empty':'');h.textContent=i<lives?'♥':'♡';h.setAttribute('aria-hidden','true');livesEl.appendChild(h);}livesEl.setAttribute('aria-label',`${lives} von 3 Herzen verbleiben`);highscoreEl.textContent=`Richtig: ${streak}`;}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function svgEl(parent,tag,attrs={},txt){const e=document.createElementNS(NS,tag);for(const [key,val] of Object.entries(attrs))e.setAttribute(key,val);if(txt!==undefined)e.textContent=txt;parent.appendChild(e);return e;}
+function line(parent,x1,y1,x2,y2,stroke='#252a31',width=2){return svgEl(parent,'line',{x1,y1,x2,y2,stroke,'stroke-width':width,'stroke-linecap':'round'});}
+// Fünf Linien: E4 bei y=155, jede Tonstufe nach oben 10 Einheiten.
+function noteY(index){return 165-index*10;}
+function drawStaff(parent,{x0=26,x1=424,top=65,gap=20,clefX=32,clefBase=149}={}){
+ for(let k=0;k<5;k++)line(parent,x0,top+gap*k,x1,top+gap*k,'#34383f',2);
+ svgEl(parent,'path',{d:CLEF_PATH,transform:`translate(${clefX} ${clefBase}) scale(0.086 -0.086)`,fill:'#15191e'});
+}
+function drawNote(parent,x,y,hex='#1d2530',size=1){
+ // Hilfslinie für c′ (y=175). Normale Notenhöhen zwischen Linien/auf Linien.
+ if(y>=165)line(parent,x-17*size,y,x+17*size,y,'#34383f',2.2*size);
+ svgEl(parent,'ellipse',{cx:x,cy:y,rx:11.5*size,ry:7.6*size,transform:`rotate(-18 ${x} ${y})`,fill:hex});
+ line(parent,x+10*size,y-1*size,x+10*size,y-59*size,hex,2.7*size);
+}
+function drawMain(){
+ staff.replaceChildren();drawStaff(staff);
+ // Beide Noten im SELBEN System; die Vorgabe ist mit "Do" bezeichnet.
+ // Auch wenn beide die gleiche Höhe besitzen, sind sie durch die Position unterscheidbar.
+ const xDo=171,xQuestion=315;
+ drawNote(staff,xDo,noteY(tonic),'#1d2530');
+ drawNote(staff,xQuestion,noteY(current),'#1d2530');
+ svgEl(staff,'text',{x:xDo,y:188,'text-anchor':'middle','font-size':20,'font-weight':750,fill:'#29364a'},'Do');
+ svgEl(staff,'text',{x:xQuestion,y:188,'text-anchor':'middle','font-size':20,'font-weight':750,fill:'#9aa4b2'},'?');
+}
+function shuffledColors(){colors.replaceChildren();const options=shuffle(colorOptions.slice());for(const c of options){const b=document.createElement('button');b.type='button';b.className='color';b.style.setProperty('--c',c.hex);b.setAttribute('aria-label',c.id);b.setAttribute('aria-pressed','false');b.title=c.id;b.dataset.id=c.id;b.addEventListener('click',()=>{if(locked)return;selected=c.id;for(const btn of colors.children){const is=btn===b;btn.classList.toggle('selected',is);btn.setAttribute('aria-pressed',String(is));}});colors.appendChild(b);}}
+function newRound(){if(gameEnded)return;if(nextTimer){clearTimeout(nextTimer);nextTimer=null;}
+ if(bag.length===0){
+   bag=[];
+   for(let root=0;root<=4;root++)for(let target=root;target<=7;target++)bag.push([root,target]);
+   shuffle(bag);
+   if(bag.length>1 && bag[bag.length-1].join('-')===lastKey){
+     [bag[0],bag[bag.length-1]]=[bag[bag.length-1],bag[0]];
+   }
+ }
+ [tonic,current]=bag.pop();lastKey=`${tonic}-${current}`;
+ showStatus('');selected=null;locked=false;input.value='';feedback.textContent='';feedback.className='';solution.style.display='none';document.body.classList.remove('show-solution');gameover.style.display='none';next.hidden=true;check.hidden=false;check.disabled=false;drawMain();shuffledColors();input.focus({preventScroll:true});
+}
+function normalize(v){return v.trim().toLocaleLowerCase('de-CH').replace(/\s+/g,'');}
+function drawScale(){
+ scale.replaceChildren();
+ const count=current-tonic+1;
+ // Abstand rechts vom Violinschlüssel, auch bei der vollständigen Tonleiter.
+ const left=146,dx=48,top=30,gap=17.5;
+ for(let k=0;k<5;k++)line(scale,26,top+k*gap,535,top+k*gap,'#555d66',1.4);
+ svgEl(scale,'path',{d:CLEF_PATH,transform:'translate(35 101) scale(0.067 -0.067)',fill:'#222831'});
+ for(let j=0;j<count;j++){
+   const idx=tonic+j,x=left+j*dx,y=top+4*gap+17.5-(idx*gap/2);
+   if(idx===0)line(scale,x-12,y,x+12,y,'#454c56',1.8);
+   const deg=j%7,hex=colorOptions[deg].hex,syllable=SYLLABLES[deg];
+   svgEl(scale,'ellipse',{cx:x,cy:y,rx:8,ry:5.3,transform:`rotate(-18 ${x} ${y})`,fill:hex,stroke:j===count-1?'#202630':'none','stroke-width':j===count-1?2:0});
+   line(scale,x+7.5,y,x+7.5,y-29,hex,2);
+   svgEl(scale,'text',{x,y:161,'text-anchor':'middle','font-size':j===count-1?'18':'15','font-weight':j===count-1?'800':'600',fill:'#263043'},syllable);
+ }
+}
+function showAnswer(typed,chosen){
+ const a=answer();
+ submittedSyllable.textContent=typed.trim()||'–';
+ submittedColor.style.setProperty('--c',colorOptions.find(c=>c.id===chosen)?.hex||'#fff');
+ submittedColor.setAttribute('aria-label',chosen||'Keine Farbe');
+ correctSyllable.textContent=a.syllable;
+ correctColor.style.setProperty('--c',a.hex);
+ correctColor.setAttribute('aria-label',a.color);
+ drawScale();solution.style.display='block';document.body.classList.add('show-solution');
+ check.hidden=true;next.hidden=gameEnded;
+}
+function verify(){
+ if(locked)return;
+ const typed=normalize(input.value);
+ if(!typed||!selected){showStatus('Bitte Silbe und Farbe auswählen.','neutral');return;}
+ const a=answer();
+ const ok=(typed===normalize(a.syllable)&&selected===a.color);
+ window.SafariTelemetry?.record({task:'Ton '+current+' mit Do auf '+tonic,correct:ok,answer:input.value+' / '+selected,expected:a.syllable+' / '+a.color});
+ locked=true;
+ if(ok){
+   streak++;updateHud();
+   showStatus('Richtig! Hier kommt der nächste Ton!','good');
+   feedback.textContent='';check.disabled=true;nextTimer=setTimeout(newRound,1450);return;
+ }
+ lives=Math.max(0,lives-1);if(lives===0)streak=0;updateHud();feedback.textContent='';
+ if(lives===0){gameEnded=true;showStatus('Falsch – alle Herzen verloren!','bad');showAnswer(input.value,selected);gameover.style.display='block';}
+ else{showStatus('Falsch! Vergleiche deine Antwort mit der Lösung.','bad');showAnswer(input.value,selected);}
+}
+restart.addEventListener('click',()=>{lives=3;streak=0;gameEnded=false;bag=[];showStatus('');updateHud();newRound();});
+check.addEventListener('click',verify);next.addEventListener('click',newRound);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(locked&&next.hidden===false)newRound();else verify();}});
+updateHud();newRound();
+</script><script src="../assets/login-config.js"></script><script defer src="../assets/highscore.js"></script><link rel="stylesheet" href="../assets/highscore.css">
+<script defer src="../assets/game-telemetry.js"></script>
+</body></html>

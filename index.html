@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#FAF1D9">
+<meta name="description" content="Lernsafari Klasse 3b: Aufgaben des Tages, aktuelle Lernspiele und Archiv">
+<title>Lernsafari – Klasse 3b</title>
+<link rel="stylesheet" href="assets/safari.css?v=3">
+<script defer src="assets/analytics-config.js"></script>
+<script defer src="assets/daily-data.js"></script>
+<script defer src="assets/login-config.js?v=2"></script>
+<script defer src="assets/login.js?v=3"></script>
+<script defer src="assets/safari.js?v=3"></script>
+</head>
+<body>
+<header class="site-header" id="main-header">
+ <div class="header-inner">
+  <div class="logo-group">
+   <button type="button" class="header-flamingo" id="flamingo-admin" aria-label="Flamingo"><img src="assets/flamingo-zwinkernd.png" alt="Zwinkernder Flamingo"></button><div class="admin-secret-box" id="admin-secret-box" hidden><input type="password" id="admin-secret-input" aria-label="Code" maxlength="128" autocomplete="off"></div>
+   <div class="login-greeting"><span class="site-title" id="login-greeting"><span class="welcome-main">Willkommen auf der <strong>LernSafari!</strong></span><span class="welcome-login"><button type="button" id="login-open" class="inline-login"><u><b>Hier</b></u></button> kannst du dich anmelden.</span></span><button class="logout-btn" type="button" id="logout-btn" hidden>Abmelden</button></div>
+  </div>
+  <nav class="top-nav" aria-label="Hauptnavigation">
+   <a class="nav-link" data-route="aufgaben" href="#aufgaben">Aufgaben des Tages</a>
+   <div class="nav-dropdown" id="dropdown">
+    <a class="nav-trigger" data-route="aktuelle" href="#aktuelle" id="nav-current" aria-haspopup="true" aria-controls="subject-menu">Aktuelle Lernspiele ▾</a>
+    <div class="nav-drop-panel" id="subject-menu">
+     <a href="#aktuelle">Alle Fächer anzeigen</a>
+     <a data-subject="allgemein" href="#aktuelle--allgemein">Allgemein</a>
+     <a data-subject="deutsch" href="#aktuelle--deutsch">Deutsch</a>
+     <a data-subject="englisch" href="#aktuelle--englisch">Englisch</a>
+     <a data-subject="mathe" href="#aktuelle--mathe">Mathe</a>
+     <a data-subject="musik" href="#aktuelle--musik">Musik</a>
+     <a data-subject="nmg" href="#aktuelle--nmg">NMG</a>
+    </div>
+   </div>
+   <a class="nav-link" data-route="archiv" href="#archiv">Lernspiele Archiv</a>
+   <a class="nav-link" data-route="lernportale" href="#lernportale">Lernportale</a>
+   <a class="nav-link" data-route="advent" href="#advent">Adventskalender</a>
+  </nav>
+ </div>
+</header>
+<main class="shell">
+ <section class="view" id="view-aufgaben">
+  <div class="today-layout">
+   <aside class="meerkat-panel">
+    <div class="speech">Probiere die Aufgaben des Tages zu lösen!</div>
+    <div class="secret-wrap">
+     <button type="button" class="secret-image" id="meerkat-secret" aria-label="Erdmännchen"><img class="meerkat-figure" src="assets/erdmaennchen-denkend.png" alt="Nachdenkliches Erdmännchen"></button>
+     <div class="secret-box" id="secret-box" hidden><input id="secret-input" type="password" maxlength="12" autocomplete="off" aria-label="Code"></div>
+    </div>
+   </aside>
+   <div class="today-panel">
+    <section class="today-head">
+     <div class="today-meta"><span class="today-label" id="today-label"></span><span class="day-pill" id="day-pill"></span></div>
+     <h2 id="today-theme"></h2>
+     <p id="today-intro"></p>
+     <div class="progress-label"><span>Deine Tagesaufgaben</span><span id="daily-progress">0 von 4 Aufgaben geschafft</span></div>
+     <div class="progress-track"><span class="progress-fill" id="daily-progress-bar"></span></div>
+    </section>
+    <div class="preview-note" id="preview-notice" hidden><span>Wochenvorschau</span><button id="return-today" type="button">Zur heutigen Aufgabe</button></div>
+    <div id="daily-tasks"></div>
+   </div>
+  </div>
+ </section>
+ <section class="view" id="view-aktuelle" hidden>
+  <div class="section-heading"><span class="eyebrow">Zum Üben und Entdecken</span><h1>Aktuelle Lernspiele</h1><p>Wähle ein Fach und dann dein Lernspiel aus.</p></div>
+  <div id="subject-list" class="subject-list"></div>
+ </section>
+ <section class="view" id="view-archiv" hidden>
+  <div class="section-heading"><span class="eyebrow">Schon entdeckt</span><h1>Lernspiele Archiv</h1><p>Hier werden später Lernspiele gesammelt, die nicht mehr aktuell sind. Neue Archivierungen stehen jeweils zuoberst.</p></div>
+  <div id="archive-list" class="subject-list"></div>
+ </section>
+ <section class="view" id="view-lernportale" hidden>
+   <div class="section-heading"><span class="eyebrow">Unsere Lernseiten</span><h1>Lernportale</h1><p>Wähle das Portal aus, das du öffnen möchtest.</p></div>
+   <div class="portal-grid">
+    <a class="portal-tile" href="https://anton.app/" target="_blank" rel="noopener noreferrer"><img src="assets/portale/anton.png" alt="ANTON Logo"><strong>Anton</strong></a>
+    <a class="portal-tile" href="https://antolin.westermann.de/" target="_blank" rel="noopener noreferrer"><img src="assets/portale/antolin.png" alt="Antolin Logo"><strong>Antolin</strong></a>
+    <a class="portal-tile" href="https://kahoot.it/" target="_blank" rel="noopener noreferrer"><img src="assets/portale/kahoot.png" alt="Kahoot Logo"><strong>Kahoot</strong></a>
+    <a class="portal-tile" href="https://www.klett.ch/login/start" target="_blank" rel="noopener noreferrer"><img src="assets/portale/klett.jpg" alt="Klett Logo"><strong>Klett</strong></a>
+   </div>
+ </section>
+ <section class="view" id="view-advent" hidden>
+  <div class="advent-scene"><div class="advent-overlay"><img src="assets/baustelle.webp" alt="Flamingo, Erdmännchen und Warzenschwein auf einer Baustelle"><div class="advent-construction-text">Hier wird gerade noch gebaut...</div></div></div>
+ </section>
+ <section class="view" id="view-admin" hidden>
+  <div class="section-heading"><span class="eyebrow">Nur mit Code erreichbar</span><h1>Admin</h1><p>Übersicht der Tagesaufgaben und Notizen für die Webseite.</p></div>
+  <div class="admin-layout">
+   <section class="admin-card"><h2>Aufgaben des Tages</h2><div id="admin-reserve" class="reserve-status"></div><p class="admin-small">Ab Montag, 16. November, werden automatisch die 20 Reserve-Serien verwendet, wenn keine neuen Aufgaben ergänzt wurden. Nach deren Ende wird nicht wiederholt.</p></section>
+   <section class="admin-card"><h2>Besucherstatistik</h2><p class="admin-small">Die echten Seitenaufrufe und geschätzten Besucher findest du im <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener">Cloudflare-Web-Analytics-Dashboard</a>. Diese Werte werden separat erfasst und hier nicht automatisch ausgelesen.</p><p class="admin-small"><strong>Wichtig:</strong> Die Cloudflare-Web-Analytics-Messung ist eingerichtet. Die folgende Tabelle zeigt trotzdem ausschliesslich Aufrufe <strong>in diesem Browser auf diesem Gerät</strong> – nicht die gesamte Klasse.</p><div id="admin-stats"></div><div id="class-analytics"><h3>Fortschritt der Kinder</h3><p class="admin-small">Wochentage, Highscore-Verlauf und genaue Fehler je Kind.</p><p class="admin-small" id="class-analytics-status">Die Klassenübersicht benötigt die sichere Cloudflare-Datenbank.</p><div id="class-analytics-contents"></div></div><div class="admin-unavailable">Verschiedene Geräte (webseitenweit): <strong>nicht verfügbar</strong></div></section>
+   <section class="admin-card admin-todo"><h2>To-Do Liste:</h2><label for="admin-todos" class="admin-small">Deine Notizen für die Webseite</label><textarea id="admin-todos" placeholder="Hier kannst du deine To-Dos notieren …" rows="9"></textarea><div class="todo-actions"><button type="button" id="save-todos" class="check-button">To-Dos speichern</button><span id="todo-feedback" role="status" aria-live="polite"></span></div><p class="admin-small">Die Notizen werden nach dem Speichern sicher in Cloudflare gespeichert und auf allen Geräten angezeigt.</p></section>
+  </div>
+ </section>
+ <footer class="footer">Klasse 3b · Hakuna Matata · Jeden Tag Neues entdecken</footer>
+</main>
+<div id="login-dialog" class="login-shade" hidden role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="login-card"><button type="button" id="login-close" class="login-close" aria-label="Schliessen">×</button><h2 id="login-title">Auf der LernSafari anmelden</h2><p>Melde dich mit deinem Tiernamen an, damit deine Erfolge gespeichert werden.</p><form id="login-form"><label for="login-username">Benutzername</label><input id="login-username" name="username" autocomplete="username" required><label for="login-password">Passwort</label><input id="login-password" type="password" name="password" autocomplete="current-password" required><button type="submit" class="login-submit">Anmelden</button><p id="login-message" role="status"></p></form></div></div>
+<div class="week-overlay" id="week-panel" hidden role="dialog" aria-modal="true" aria-label="Wochenaufgaben">
+ <div class="week-content"><div class="week-head"><h2>Aufgabenserien – Vorschau</h2><button type="button" id="close-week" class="close-week" aria-label="Schliessen">×</button></div><p class="week-hint">Geplante Woche und Reserveaufgaben (alle ohne Wiederholung)</p><div class="week-list" id="week-list"></div></div>
+</div>
+</body>
+</html>
