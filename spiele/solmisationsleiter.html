@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#191f23">
+<title>Solmisationsleiter – Herr Arnolds Lernspiele</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#273323;background:#f8f4e9;--green:#417547;--earth:#745127;--line:#dfe5d8;--cream:#fffdf8;--red:#d92f3d;--orange:#ef972f;--yellow:#ead73d;--lightgreen:#92c94b;--darkgreen:#2a8f47;--blue:#2d7ad3;--purple:#8751bd}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{margin:0;min-height:100vh;background:radial-gradient(circle at 4% 10%,#f6e3bb 0,transparent 37%),radial-gradient(circle at 90% 100%,#dce9d1 0,transparent 38%),#fbf9f3}button,input{font:inherit}
+.shell{max-width:1240px;margin:0 auto;padding:16px 25px 28px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.brandmark{width:48px;height:48px;background:#e9efd9;border-radius:17px;display:grid;place-items:center;font-size:27px}h1{margin:0;font-size:clamp(27px,3vw,39px);letter-spacing:-1.2px;line-height:1.08;color:#3e5e35}.subtitle{font-size:15px;color:#695d45;font-weight:650;margin-top:4px}
+.topright{display:flex;align-items:center;gap:11px;flex-wrap:wrap}.pill{background:#fff;border:1px solid #e1e5d8;border-radius:99px;padding:9px 16px;font-size:16px;font-weight:750;white-space:nowrap}.backlink{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#42633d;background:#fff;border:1px solid #d7dfd0;border-radius:12px;padding:9px 13px;font-weight:700}.backlink:hover{background:#f0f6e9}
+.play-card{background:rgba(255,255,255,.86);border:1px solid #e6e4d9;border-radius:24px;box-shadow:0 12px 30px #5f6b3b12;padding:18px 18px 22px}.part-title{font-size:30px;font-weight:850;color:#3e5e35;margin:0 0 6px}.part-sub{font-size:18px;color:#6b5a40;margin:0 0 16px;font-weight:650}
+.source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.tile{width:100%;border:2px solid #e2e5df;background:#fff;border-radius:16px;box-shadow:0 2px 0 #e7e8e1;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:122px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.tile:hover{transform:translateY(-1px);border-color:#9bb68e}.tile:disabled{cursor:default;opacity:.38;transform:none;background:#f3f3ef}.tile-label{font-weight:850;font-size:22px;color:#2f3a2b}
+.answer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.answer-slot{border:2px dashed #cfd7c4;border-radius:18px;padding:8px;min-height:176px;background:#fffef9;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px}.answer-slot.filled{border-style:solid;border-color:#c8dcc0;background:#fff}.slot-number{font-size:15px;color:#6a6f5c;font-weight:800}
+.answer-tile{width:100%;display:flex;flex-direction:column;align-items:center;gap:5px}.answer-tile .tile-label{font-size:21px}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.btn{border:0;border-radius:14px;padding:13px 20px;font-size:18px;font-weight:850;cursor:pointer}.btn.primary{background:#4d7b45;color:#fff}.btn.secondary{background:#fff;border:1px solid #d7dfd0;color:#42633d}.btn:disabled{opacity:.55;cursor:default}.feedback{min-height:34px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;font-weight:800;color:#597048;margin:8px 0 12px}.feedback.bad{color:#9f4338}.feedback.good{color:#397342}.hidden{display:none!important}
+.note-wrap{width:100%;display:flex;justify-content:center}.note-staff{width:160px;height:84px;display:block}.note-staff.small{width:122px;height:74px}.ledger{stroke:#1a2318;stroke-width:3}.staff-line{stroke:#7b7b72;stroke-width:2.2}.note-head{stroke:#1a2318;stroke-width:3}.note-stem{stroke:#1a2318;stroke-width:3.6;stroke-linecap:round}
+.palette{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:100%}.palette.twoRows{grid-template-columns:repeat(4,minmax(0,1fr))}.color-btn{height:34px;border-radius:12px;border:2px solid #d8ddd1;background:var(--color);cursor:pointer;position:relative}.color-btn.selected{outline:3px solid #2e6f40;outline-offset:1px;transform:scale(1.02)}.color-btn.white{box-shadow:inset 0 0 0 1px #bfc4bf}.color-btn::after{content:"";position:absolute;inset:0;border-radius:10px;box-shadow:inset 0 0 0 1px #00000018}
+.mini-help{text-align:center;font-size:15px;color:#6b6a5b;font-weight:700;margin-top:2px}
+.identify-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.identify-card{border:2px solid #dfe5d8;border-radius:18px;background:#fff;padding:10px 10px 12px;display:flex;flex-direction:column;gap:9px;align-items:center}.identify-card input{width:100%;border:2px solid #d5ddd0;border-radius:12px;padding:10px 12px;font-size:18px;font-weight:750;text-align:center;background:#fff}.identify-card input:focus{outline:3px solid #86b1ff;outline-offset:2px;border-color:#86b1ff}
+.complete{background:white;border:2px solid #bbdcb4;border-radius:22px;padding:22px 23px;box-shadow:0 15px 40px #465b3620;margin-top:12px}.complete h2{text-align:center;color:#417346;font-size:35px;margin:0 0 8px}.complete .intro{text-align:center;font-size:19px;margin:0 0 18px;color:#5b604f}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.mini-card{border:1px solid #dce6d6;background:#f8fcf5;border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px}.mini-card .mini-name{font-weight:850;font-size:18px}.mini-card .mini-color{font-size:14px;color:#5f684e;font-weight:750}
+.preview-holder{position:absolute;left:-10000px;top:auto;width:540px;pointer-events:none}
+@media(max-width:900px){.source-grid,.answer-grid,.identify-grid,.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.answer-slot{min-height:195px}}
+@media(max-width:700px){.shell{padding:13px 11px 23px}.brandmark{width:42px;height:42px;font-size:23px}.part-title{font-size:26px}.part-sub{font-size:16px}.source-grid,.answer-grid,.identify-grid{gap:9px}.tile{min-height:104px;padding:8px 5px}.answer-slot{min-height:188px;padding:8px 6px}.tile-label{font-size:19px}.answer-tile .tile-label{font-size:19px}.note-staff{width:130px;height:72px}.note-staff.small{width:104px;height:64px}.identify-card input{font-size:17px}.palette{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.color-btn{height:31px}}
+@media(max-width:430px){.source-grid,.answer-grid,.identify-grid,.summary{grid-template-columns:1fr}.answer-slot{min-height:176px}}
+@media(prefers-reduced-motion:reduce){.tile,.color-btn{transition:none}}
+</style>
+<link rel="stylesheet" href="../assets/game-theme.css">
+<script defer src="../assets/analytics-config.js"></script>
+<link rel="stylesheet" href="../assets/lernsafari-dark.css?v=1"></head>
+<body>
+<div class="safari-exit-bar"><span>Lernsafari</span><a href="../index.html#aktuelle">✕ Spiel beenden</a></div>
+<main class="shell">
+  <header class="top">
+    <div class="brand"><div class="brandmark" aria-hidden="true">🎵</div><div><h1>Solmisationsleiter</h1><div class="subtitle">Ordnen, Farben wählen und Silben schreiben</div></div></div>
+    <div class="topright">
+      <div class="pill" id="partPill">Teil 1 von 3</div>
+      <a class="backlink" href="../index.html">← Zurück</a>
+    </div>
+  </header>
+
+  <section id="part1" class="play-card">
+    <h2 class="part-title">Teil 1</h2>
+    <p class="part-sub">Ordne die Felder vom <b>tiefen Do</b> bis zum <b>hohen Do</b>.</p>
+    <div id="part1Source" class="source-grid" aria-label="Gemischte Felder"></div>
+    <div id="part1Answer" class="answer-grid" aria-label="Deine Reihenfolge"></div>
+    <div id="feedback1" class="feedback" aria-live="polite"></div>
+    <div class="actions"><button type="button" class="btn secondary" id="undo1">Zurück</button><button type="button" class="btn secondary" id="shuffle1">Neu mischen</button><button type="button" class="btn primary" id="check1">Überprüfen</button></div>
+  </section>
+
+  <section id="part2" class="play-card hidden">
+    <h2 class="part-title">Teil 2</h2>
+    <p class="part-sub">Ordne die Felder wieder richtig und wähle zu jedem Ton die passende <b>Farbe</b>.</p>
+    <div id="part2Source" class="source-grid" aria-label="Gemischte Felder"></div>
+    <div id="part2Answer" class="answer-grid" aria-label="Deine Reihenfolge mit Farben"></div>
+    <div class="mini-help">Die Farbauswahl gehört immer zu genau <b>einem</b> Feld.</div>
+    <div id="feedback2" class="feedback" aria-live="polite"></div>
+    <div class="actions"><button type="button" class="btn secondary" id="undo2">Zurück</button><button type="button" class="btn secondary" id="shuffle2">Neu mischen</button><button type="button" class="btn primary" id="check2">Überprüfen</button></div>
+  </section>
+
+  <section id="part3" class="play-card hidden">
+    <h2 class="part-title">Teil 3</h2>
+    <p class="part-sub">Wähle die passende <b>Farbe</b> zu jeder Note und schreibe die richtige <b>Silbe</b> darunter.</p>
+    <div id="part3Grid" class="identify-grid" aria-label="Noten erkennen"></div>
+    <div class="mini-help">Unter jeder Note gibt es ein eigenes Eingabefeld und eine eigene Farbauswahl.</div>
+    <div id="feedback3" class="feedback" aria-live="polite"></div>
+    <div class="actions"><button type="button" class="btn secondary" id="shuffle3">Neu mischen</button><button type="button" class="btn primary" id="check3">Überprüfen</button></div>
+  </section>
+
+  <section id="complete" class="complete hidden" aria-live="polite">
+    <h2>Super gemacht! 🎉</h2>
+    <p class="intro">Du hast alle drei Teile der Solmisationsleiter geschafft.</p>
+    <div id="summary" class="summary"></div>
+    <div class="actions" style="margin-top:18px"><button type="button" class="btn primary" id="restartAll">Noch einmal spielen</button></div>
+  </section>
+</main>
+
+<div class="preview-holder" aria-hidden="true"><section class="play-card" id="previewCapture"><h2 class="part-title">Solmisationsleiter</h2><p class="part-sub">Ordne die Felder vom tiefen Do bis zum hohen Do.</p><div id="previewGrid" class="source-grid"></div></section></div>
+
+<script>
+'use strict';
+const SCALE=[
+  {id:'do-low',syllable:'Do',color:'rot',hex:'#d92f3d',step:0},
+  {id:'re',syllable:'Re',color:'orange',hex:'#ef972f',step:1},
+  {id:'mi',syllable:'Mi',color:'gelb',hex:'#ead73d',step:2},
+  {id:'fa',syllable:'Fa',color:'hellgrün',hex:'#92c94b',step:3},
+  {id:'so',syllable:'So',color:'dunkelgrün',hex:'#2a8f47',step:4},
+  {id:'la',syllable:'La',color:'blau',hex:'#2d7ad3',step:5},
+  {id:'ti',syllable:'Ti',color:'violett',hex:'#8751bd',step:6},
+  {id:'do-high',syllable:'Do',color:'rot',hex:'#d92f3d',step:7}
+];
+const COLORS=[
+  {key:'rot',label:'Rot',hex:'#d92f3d'},
+  {key:'orange',label:'Orange',hex:'#ef972f'},
+  {key:'gelb',label:'Gelb',hex:'#ead73d'},
+  {key:'hellgrün',label:'Hellgrün',hex:'#92c94b'},
+  {key:'dunkelgrün',label:'Dunkelgrün',hex:'#2a8f47'},
+  {key:'blau',label:'Blau',hex:'#2d7ad3'},
+  {key:'violett',label:'Violett',hex:'#8751bd'}
+];
+const YPOS=[90,84,78,72,66,60,54,48];
+const stemsUpStepLimit=4;
+const state={part:1,part1:{pool:[],answer:[]},part2:{pool:[],answer:[],colors:Array(8).fill(null)},part3:{order:[],colors:Array(8).fill(null),syllables:Array(8).fill('')}};
+function $(id){return document.getElementById(id)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function normalize(t){return (t||'').trim().toLowerCase();}
+function noteSvg(note,{colored=true,small=false}={}){
+  const y=YPOS[note.step]; const fill=colored?note.hex:'#1f2620'; const stroke='#1a2318';
+  const stemUp=note.step<=stemsUpStepLimit; const headCx=78, headCy=y, rx=10.5, ry=7;
+  let ledger='';
+  if(note.step===0) ledger=`<line x1="56" y1="${y}" x2="100" y2="${y}" class="ledger"/>`;
+  const stemX=stemUp?headCx+8.5:headCx-8.5; const stemY1=stemUp?headCy-2:headCy+2; const stemY2=stemUp?22:102;
+  return `<svg class="note-staff ${small?'small':''}" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <line x1="16" y1="30" x2="146" y2="30" class="staff-line"/><line x1="16" y1="42" x2="146" y2="42" class="staff-line"/><line x1="16" y1="54" x2="146" y2="54" class="staff-line"/><line x1="16" y1="66" x2="146" y2="66" class="staff-line"/><line x1="16" y1="78" x2="146" y2="78" class="staff-line"/>
+    ${ledger}
+    <ellipse cx="${headCx}" cy="${headCy}" rx="${rx}" ry="${ry}" transform="rotate(-23 ${headCx} ${headCy})" fill="${fill}" class="note-head"/>
+    <line x1="${stemX}" y1="${stemY1}" x2="${stemX}" y2="${stemY2}" class="note-stem" stroke="${fill}"/>
+  </svg>`;
+}
+function makeTile(note,{colored=true,showSyllable=true,disabled=false,onClick=null}={}){
+  const btn=document.createElement('button'); btn.type='button'; btn.className='tile'; if(disabled) btn.disabled=true;
+  btn.innerHTML=`<div class="note-wrap">${noteSvg(note,{colored})}</div>${showSyllable?`<div class="tile-label">${note.syllable}</div>`:''}`;
+  if(onClick) btn.addEventListener('click',onClick);
+  return btn;
+}
+function renderPreview(){const host=$('previewGrid'); host.replaceChildren(); SCALE.forEach(n=>host.append(makeTile(n,{colored:true,showSyllable:true,disabled:true})));}
+function updatePill(){ $('partPill').textContent = state.part<=3 ? `Teil ${state.part} von 3` : 'Fertig'; }
+function setFeedback(part,msg,type=''){const box=$('feedback'+part); box.textContent=msg; box.className='feedback'+(type?(' '+type):'');}
+function clearFeedbacks(){[1,2,3].forEach(n=>setFeedback(n,''));}
+
+function initPart1(){state.part=1;updatePill();state.part1.pool=shuffle(SCALE.map(n=>n.id));state.part1.answer=[];renderPart1();showOnly('part1');setFeedback(1,'');}
+function renderPart1(){const poolHost=$('part1Source');const ansHost=$('part1Answer'); poolHost.replaceChildren(); ansHost.replaceChildren();
+  state.part1.pool.forEach(id=>{const note=SCALE.find(n=>n.id===id);const used=state.part1.answer.includes(id);poolHost.append(makeTile(note,{colored:true,showSyllable:true,disabled:used,onClick:()=>{if(!used && state.part1.answer.length<8){state.part1.answer.push(id);renderPart1();}}}));});
+  for(let i=0;i<8;i++){const slot=document.createElement('div'); slot.className='answer-slot'+(state.part1.answer[i]?' filled':''); slot.innerHTML=`<div class="slot-number">${i+1}</div>`; if(state.part1.answer[i]){ const note=SCALE.find(n=>n.id===state.part1.answer[i]); const wrap=document.createElement('div'); wrap.className='answer-tile'; wrap.innerHTML=`<div class="note-wrap">${noteSvg(note,{colored:true})}</div><div class="tile-label">${note.syllable}</div>`; slot.append(wrap);} ansHost.append(slot);} }
+function checkPart1(){ if(state.part1.answer.length<8){setFeedback(1,'Ordne zuerst alle acht Felder ein.','bad');return;} const ok=SCALE.every((n,i)=>state.part1.answer[i]===n.id); window.SafariTelemetry?.record({task:'Solmisationsleiter Teil 1: Reihenfolge',correct:ok,answer:state.part1.answer.map(id=>SCALE.find(n=>n.id===id)?.syllable).join(' – '),expected:SCALE.map(n=>n.syllable).join(' – ')}); if(ok){setFeedback(1,'Richtig! Weiter geht es mit Teil 2.','good'); setTimeout(()=>initPart2(),900);} else {setFeedback(1,'Noch nicht ganz. Ordne vom tiefen Do bis zum hohen Do.','bad');} }
+
+function initPart2(){state.part=2;updatePill();state.part2.pool=shuffle(SCALE.map(n=>n.id));state.part2.answer=[];state.part2.colors=Array(8).fill(null);renderPart2();showOnly('part2');setFeedback(2,'');}
+function makePalette(selected,onSelect){const wrap=document.createElement('div'); wrap.className='palette twoRows'; COLORS.forEach(c=>{const b=document.createElement('button'); b.type='button'; b.className='color-btn'+(selected===c.key?' selected':'')+(c.key==='weiß'?' white':''); b.style.setProperty('--color',c.hex); b.setAttribute('aria-label',c.label); b.title=c.label; b.addEventListener('click',onSelect.bind(null,c.key)); wrap.append(b);}); return wrap;}
+function renderPart2(){const poolHost=$('part2Source');const ansHost=$('part2Answer'); poolHost.replaceChildren(); ansHost.replaceChildren();
+  state.part2.pool.forEach(id=>{const note=SCALE.find(n=>n.id===id); const used=state.part2.answer.includes(id); poolHost.append(makeTile(note,{colored:false,showSyllable:true,disabled:used,onClick:()=>{if(!used && state.part2.answer.length<8){state.part2.answer.push(id);renderPart2();}}}));});
+  for(let i=0;i<8;i++){const slot=document.createElement('div'); slot.className='answer-slot'+(state.part2.answer[i]?' filled':''); slot.innerHTML=`<div class="slot-number">${i+1}</div>`; if(state.part2.answer[i]){ const note=SCALE.find(n=>n.id===state.part2.answer[i]); const wrap=document.createElement('div'); wrap.className='answer-tile'; wrap.innerHTML=`<div class="note-wrap">${noteSvg(note,{colored:false})}</div><div class="tile-label">${note.syllable}</div>`; slot.append(wrap); slot.append(makePalette(state.part2.colors[i],(key)=>{state.part2.colors[i]=key;renderPart2();})); }
+  ansHost.append(slot);} }
+function checkPart2(){ if(state.part2.answer.length<8){setFeedback(2,'Ordne zuerst alle acht Felder ein.','bad');return;} if(state.part2.colors.some((v,i)=>state.part2.answer[i] && !v)){setFeedback(2,'Wähle zu jedem Feld eine Farbe aus.','bad');return;} const orderOk=SCALE.every((n,i)=>state.part2.answer[i]===n.id); const colorsOk=SCALE.every((n,i)=>state.part2.colors[i]===n.color); window.SafariTelemetry?.record({task:'Solmisationsleiter Teil 2: Reihenfolge und Farben',correct:orderOk&&colorsOk,answer:state.part2.answer.map((id,i)=>id+'/'+state.part2.colors[i]).join(' · '),expected:SCALE.map(n=>n.id+'/'+n.color).join(' · ')}); if(orderOk && colorsOk){setFeedback(2,'Super! Jetzt kommt Teil 3.','good'); setTimeout(()=>initPart3(),900);} else if(!orderOk && !colorsOk){setFeedback(2,'Reihenfolge und Farben stimmen noch nicht ganz.','bad');} else if(!orderOk){setFeedback(2,'Die Reihenfolge stimmt noch nicht ganz.','bad');} else {setFeedback(2,'Prüfe die Farben noch einmal.','bad');} }
+
+function initPart3(){state.part=3;updatePill();state.part3.order=shuffle(SCALE.map(n=>n.id));state.part3.colors=Array(8).fill(null);state.part3.syllables=Array(8).fill('');renderPart3();showOnly('part3');setFeedback(3,'');}
+function renderPart3(){const host=$('part3Grid'); host.replaceChildren(); state.part3.order.forEach((id,idx)=>{const note=SCALE.find(n=>n.id===id); const card=document.createElement('div'); card.className='identify-card'; card.innerHTML=`<div class="note-wrap">${noteSvg(note,{colored:false,small:true})}</div>`; const input=document.createElement('input'); input.type='text'; input.placeholder='Silbe'; input.value=state.part3.syllables[idx]; input.maxLength=5; input.autocomplete='off'; input.spellcheck=false; input.setAttribute('aria-label',`Silbe zu Note ${idx+1}`); input.addEventListener('input',e=>{state.part3.syllables[idx]=e.target.value;}); card.append(input); card.append(makePalette(state.part3.colors[idx],(key)=>{state.part3.colors[idx]=key;renderPart3();})); host.append(card); }); }
+function checkPart3(){ if(state.part3.colors.some(v=>!v) || state.part3.syllables.some(v=>!normalize(v))){setFeedback(3,'Fülle alle Silben aus und wähle überall eine Farbe.','bad'); return;} const allOk=state.part3.order.every((id,idx)=>{const note=SCALE.find(n=>n.id===id); return state.part3.colors[idx]===note.color && normalize(state.part3.syllables[idx])===normalize(note.syllable);}); window.SafariTelemetry?.record({task:'Solmisationsleiter Teil 3: Silben und Farben',correct:allOk,answer:state.part3.order.map((id,i)=>id+':'+state.part3.syllables[i]+'/'+state.part3.colors[i]).join(' · '),expected:state.part3.order.map(id=>{const n=SCALE.find(n=>n.id===id);return id+':'+n.syllable+'/'+n.color}).join(' · ')});if(allOk){completeGame();} else {setFeedback(3,'Noch nicht alles richtig. Prüfe Farben und Silben noch einmal.','bad');} }
+function completeGame(){state.part=4;updatePill(); showOnly('complete'); const host=$('summary'); host.replaceChildren(); SCALE.forEach(n=>{const c=document.createElement('div'); c.className='mini-card'; c.innerHTML=`${noteSvg(n,{colored:true,small:true})}<div class="mini-name">${n.syllable}</div><div class="mini-color">${n.color}</div>`; host.append(c);});}
+function showOnly(id){['part1','part2','part3','complete'].forEach(x=>$(x).classList.toggle('hidden',x!==id)); window.scrollTo({top:0,behavior:'smooth'});}
+function restartAll(){clearFeedbacks();initPart1();}
+$('undo1').addEventListener('click',()=>{state.part1.answer.pop();renderPart1();setFeedback(1,'');});
+$('shuffle1').addEventListener('click',()=>{state.part1.pool=shuffle(SCALE.map(n=>n.id));state.part1.answer=[];renderPart1();setFeedback(1,'');});
+$('check1').addEventListener('click',checkPart1);
+$('undo2').addEventListener('click',()=>{const pos=state.part2.answer.length-1; if(pos>=0){state.part2.answer.pop();state.part2.colors[pos]=null;renderPart2();setFeedback(2,'');}});
+$('shuffle2').addEventListener('click',()=>{state.part2.pool=shuffle(SCALE.map(n=>n.id));state.part2.answer=[];state.part2.colors=Array(8).fill(null);renderPart2();setFeedback(2,'');});
+$('check2').addEventListener('click',checkPart2);
+$('shuffle3').addEventListener('click',()=>{state.part3.order=shuffle(SCALE.map(n=>n.id));state.part3.colors=Array(8).fill(null);state.part3.syllables=Array(8).fill('');renderPart3();setFeedback(3,'');});
+$('check3').addEventListener('click',checkPart3);
+$('restartAll').addEventListener('click',restartAll);
+renderPreview();initPart1();
+</script>
+<script defer src="../assets/game-telemetry.js"></script>
+</body>
+</html>
