@@ -6,12 +6,12 @@
 <meta name="theme-color" content="#191f23">
 <meta name="description" content="Lernsafari Klasse 3b: Aufgaben des Tages, aktuelle Lernspiele und Archiv">
 <title>Lernsafari – Klasse 3b</title>
-<link rel="stylesheet" href="assets/safari.css?v=10">
+<link rel="stylesheet" href="assets/safari.css?v=14">
 <script defer src="assets/analytics-config.js"></script>
 <script defer src="assets/daily-data.js"></script>
 <script defer src="assets/login-config.js?v=2"></script>
 <script defer src="assets/login.js?v=7"></script>
-<script defer src="assets/safari.js?v=10"></script><link rel="stylesheet" href="assets/zahl-des-tages.css?v=11"><script defer src="assets/zahl-des-tages.js?v=11"></script>
+<script defer src="assets/safari.js?v=12"></script><link rel="stylesheet" href="assets/zahl-des-tages.css?v=11"><script defer src="assets/zahl-des-tages.js?v=11"></script>
 <link rel="stylesheet" href="assets/lernsafari-dark.css?v=10"><link rel="stylesheet" href="assets/tierwelt.css?v=12"><script defer src="assets/tierwelt-data.js?v=11"></script><script defer src="assets/tierwelt.js?v=11"></script><script defer src="assets/agenda.js?v=12"></script></head>
 <body>
 <header class="site-header" id="main-header">
@@ -67,7 +67,7 @@
      <div class="today-meta"><span class="today-label" id="today-label"></span><span class="day-pill" id="day-pill"></span></div>
      <h2 id="today-theme"></h2>
      <p id="today-intro"></p>
-     <div class="progress-label"><span>Deine Tagesaufgaben</span><span id="daily-progress">0 von 4 Aufgaben geschafft</span></div>
+     <p class="daily-progress-explain">Hier zählen nur die <b>vier anderen Tagesaufgaben</b>. Die sechs Aufgaben bei der «Zahl des Tages» werden separat gezählt.</p><div class="progress-label"><span>Andere Tagesaufgaben (4)</span><span id="daily-progress">0 von 4 Aufgaben geschafft</span></div>
      <div class="progress-track"><span class="progress-fill" id="daily-progress-bar"></span></div>
     </section>
     <div class="preview-note" id="preview-notice" hidden><span>Wochenvorschau</span><button id="return-today" type="button">Zur heutigen Aufgabe</button></div>
@@ -128,6 +128,9 @@
 <div id="login-dialog" class="login-shade" hidden role="dialog" aria-modal="true" aria-labelledby="login-title"><div class="login-card"><button type="button" id="login-close" class="login-close" aria-label="Schliessen">×</button><h2 id="login-title">Auf der LernSafari anmelden</h2><p>Melde dich mit deinem Tiernamen an, damit deine Erfolge gespeichert werden.</p><form id="login-form"><label for="login-username">Benutzername</label><input id="login-username" name="username" autocomplete="username" required><label for="login-password">Passwort</label><input id="login-password" type="password" name="password" autocomplete="current-password" required><button type="submit" class="login-submit">Anmelden</button><p id="login-message" role="status"></p></form></div></div>
 <div class="week-overlay" id="week-panel" hidden role="dialog" aria-modal="true" aria-label="Wochenaufgaben">
  <div class="week-content"><div class="week-head"><h2>Aufgabenserien – Vorschau</h2><button type="button" id="close-week" class="close-week" aria-label="Schliessen">×</button></div><p class="week-hint">Geplante Woche und Reserveaufgaben (alle ohne Wiederholung)</p><div class="week-list" id="week-list"></div></div>
+</div>
+<div id="admin-student-modal" class="admin-student-modal" role="dialog" aria-modal="true" aria-labelledby="admin-student-title" hidden>
+ <div class="admin-student-window"><div class="admin-student-toolbar"><h2 id="admin-student-title">Lernfortschritt</h2><button type="button" id="admin-student-close" aria-label="Fenster schliessen">✕ Schliessen</button></div><div class="admin-student-body" id="admin-student-body"></div></div>
 </div>
 <div class="number-plan-overlay" id="number-plan-overlay" hidden aria-modal="true" role="dialog" aria-label="Zahlenplanung">
  <div class="number-plan-dialog"><button type="button" class="number-plan-close" id="number-plan-close" aria-label="Schliessen">✕</button>

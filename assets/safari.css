@@ -148,3 +148,59 @@
 .archive-open:hover,.archive-open:focus-visible{background:#d97e9c}
 @media(max-width:800px){.today-intro-duo{grid-template-columns:1fr}.today-mascot img{max-width:230px;max-height:260px}.today-joke,.today-meerkat-intro{padding:12px;min-height:145px}.today-joke img{width:34%;height:180px}.today-bubble{font-size:20px;padding:15px}.today-meerkat-figure{width:32%}}
 @media(max-width:520px){.today-joke img{height:135px}.today-bubble{font-size:17px}.today-meerkat-figure .meerkat-figure{max-height:145px}}
+
+/* Admin-Auswertung: kompakte Tierkarten und eigene Detailansicht */
+.admin-kids-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:12px;margin-top:18px}
+.admin-kid-tile{min-width:0;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid #5d6f77;border-radius:17px;padding:13px;background:#303a40;color:#f2f5f6;cursor:pointer;font:inherit}
+.admin-kid-tile:hover,.admin-kid-tile:focus-visible{border-color:#f5a2bb;background:#3a464c;outline-offset:2px}
+.admin-kid-tile img{width:64px;height:64px;object-fit:contain;flex-shrink:0}
+.admin-kid-tile span:not(.admin-tile-arrow){flex:1;min-width:0}
+.admin-kid-tile strong{display:block;color:#fff;font-size:18px}
+.admin-kid-tile small{display:block;color:#c9d5d9;line-height:1.5;font-size:12px}
+.admin-tile-arrow{font-size:12px;color:#f8b4cb;white-space:nowrap}
+.admin-student-modal[hidden]{display:none!important}
+.admin-student-modal{position:fixed;inset:0;background:#080d11e8;z-index:5200;display:flex;justify-content:center;align-items:center;padding:14px}
+.admin-student-window{width:min(1100px,100%);max-height:calc(100vh - 28px);display:flex;flex-direction:column;background:#222b30;color:#f3f6f6;border:1px solid #697983;border-radius:20px;box-shadow:0 30px 90px #000b;overflow:hidden}
+.admin-student-toolbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#303b41;border-bottom:1px solid #5f6b74}
+.admin-student-toolbar h2{margin:0!important;color:#f5a6be!important;font-size:clamp(19px,2.5vw,27px)}
+.admin-student-toolbar button{padding:10px 14px;border:1px solid #c8d1d3;background:#e9ecec;border-radius:10px;color:#202c30;font:inherit;font-weight:800;cursor:pointer}
+.admin-student-body{overflow-y:auto;padding:18px 22px;overscroll-behavior:contain}
+.admin-modal-open{overflow:hidden}
+.admin-student-full h4{color:#f7acc5!important;margin:25px 0 10px;font-size:19px}
+.admin-student-summary{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}
+.admin-student-summary h3{font-size:25px;margin:0;color:#fff}
+.admin-student-summary p{color:#c4d1d5;margin:3px 0}
+.admin-progress-info{border-left:4px solid #f1a4bd;background:#36434a;padding:12px;border-radius:8px;color:#e6eff0;margin-top:12px}
+.admin-score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px}
+.admin-score-grid>div{background:#34434b;border:1px solid #5d7076;border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:10px}
+.admin-score-grid span{color:#e6eef0}.admin-score-grid strong{color:#f8b8ce}
+.admin-student-body .admin-attempt,.admin-history-group{border:1px solid #5c6970;border-radius:12px;margin:9px 0;background:#2e383f;overflow:hidden}
+.admin-student-body .admin-attempt summary,.admin-history-group summary{color:#f6f9fa!important;cursor:pointer;padding:13px 15px;display:flex;align-items:center;gap:12px;font-weight:700;list-style:none}
+.admin-student-body .admin-attempt summary::-webkit-details-marker,.admin-history-group summary::-webkit-details-marker{display:none}
+.admin-student-body .admin-attempt summary:after,.admin-history-group summary:after{content:'⌄';margin-left:auto;color:#f7adc8;font-size:19px}
+.admin-student-body .admin-attempt[open]>summary:after,.admin-history-group[open]>summary:after{content:'⌃'}
+.admin-student-body .admin-attempt summary small{display:block;color:#c1cfd5;font-weight:400;font-size:12px;margin-top:4px}
+.admin-attempt-mark{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;flex-shrink:0;border-radius:50%;font-size:19px;background:#406e52;color:#fff}
+.admin-attempt-mark.wrong{background:#984b55}
+.admin-attempt-detail{padding:14px;border-top:1px solid #5a6870;display:grid;gap:13px}
+.admin-task-picture{width:min(100%,550px);max-height:250px;object-fit:contain;display:block;margin:0 auto;background:#404a50;border:1px solid #697780;border-radius:12px}
+.admin-answer-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-answer-compare>div{background:#38454c;border:1px solid #61717a;border-radius:11px;padding:13px;min-width:0}
+.admin-answer-compare span{display:block;color:#f6b4ca;font-weight:800;font-size:13px}
+.admin-answer-compare strong{display:block;color:#fff;font-weight:700;overflow-wrap:anywhere;margin-top:8px;white-space:pre-wrap}
+.admin-attempt-note,.admin-no-picture{background:#38464e;color:#d5e1e5;padding:12px;border-radius:10px;overflow-wrap:anywhere}
+.admin-history-group>summary{background:#35434b}
+.admin-history-group[open]{padding-bottom:12px}
+.admin-history-group>.admin-attempt{margin:10px 12px}
+.admin-daily-example{background:#39484f;border-radius:11px;padding:15px;color:#f3f5f6}
+.admin-daily-example p{color:#d3e0e3}
+.admin-daily-mini-grid{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:3px;max-width:220px;margin:10px auto}
+.admin-daily-mini-grid i{aspect-ratio:1;border-radius:2px}
+.admin-student-body .admin-week-table{overflow-x:auto}
+.admin-student-body .admin-week-table table{min-width:410px;width:100%;border-collapse:collapse}
+.admin-student-body .admin-week-table th,.admin-student-body .admin-week-table td{text-align:center;border:1px solid #66777e;background:#35424a;color:#f2f5f5;padding:12px 7px}
+.admin-student-body .admin-graph{background:#334249!important;border-color:#66787f!important}
+.admin-student-body .admin-graph h5{color:#f7cedb!important}
+@media(max-width:650px){.admin-student-body{padding:13px}.admin-answer-compare{grid-template-columns:1fr}.admin-kid-tile img{width:49px;height:49px}.admin-student-toolbar{padding:10px}}
+
+.daily-progress-explain{margin:12px 0 7px;color:#e3ebef;font-size:14px;line-height:1.5}

@@ -97,7 +97,7 @@ async function restoreSavedProgress(){
  const api=window.SafariLogin;if(!api?.auth()||api.auth().role!=='child'||siteState.dayIndex===null)return;
  const day=siteState.dayIndex,date=days[day].date;
  try{const saved=await api.dayState(date);if(siteState.dayIndex!==day||!api.auth())return;
-   for(const item of saved.progress||[]){const i=Number(item.task_index);if(i>=0&&i<4&&item.completed===1)session(day)[i].success=true}
+   for(const item of saved.progress||[]){const i=Number(item.task_index);if(Number.isInteger(i)&&i>=0&&i<4&&Number(item.completed)===1)session(day)[i].success=true}
    for(let i=0;i<4;i++)renderTask(day,i);updateProgress();
  }catch(e){console.warn('Fortschritt nicht geladen:',e.message)}
 }
@@ -264,29 +264,88 @@ async function loadAdminNotes(){
  try{const data=await api.getAdminNotes();$('admin-todos').value=data.content||'';$('todo-feedback').textContent='Auf allen Geräten verfügbar ✓';}
  catch(error){$('todo-feedback').textContent='Nicht geladen: '+error.message}
 }
+function mondayOf(iso){
+ const date=new Date(iso+'T12:00:00Z');date.setUTCDate(date.getUTCDate()-((date.getUTCDay()+6)%7));return date.toISOString().slice(0,10);
+}
+function previewForGame(game){
+ const slug=String(game||'').replace(/^spiele\//,'').replace(/\.html$/,'');
+ if(slug==='zahl-des-tages')return {name:'Zahl des Tages',preview:'flamingo-zahl-des-tages.webp'};
+ if(slug.startsWith('tierwelt-')){
+   const id=slug.replace(/^tierwelt-/,'');const animal=(window.SAFARI_ANIMALS||[]).find(a=>a.id===id);
+   return {name:animal?`Tierwelt: ${animal.name}`:'Tierwelt',preview:animal?.photo||null};
+ }
+ if(slug==='tier-memory')return {name:'Tier-Memory',preview:null};
+ if(slug==='tier-schreibspiel')return {name:'Tiernamen schreiben',preview:null};
+ for(const category of Object.values(paths))for(const item of category){if(item[1].replace(/\.html$/,'')===slug)return {name:item[0],preview:item[2]?'assets/'+item[2]:null};}
+ const aliases={'teste-dein-wissen-musik':'Teste dein Wissen – Musik','teste-dein-wissen-nmg':'Teste dein Wissen – NMG'};
+ return {name:aliases[slug]||slug.replace(/-/g,' '),preview:null};
+}
+function adminPreviewUrl(game){const info=previewForGame(game);if(!info.preview)return '';
+ return /^https?:/.test(info.preview)||info.preview.startsWith('assets/')?info.preview:'assets/'+info.preview;
+}
+function adminAttemptCard(a){const info=previewForGame(a.game),image=adminPreviewUrl(a.game);
+ const bad=!Boolean(a.is_correct),stamp=swissStamp(a.happened_at);
+ const parsed=(()=>{try{const v=JSON.parse(a.details);return v&&typeof v==='object'&&!Array.isArray(v)?v:null}catch(_){return null}})();
+ const detailText=parsed?Object.entries(parsed).filter(([k])=>!['answer','expected'].includes(k)).map(([k,v])=>`${k}: ${typeof v==='string'?v:JSON.stringify(v)}`).join(' · '):a.details;
+ return `<details class="admin-attempt admin-attempt-picture"><summary><span class="admin-attempt-mark ${bad?'wrong':'right'}">${bad?'✗':'✓'}</span><span><b>${htmlEscape(info.name)}</b> · ${htmlEscape(a.task_ref||'Aufgabe')}<small>${htmlEscape(stamp)} · ${a.correct_count}/${a.total} richtig</small></span></summary><div class="admin-attempt-detail">${image?`<img class="admin-task-picture" src="${htmlEscape(image)}" loading="lazy" alt="Vorschau von ${htmlEscape(info.name)}" onerror="this.style.display='none'">`:'<div class="admin-no-picture">Für dieses Spiel gibt es noch kein eigenes Vorschaubild.</div>'}<div class="admin-answer-compare"><div><span>Antwort des Kindes</span><strong>${htmlEscape(a.answer||'Keine Antwort gespeichert')}</strong></div><div><span>Richtige Lösung</span><strong>${htmlEscape(a.expected||'Keine Lösung gespeichert')}</strong></div></div>${detailText?`<p class="admin-attempt-note">${htmlEscape(detailText)}</p>`:''}</div></details>`;
+}
+function adminDailyCard(e){const match=/^(\d{4}-\d\d-\d\d):(\d+)$/.exec(String(e.ref||''));
+ const d=match?days.find(x=>x.date===match[1]):null;const index=match?Number(match[2]):-1;
+ const ex=d?.exercises?.[index];const mistakes=adminMistakes(e);
+ const preview=ex?.type==='paint'?`<div class="admin-daily-mini-grid" style="--cols:${ex.art[0].length}">${ex.art.join('').split('').map(v=>`<i style="background:${htmlEscape(ex.palette.find(p=>p.value===ex.mapping[v])?.color||'#8ca7a9')}"></i>`).join('')}</div>`:ex?.type==='choices'?`<p>${htmlEscape(ex.questions?.[0]?.[0]||ex.desc)}</p>`:ex?.type==='sudoku'?'<p>Vierer-Sudoku mit 16 Feldern</p>':ex?.type==='fill'?`<p>${htmlEscape(ex.fields?.[0]?.[0]||ex.desc)}</p>`:ex?.type==='match'?`<p>${htmlEscape(ex.pairs?.[0]?.[0]||ex.desc)}</p>`:ex?.type==='categorize'?`<p>${htmlEscape(ex.items?.[0]?.[0]||ex.desc)}</p>`:ex?.type==='order'?`<p>${htmlEscape(ex.items?.slice(0,3).join(' · ')||ex.desc)}</p>`:'';
+ return `<details class="admin-attempt admin-daily-entry"><summary><span class="admin-attempt-mark ${Number(e.success)?'right':'wrong'}">${Number(e.success)?'✓':'✗'}</span><span>${htmlEscape(swissStamp(e.happened_at))} · <b>${htmlEscape(ex?.title||'Tagesaufgabe '+(index+1))}</b> · ${Number(e.correct_count)||0}/${Number(e.total)||'?'} richtig</span></summary><div class="admin-attempt-detail">${ex?`<div class="admin-daily-example"><b>Aufgabe ${index+1}: ${htmlEscape(ex.title)}</b><p>${htmlEscape(ex.desc)}</p>${preview}</div>`:''}${mistakes}</div></details>`;
+}
+function adminList(items,renderer,empty='Keine Einträge vorhanden.',limit=200){
+ return items.length?items.slice(0,limit).map(renderer).join('')+(items.length>limit?`<p class="admin-small">Es werden die neuesten ${limit} von ${items.length} Einträgen gezeigt.</p>`:''):`<p class="admin-small">${empty}</p>`;
+}
+function renderStudentDetail(name,report){
+ const entries=(report.events||[]).filter(x=>x.username===name),attempts=(report.attempts||[]).filter(x=>x.username===name);
+ const account=(report.students||[]).find(x=>x.username===name);
+ const done=(report.daily||[]).filter(x=>x.username===name&&Number(x.task_index)>=0&&Number(x.task_index)<4);
+ const scores=(report.highscores||[]).filter(x=>x.username===name);
+ const weekStart=mondayOf(daySwiss());const today=daySwiss();
+ const isWeek=e=>{const date=e.day_date||swissIso(e.happened_at);return date>=weekStart&&date<=today};
+ const attemptsWeek=attempts.filter(isWeek),oldAttempts=attempts.filter(x=>!isWeek(x));
+ const thisWeekDaily=entries.filter(e=>e.kind==='daily'&&isWeek(e)),oldEntries=entries.filter(e=>!isWeek(e));
+ const numberAttempts=attemptsWeek.filter(a=>a.game==='zahl-des-tages');
+ const gameAttempts=attemptsWeek.filter(a=>a.game!=='zahl-des-tages');
+ const gameNames=[...new Set([...scores.map(s=>s.game),...entries.filter(e=>e.kind==='game').map(e=>e.ref)])].sort();
+ const graphs=gameNames.map(game=>adminGraph(previewForGame(game).name,entries.filter(e=>e.kind==='game'&&e.ref===game))).join('');
+ const lastLogin=account?.last_login_at?swissStamp(account.last_login_at)+' Uhr':'Noch nicht erfasst';
+ return `<div class="admin-student-full"><div class="admin-student-summary"><div><h3>${htmlEscape(name)}</h3><p>Letzter Login: ${htmlEscape(lastLogin)} (Schweizer Zeit)</p></div><span class="safari-pill">Aktuelle Woche</span></div><h4>Fortschritt dieser Woche · nur die 4 Tagesaufgaben</h4>${renderAdminWeek(done)}<div class="admin-progress-info">Die <b>6 Schritte der Zahl des Tages</b> zählen nicht zu diesen vier Aufgaben. Ihre Ergebnisse stehen weiter unten separat.</div><h4>Highscores pro Spiel</h4>${scores.length?`<div class="admin-score-grid">${scores.map(x=>`<div><span>${htmlEscape(previewForGame(x.game).name)}</span><strong>${Number(x.score)||0}</strong></div>`).join('')}</div>`:'<p>Noch kein Highscore.</p>'}<h4>Highscore-Entwicklung nach Spiel und Tag</h4>${graphs?`<div class="admin-graph-list">${graphs}</div>`:'<p>Noch keine Spielhighscores vorhanden.</p>'}<h4>Diese Woche · Lernspielversuche (${gameAttempts.length})</h4><p class="admin-small">Auf eine Aufgabe klicken, um Bild, Antwort und Lösung zu sehen.</p>${adminList(gameAttempts,adminAttemptCard,'Diese Woche noch keine Lernspielversuche erfasst.')}<h4>Diese Woche · Zahl des Tages (${numberAttempts.length} Prüfungen)</h4><p class="admin-small">Eigene Auswertung mit sechs Schritten, unabhängig von den vier Tagesaufgaben.</p>${adminList(numberAttempts,adminAttemptCard,'Noch keine Prüfungen bei der Zahl des Tages.')}<h4>Diese Woche · die vier übrigen Tagesaufgaben (${thisWeekDaily.length} Prüfungen)</h4>${adminList(thisWeekDaily,adminDailyCard,'Noch keine Tagesaufgaben geprüft.')}<details class="admin-history-group"><summary>Ältere Lernspielversuche (${oldAttempts.length})</summary>${adminList(oldAttempts,adminAttemptCard,'Keine älteren Lernspielversuche.',300)}</details><details class="admin-history-group"><summary>Ältere Tagesaufgaben und Highscore-Einträge (${oldEntries.length})</summary>${adminList(oldEntries,e=>e.kind==='daily'?adminDailyCard(e):`<details class="admin-attempt"><summary>${htmlEscape(swissStamp(e.happened_at))} · Highscore ${htmlEscape(previewForGame(e.ref).name)} · ${Number(e.correct_count)||0}</summary>${adminMistakes(e)}</details>`,'Keine älteren Einträge.',200)}</details></div>`;
+}
+let adminReportCache=null;
 async function renderClassReport(){
  const api=window.SafariLogin,status=$('class-analytics-status'),host=$('class-analytics-contents');
  if(!siteState.adminUnlocked||!api){status.textContent='Öffne den Adminbereich mit dem Flamingo-Code.';host.innerHTML='';return;}
  status.textContent='Lade Klassenergebnisse aus der sicheren Datenbank …';
  try{
-  const data=await api.getAdminReport();
-  const names=(data.students||[]).map(u=>u.username);
-  host.innerHTML=names.map(name=>{
-   const entries=(data.events||[]).filter(x=>x.username===name);
-   const attempts=(data.attempts||[]).filter(x=>x.username===name);
-   const account=(data.students||[]).find(x=>x.username===name);
-   const lastLogin=account?.last_login_at?swissStamp(account.last_login_at)+' Uhr':'Noch nicht erfasst';
-   const done=(data.daily||[]).filter(x=>x.username===name);
+  const data=await api.getAdminReport();adminReportCache=data;
+  const students=data.students||[];const names=students.map(x=>x.username);
+  const thisWeek=mondayOf(daySwiss());
+  host.innerHTML=`<div class="admin-kids-grid">${names.map(name=>{
+   const done=(data.daily||[]).filter(x=>x.username===name&&Number(x.task_index)>=0&&Number(x.task_index)<4&&x.day_date>=thisWeek&&x.day_date<=daySwiss()&&Number(x.completed));
    const scores=(data.highscores||[]).filter(x=>x.username===name);
-   const gameNames=[...new Set([...scores.map(s=>s.game),...entries.filter(e=>e.kind==='game').map(e=>e.ref)])].sort();
-   const graphs=gameNames.map(game=>adminGraph(game,entries.filter(e=>e.kind==='game'&&e.ref===game))).join('');
-   const attemptLogs=attempts.slice(0,300).map(a=>`<details class="admin-attempt"><summary>${htmlEscape(swissStamp(a.happened_at))} · ${htmlEscape(a.game)} · ${htmlEscape(a.task_ref)} · ${a.is_correct?'✓ richtig':'✗ falsch'} · ${a.correct_count}/${a.total}</summary><p><b>Antwort:</b> ${htmlEscape(a.answer||'–')}</p><p><b>Richtige Lösung:</b> ${htmlEscape(a.expected||'–')}</p>${a.details?`<p>${htmlEscape(a.details)}</p>`:''}</details>`).join('');
-   const logs=entries.slice(0,80).map(e=>`<details class="admin-attempt"><summary>${htmlEscape(swissStamp(e.happened_at))} · ${htmlEscape(e.kind==='daily'?'Tagesaufgabe '+e.ref:'Spiel '+e.ref)} · ${e.correct_count??0}${e.total?'/'+e.total:''} richtig</summary>${adminMistakes(e)}</details>`).join('');
-   return `<details class="admin-child-card"><summary><img src="assets/login-tiere/${encodeURIComponent(({'Chamäleon':'Chamaeleon','Löwe':'Loewe'})[name]||name)}.webp" alt=""><span>${htmlEscape(name)} · ${done.filter(x=>x.completed).length} Tagesaufgaben geschafft · ${scores.length} Spielhighscores</span></summary><p><strong>Letzter Login:</strong> ${htmlEscape(lastLogin)} (Schweizer Zeit)</p><h4>Fortschritt diese Woche</h4>${renderAdminWeek(done)}<h4>Highscores pro Spiel</h4>${scores.length?`<p>${scores.map(x=>`${htmlEscape(x.game)}: <strong>${x.score}</strong>`).join(' · ')}</p>`:'<p>Noch kein Highscore.</p>'}<h4>Highscore-Entwicklung nach Spiel und Tag</h4>${graphs?`<div class="admin-graph-list">${graphs}</div>`:'<p>Noch keine Spielhighscores vorhanden.</p>'}<h4>Alle erfassten Lernspiel-Versuche (${attempts.length})</h4>${attemptLogs||'<p>Noch keine einzelnen Spielantworten erfasst.</p>'}<h4>Ältere Tagesaufgaben und Highscore-Einträge</h4>${logs||'<p>Noch keine älteren Einträge.</p>'}</details>`;
-  }).join('')||'<p>Noch keine Schülerkonten vorhanden.</p>';
-  status.textContent=`${names.length} Schülerkonten · alle Uhrzeiten Europe/Zurich (Sommer- und Winterzeit berücksichtigt). Highscore-Diagramme zeigen die tatsächlich gespeicherten neuen Bestwerte. Alle neu erfassten Spielantworten stehen darunter.`;
+   const numberAttempts=(data.attempts||[]).filter(x=>x.username===name&&x.game==='zahl-des-tages'&&swissIso(x.happened_at)>=thisWeek);
+   const img=encodeURIComponent(({'Chamäleon':'Chamaeleon','Löwe':'Loewe'})[name]||name);
+   return `<button type="button" class="admin-kid-tile" data-student="${htmlEscape(name)}"><img src="assets/login-tiere/${img}.webp" alt="" loading="lazy"><span><strong>${htmlEscape(name)}</strong><small>${done.length} Tagesaufgaben diese Woche · ${scores.length} Spielhighscores</small><small>Zahl des Tages: ${numberAttempts.length} Prüfungen</small></span><span class="admin-tile-arrow">Öffnen ›</span></button>`;
+  }).join('')}</div>`;
+  host.querySelectorAll('[data-student]').forEach(b=>b.onclick=()=>openStudentModal(b.dataset.student));
+  status.textContent=`${names.length} Tierkonten · Tagesaufgaben (4) und Zahl des Tages (6) werden getrennt angezeigt. Die aktuelle Woche steht im Vordergrund.`;
  }catch(e){status.textContent='Klassendaten nicht verfügbar: '+e.message;host.innerHTML='';}
 }
+function openStudentModal(name){if(!adminReportCache)return;const modal=$('admin-student-modal');
+ $('admin-student-title').textContent='Lernfortschritt: '+name;
+ $('admin-student-body').innerHTML=renderStudentDetail(name,adminReportCache);
+ modal.hidden=false;document.body.classList.add('admin-modal-open');$('admin-student-close').focus();
+}
+function closeStudentModal(){const modal=$('admin-student-modal');if(!modal)return;modal.hidden=true;document.body.classList.remove('admin-modal-open');$('admin-student-body').innerHTML='';}
+function initStudentModal(){const modal=$('admin-student-modal');if(!modal)return;
+ $('admin-student-close').addEventListener('click',closeStudentModal);
+ modal.addEventListener('click',e=>{if(e.target===modal)closeStudentModal()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeStudentModal()});
+}
+
 function initAdmin(){
  const trigger=$('flamingo-admin'),box=$('admin-secret-box'),pass=$('admin-secret-input');
  trigger.addEventListener('click',()=>{box.hidden=!box.hidden;if(!box.hidden){pass.value='';pass.focus()}});
@@ -311,7 +370,7 @@ function initAdmin(){
 }
 
 window.SafariSite={isAdminUnlocked:()=>siteState.adminUnlocked};
-function init(){window.addEventListener('safari-auth-change',()=>{window.SafariAgenda?.updateNav();if(siteState.dayIndex!==null){siteState.sessions.clear();renderToday(true)}if(siteState.route==='admin')renderClassReport();if(siteState.route==='agenda'||siteState.route==='advent')route();});recordLocalVisit();initAdmin();renderSubjects();initNavigation();initSecret();initWeek();renderToday(true);$('daily-tasks').addEventListener('click',handleTasks);$('daily-tasks').addEventListener('change',handleChanges);$('daily-tasks').addEventListener('input',handleChanges);
+function init(){window.addEventListener('safari-auth-change',()=>{window.SafariAgenda?.updateNav();if(siteState.dayIndex!==null){siteState.sessions.clear();renderToday(true)}if(siteState.route==='admin')renderClassReport();if(siteState.route==='agenda'||siteState.route==='advent')route();});recordLocalVisit();initAdmin();initStudentModal();renderSubjects();initNavigation();initSecret();initWeek();renderToday(true);$('daily-tasks').addEventListener('click',handleTasks);$('daily-tasks').addEventListener('change',handleChanges);$('daily-tasks').addEventListener('input',handleChanges);
  setInterval(()=>{const iso=daySwiss();if(iso!==siteState.renderedDate)renderToday(true)},1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderToday()});}
 window.addEventListener('DOMContentLoaded',init);
 })();
