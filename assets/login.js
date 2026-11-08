@@ -50,7 +50,7 @@
  async function verifyAdmin(){return adminRequest('/admin-session')}
  
  async function getScores(){if(!identity)return {};const data=await request('/highscores');scores=Object.fromEntries(data.highscores.map(x=>[x.game,x.score]));return scores}
- window.SafariLogin={auth,request,login,logout,dayState,recordDay,recordScore,getAdminReport,getAdminNotes,saveAdminNotes,adminUnlock,verifyAdmin,getScores,score:game=>Number(scores[game]||0),isConfigured:()=>!!apiUrl(),ready:()=>ready};
+ window.SafariLogin={auth,request,login,logout,dayState,recordDay,recordScore,getAdminReport,getAdminNotes,saveAdminNotes,adminUnlock,verifyAdmin,adminRequest,getScores,score:game=>Number(scores[game]||0),isConfigured:()=>!!apiUrl(),ready:()=>ready};
  window.addEventListener('DOMContentLoaded',()=>{
    const dlg=$('login-dialog');$('login-close').onclick=()=>dlg.hidden=true;dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.hidden=true});
    $('logout-btn').onclick=logout;

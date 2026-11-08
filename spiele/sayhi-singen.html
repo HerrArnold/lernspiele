@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#161d21"><title>SayHi: Singen – LernSafari</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--paper:#283238;--line:#56656d;--pink:#f69bb6;--ink:#f8fafb;--muted:#cad6dc}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:#161d21;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 5% 0%,#f38aa918 0%,transparent 45%),radial-gradient(circle at 95% 80%,#7da99410 0%,transparent 42%)}
+button{font:inherit;cursor:pointer}.shell{position:relative;max-width:1440px;margin:0 auto;padding:20px clamp(14px,3vw,40px) 40px}
+.heading{margin:12px 0 20px}.kicker{color:var(--pink);font-weight:900;letter-spacing:.06em;font-size:13px;text-transform:uppercase;margin-bottom:7px}
+h1{font-size:clamp(29px,3.8vw,46px);letter-spacing:-.035em;margin:0 0 8px;line-height:1.1;color:#fff}
+.heading p{font-size:clamp(16px,1.5vw,20px);color:#e1e7ea;line-height:1.5;margin:0;max-width:950px}
+.practice-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(350px,1fr);gap:19px;align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:19px;min-width:0;box-shadow:0 16px 45px #0002}
+.panel h2{color:#fff;font-size:clamp(18px,1.8vw,23px);margin:0 0 14px;display:flex;gap:10px;align-items:center}
+.panel h2 span{color:#f4a0b9}.hint{margin:12px 0 0;color:#dae3e6;font-size:14px;line-height:1.5}
+.video-shell{position:relative;width:100%;aspect-ratio:16/9;background:#0b1115;border-radius:16px;overflow:hidden;box-shadow:inset 0 0 0 1px #53626a}
+.video-shell iframe{display:block;position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-done{position:absolute;inset:0;background:linear-gradient(140deg,#1b2327f2,#35424cf2);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;text-align:center;padding:20px;z-index:5}
+.video-done[hidden]{display:none!important}.video-done strong{font-size:clamp(20px,3vw,31px)}
+.replay{border:0;background:var(--pink);color:#263039;font-size:18px;font-weight:900;border-radius:14px;padding:14px 25px}
+.replay:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.lyrics{background:#313d44;border:1px solid #53616b;border-radius:15px;padding:clamp(18px,2vw,26px);color:#fff;font-size:clamp(16px,1.55vw,19px);line-height:1.8;max-height:min(72vh,780px);overflow-y:auto;scrollbar-color:#bd7792 #313d44}
+.lyrics p{margin:0 0 21px}.lyrics .refrain{font-weight:850;color:#fff;border-left:4px solid #f4a0b9;padding-left:15px}
+.lyrics .intro{font-weight:750;color:#ffd1df}.lyrics .small-note{font-weight:750;color:#ffd1df}
+.activity{max-width:1150px}.activity .video-shell{max-height:72vh}
+.notice{margin-top:18px;border:1px solid #5c6871;border-radius:13px;padding:13px 16px;color:#cbd6dc;font-size:13px;line-height:1.55}
+@media(max-width:950px){.practice-grid{grid-template-columns:1fr}.lyrics{max-height:none}.panel{padding:14px}}@media(max-width:520px){.shell{padding:12px 10px 30px}.heading{margin:12px 2px 17px}.panel{border-radius:16px}.lyrics{font-size:17px}}
+</style><link rel="stylesheet" href="../assets/game-theme.css"><link rel="stylesheet" href="../assets/lernsafari-dark.css?v=7"></head>
+<body><div class="safari-exit-bar"><span>LernSafari</span><a href="../index.html#aktuelle">✕ Spiel beenden</a></div>
+<main class="shell"><header class="heading"><div class="kicker">Musik · SayHi</div><h1>SayHi: Singen</h1><p>Hier kannst du das Singen vom SayHi-Song üben. Starte das Video und wiederhole Stellen, die du noch üben möchtest. Viel Spass beim Singen!</p></header><div class="practice-grid"><section class="panel"><h2><span>▶</span> Musikvideo</h2><div class="video-shell" aria-label="SayHi-Video">
+      <iframe id="sayhi-video" title="SayHi: Singen – eingebettetes Übungsvideo" src="https://www.youtube-nocookie.com/embed/ZXEhf3IEkKU?enablejsapi=1&amp;controls=1&amp;rel=0&amp;playsinline=1&amp;hl=de" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div class="video-done" id="sayhi-ended" hidden><strong>Super gemacht!</strong><span>Willst du noch einmal üben?</span><button class="replay" id="sayhi-replay" type="button">↻ Video noch einmal</button></div>
+    </div><p class="hint">Drücke auf Pause oder spule zurück, wenn du eine Stelle wiederholen möchtest.</p></section><section class="panel"><h2><span>♫</span> Liedtext: I bi da für di</h2><div class="lyrics" lang="gsw" aria-label="Liedtext zum Mitsingen"><p class="intro">Uououo, uououo<br>I bi da, da, da, da für di</p>
+<p class="">Mier alli si chlii truurig ab und zue<br>fühlet üs allei<br>weisch was i mein</p>
+<p class="">Äs chliis «hallo» vo dir i dem Moment<br>setzt dr Truurigkeit äs Änd<br>und bringt mi zrügg uf d Bei</p>
+<p class="">U wenn du irgendwenn nümme witer weisch<br>denn lueg eifach zu mir, will i weiss Bscheid<br>Dass Himmel und Stärnä müeänd zämä si<br>so wie mier zwei, du und i</p>
+<p class="refrain">Und alli tanzed<br>1-2-3<br>chumm und tanz mit üs<br>lah di eifach gah und mach mit<br>uououo<br>ei Schritt füre, ufe ander zue<br>ei neue Fründschaft steiht, Schritt für Schritt<br>uououo, uououo<br>I bi da, da, da, da für di<br>uououo, uououo<br>und du bisch da, da, da, da für mi</p>
+<p class="">S wär doch so guet wenn jede Mänsch e chlii<br>anders törfti sii<br>Wie’n eigni Melodie</p>
+<p class="">U wenn mir zämä tanzä Hand in Hand<br>Entsteit es festers Band<br>und alli stimmed ii</p>
+<p class="">U wenn du irgendwenn nümme witer weisch<br>denn lueg eifach zu mir, will i weiss Bscheid<br>Dass Himmel und Stärnä müeänd zämä si<br>so wie mier zwei, du und i</p>
+<p class="refrain">Und alli tanzed<br>1-2-3<br>chumm und tanz mit üs<br>lah di eifach gah und mach mit<br>uououo<br>ei Schritt füre, ufe ander zue<br>ei neue Fründschaft steiht, Schritt für Schritt<br>uououo, uououo<br>I bi da, da, da, da für di<br>uououo, uououo<br>und du bisch da, da, da, da für mi</p>
+<p class="">Und wenn du doch mal wider Sorge hesch<br>uououo<br>Denn dänk immer dra, i heb di fescht<br>uououo<br>so wie Himmel und Stärnä verbunde si<br>so wie mier zwei, du und i</p>
+<p class="refrain">Und alli tanzed<br>1-2-3<br>chumm und tanz mit üs<br>lah di eifach gah und mach mit<br>uououo<br>ei Schritt füre, ufe ander zue<br>ei neue Fründschaft steiht, Schritt für Schritt<br>uououo, uououo<br>I bi da, da, da, da für di<br>uououo, uououo<br>und du bisch da, da, da, da für mi<br>uououo</p></div></section></div>
+<p class="notice">Das Video wird von YouTube eingebettet. Wenn das Video auf diesem Gerät nicht abgespielt werden kann, kann die Schule die YouTube-Freigabe prüfen. Werbung und Verweise innerhalb des YouTube-Players können technisch nicht vollständig ausgeschaltet werden.</p>
+</main>
+<script>
+'use strict';
+(()=>{
+  const frame=document.getElementById('sayhi-video');
+  const end=document.getElementById('sayhi-ended');
+  const replay=document.getElementById('sayhi-replay');
+  let player=null;
+  function again(){end.hidden=true; if(player&&typeof player.seekTo==='function'){try{player.seekTo(0,true);player.playVideo();return;}catch(e){}}
+    // Fallback: ausschließlich dasselbe Video neu laden.
+    frame.src=frame.src.split('#')[0];
+  }
+  replay.addEventListener('click',again);
+  // Ein iframe alleine funktioniert auch, wenn die YouTube-API nicht geladen werden kann.
+  const api=document.createElement('script');
+  api.src='https://www.youtube.com/iframe_api';api.async=true;
+  window.onYouTubeIframeAPIReady=()=>{
+    try{player=new YT.Player(frame,{events:{onStateChange:e=>{
+      if(e.data===YT.PlayerState.ENDED){end.hidden=false;}
+      else if(e.data===YT.PlayerState.PLAYING){end.hidden=true;}
+    }}})}catch(e){player=null;}
+  };
+  document.head.append(api);
+})();
+</script>
+</body></html>

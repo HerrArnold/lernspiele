@@ -403,3 +403,5 @@ html body:has(.safari-exit-bar) .complete .intro,
 html body:has(.safari-exit-bar) .complete h2 {color:#f3f6f8 !important;}
 html body:has(.safari-exit-bar) .final-table th {background:#e4eddf !important;color:#24332a !important;}
 html body:has(.safari-exit-bar) .final-table td {background:#2d363c !important;color:#f3f6f8 !important;}
+
+#nav-agenda[hidden],#nav-advent[hidden]{display:none!important}
