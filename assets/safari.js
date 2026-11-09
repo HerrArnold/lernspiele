@@ -28,6 +28,9 @@ const paths={
   ['Notenname · Notenbild · Rhythmussprache','rhythmus-trio-profi.html','preview-rhythm-profi.webp','Rhythmen schreiben und zeichnen'],
   ['Teste dein Wissen','teste-dein-wissen-musik.html',null,'24 Punkte · 12 Aufgaben']],
  Mathe:[
+  ['Einmaleins-Mix','einmaleins-mix.html','preview-einmaleins-mix.svg','2er-, 5er- und 10er-Reihe gemischt üben'],
+  ['Die 3er-Reihe','einmaleins-dreier.html','preview-einmaleins-dreier.svg','Mit der 2er-Reihe die 3er-Reihe entdecken'],
+  ['Die 6er-Reihe','einmaleins-sechser.html','preview-einmaleins-sechser.svg','Mit der 5er-Reihe die 6er-Reihe entdecken'],
   ['Finde die Zahl','finde-die-zahl.html','preview-finde-die-zahl.webp','Zahlen im Tausenderbuch suchen'],
   ['Stellentafel','stellentafel.html','preview-stellentafel.webp','Hunderter, Zehner und Einer'],
   ['Hunderter, Zehner und Einer zerlegen','hunderter-zehner-einer-zerlegen.html','preview-hunderter-zehner-einer-zerlegen.webp','Zahlen zerlegen'],
