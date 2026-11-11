@@ -1,0 +1,186 @@
+{
+  "Deutsch": [
+    {
+      "title": "Gefühle und direkte Rede",
+      "file": "gefuehle-direkte-rede.html",
+      "preview": "preview-gefuehle.webp",
+      "description": "Direkte Rede, Gesichter und Stimmen · 3 Teile"
+    },
+    {
+      "title": "Briefe entdecken",
+      "file": "briefe-entdecken.html",
+      "preview": "preview-briefe.webp",
+      "description": "Briefarten, Briefaufbau und passende Sätze · 3 Teile"
+    }
+  ],
+  "NMG": [
+    {
+      "title": "Verschiedene Rabenvögel",
+      "file": "verschiedene-rabenvoegel.html",
+      "preview": "preview-rabenvoegel.webp",
+      "description": "10 Rabenvögel auf Fotos erkennen und benennen"
+    },
+    {
+      "title": "Lebensraum der Vögel",
+      "file": "lebensraum-voegel.html",
+      "preview": "preview-lebensraum.webp",
+      "description": "Was hilft und was schadet Vögeln? · 2 Teile"
+    },
+    {
+      "title": "Federtypen",
+      "file": "federtypen.html",
+      "preview": "preview-federn.webp",
+      "description": "Federn erkennen und ihre Aufgaben verstehen"
+    },
+    {
+      "title": "Teste dein Wissen",
+      "file": "teste-dein-wissen-nmg.html",
+      "preview": "preview-wissen-nmg.webp",
+      "description": "18 Aufgaben · 3 Teile · 18 Punkte"
+    }
+  ],
+  "Allgemein": [
+    {
+      "title": "Schach-Lexikon",
+      "file": "schach-lexikon.html",
+      "preview": "preview-schach-lexikon.svg",
+      "description": "Figuren und wichtige Regeln einfach erklärt"
+    },
+    {
+      "title": "Schach gegen den Computer",
+      "file": "schach-computer.html",
+      "preview": "preview-schach-computer.svg",
+      "description": "Spiele eine echte Partie gegen den Computer"
+    }
+  ],
+  "Musik": [
+    {
+      "title": "SayHi: Singen",
+      "file": "sayhi-singen.html",
+      "preview": "preview-sayhi-singen.svg",
+      "description": "Musikvideo anschauen und mit Liedtext mitsingen"
+    },
+    {
+      "title": "SayHi: Tanz",
+      "file": "sayhi-tanz.html",
+      "preview": "preview-sayhi-tanz.svg",
+      "description": "Die Tanzschritte mit Video üben"
+    },
+    {
+      "title": "Solmisationsleiter",
+      "file": "solmisationsleiter.html",
+      "preview": "preview-solmisationsleiter.webp",
+      "description": "Silben ordnen und Farben finden"
+    },
+    {
+      "title": "Solmisationsspiel",
+      "file": "solmisationsspiel.html",
+      "preview": "preview-solmi.webp",
+      "description": "Do liegt auf C"
+    },
+    {
+      "title": "Solmisationsspiel schwer",
+      "file": "solmisationsspiel-profi.html",
+      "preview": "preview-solmi-profi.webp",
+      "description": "Do liegt auf verschiedenen Tönen"
+    },
+    {
+      "title": "Rhythmus-Trio",
+      "file": "rhythmus-trio.html",
+      "preview": "preview-rhythm-trio.webp",
+      "description": "Drei passende Karten finden"
+    },
+    {
+      "title": "Notenname · Notenbild · Rhythmussprache",
+      "file": "rhythmus-trio-profi.html",
+      "preview": "preview-rhythm-profi.webp",
+      "description": "Rhythmen schreiben und zeichnen"
+    },
+    {
+      "title": "Teste dein Wissen",
+      "file": "teste-dein-wissen-musik.html",
+      "preview": "preview-teste-wissen-musik.svg",
+      "description": "24 Punkte · 12 Aufgaben"
+    }
+  ],
+  "Mathe": [
+    {
+      "title": "Einmaleins-Tafel erforschen",
+      "file": "einmaleins-tafel-entdecken.html",
+      "preview": "preview-einmaleins-tafel.svg",
+      "description": "Zusammenhänge finden · Neue Reihen mit Merkaufgaben lösen"
+    },
+    {
+      "title": "Einmaleins-Mix",
+      "file": "einmaleins-mix.html",
+      "preview": "preview-einmaleins-mix.svg",
+      "description": "2er-, 5er- und 10er-Reihe gemischt üben"
+    },
+    {
+      "title": "Die 3er-Reihe",
+      "file": "einmaleins-dreier.html",
+      "preview": "preview-einmaleins-dreier.svg",
+      "description": "Mit der 2er-Reihe die 3er-Reihe entdecken"
+    },
+    {
+      "title": "Die 4er-Reihe",
+      "file": "einmaleins-vierer.html",
+      "preview": "preview-einmaleins-vierer.svg",
+      "description": "Mit der 2er-Reihe die 4er-Reihe entdecken"
+    },
+    {
+      "title": "Die 6er-Reihe",
+      "file": "einmaleins-sechser.html",
+      "preview": "preview-einmaleins-sechser.svg",
+      "description": "Mit der 5er-Reihe die 6er-Reihe entdecken"
+    },
+    {
+      "title": "Die 9er-Reihe",
+      "file": "einmaleins-neuner.html",
+      "preview": "preview-einmaleins-neuner.svg",
+      "description": "Mit der 10er-Reihe die 9er-Reihe entdecken"
+    },
+    {
+      "title": "Einmaleins-Mix · 3, 4, 6 und 9",
+      "file": "einmaleins-mix-neue-reihen.html",
+      "preview": "preview-einmaleins-mix-neue-reihen.svg",
+      "description": "3er-, 4er-, 6er- und 9er-Reihe gemischt üben"
+    },
+    {
+      "title": "Finde die Zahl",
+      "file": "finde-die-zahl.html",
+      "preview": "preview-finde-die-zahl.webp",
+      "description": "Zahlen im Tausenderbuch suchen"
+    },
+    {
+      "title": "Stellentafel",
+      "file": "stellentafel.html",
+      "preview": "preview-stellentafel.webp",
+      "description": "Hunderter, Zehner und Einer"
+    },
+    {
+      "title": "Hunderter, Zehner und Einer zerlegen",
+      "file": "hunderter-zehner-einer-zerlegen.html",
+      "preview": "preview-hunderter-zehner-einer-zerlegen.webp",
+      "description": "Zahlen zerlegen"
+    },
+    {
+      "title": "Wie viele Hundertertafeln, Zehnerstangen und Einerwürfel?",
+      "file": "wie-viele-brauchst-du.html",
+      "preview": "preview-wie-viele-brauchst-du.webp",
+      "description": "Mit Stellenwertmaterial arbeiten"
+    },
+    {
+      "title": "Welche Zahl ist das?",
+      "file": "welche-zahl-ist-das.html",
+      "preview": "preview-welche-zahl-ist-das.webp",
+      "description": "Stellenwertmaterial erkennen"
+    },
+    {
+      "title": "Teste dein Wissen",
+      "file": "teste-dein-wissen.html",
+      "preview": "preview-teste-wissen-mathe.svg",
+      "description": "Lernkontrolle · 15 Aufgaben"
+    }
+  ]
+}

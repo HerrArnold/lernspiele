@@ -1,0 +1,300 @@
+html{color-scheme:light!important;background:#f7efd9!important}
+
+/* LernSafari 2.1 – Safari skin only; game logic unchanged. */
+:root{
+  --sf-bg:#f7efd9;
+  --sf-bg-2:#fff8ea;
+  --sf-paper:#fffdf7;
+  --sf-paper-2:#fff7ea;
+  --sf-ink:#4f3a27;
+  --sf-muted:#6f614f;
+  --sf-green:#567f54;
+  --sf-green-dark:#35593d;
+  --sf-leaf:#89a96b;
+  --sf-gold:#d8ac63;
+  --sf-gold-soft:#f0d8a8;
+  --sf-pink:#d8778f;
+  --sf-pink-deep:#a84f66;
+  --sf-sky:#dce9e2;
+  --sf-border:#ddcfb5;
+  --sf-shadow:0 14px 32px rgba(106,78,41,.12);
+}
+html,body{scrollbar-color:#c9b08e #f7f0e3}
+body{
+  color:var(--sf-ink)!important;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(243,223,181,.72), transparent 28%),
+    radial-gradient(circle at 92% 15%, rgba(220,235,214,.8), transparent 24%),
+    radial-gradient(circle at 88% 92%, rgba(248,225,191,.7), transparent 26%),
+    linear-gradient(180deg,#faf4e7 0%, #f7efd9 100%)!important;
+}
+body,button,input,select,textarea{font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif}
+a{color:var(--sf-green-dark)}
+button,a,input,select,textarea{accent-color:var(--sf-green)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--sf-gold);outline-offset:3px}
+
+/* Generic surfaces */
+.panel,.d-card,.nmg-card,.feature-panel,.today-panel,.login-card,.agenda-dialog,.admin-student-window,
+.number-plan-dialog,.portal-tile,.d-scene,.nmg-illustration,.animal-card,.fact,.metric,.admin-card,
+.today-example,.zdt-example,.zdt-shell,.d-head-tag,.score,.safari-pill,.nmg-status,.nmg-steps span,
+.d-chapter,.d-chip,.highscore-banner,.quiz-result,.agenda-table td,.agenda-table th,
+.agenda-table td.period-title,.feature-button.alt,.nmg-btn.secondary,.nmg-btn.ghost{
+  box-shadow:var(--sf-shadow)!important;
+}
+
+/* Embedded original pages */
+body.legacy-embedded .site-header{display:none!important}
+body.legacy-embedded .shell{max-width:1250px;margin:0 auto;padding:12px!important}
+body.legacy-embedded .safari-exit-bar{display:none!important}
+body.legacy-embedded .game-shell, body.legacy-embedded .d-shell{margin:12px auto!important}
+body.legacy-embedded .view{margin:0!important}
+body.legacy-embedded .section-heading{padding-top:12px}
+
+/* Header / exit */
+.safari-exit-bar{
+  position:sticky;top:0;z-index:300;min-height:44px;display:flex;justify-content:flex-end;align-items:center;gap:14px;
+  padding:6px 18px;background:rgba(255,251,243,.92)!important;border-bottom:1px solid var(--sf-border)!important;backdrop-filter:blur(10px)
+}
+.safari-exit-bar>a,.feature-button,.nmg-btn,.btn,.login-submit,.integration-launch-button,
+.number-plan-dialog button:not(.number-plan-close),.todo-actions .check-button,
+#save-todos,.agenda-dialog .feature-button,.close-week{
+  background:linear-gradient(180deg,#6d9a67 0%, var(--sf-green) 100%)!important;
+  color:#fff!important;border:none!important;border-radius:14px!important;font-weight:850!important;
+  box-shadow:0 4px 10px rgba(68,102,55,.18)!important;
+}
+.safari-exit-bar>a:hover,.feature-button:hover,.nmg-btn:hover,.btn:hover,.login-submit:hover,
+.integration-launch-button:hover{filter:brightness(1.05)}
+.feature-button.alt,.nmg-btn.secondary,.btn.alt,.agenda-dialog .feature-button.alt,
+.integration-back,.integration-subjects button,.integration-choice-grid button,.close-week,
+#agenda-close,.number-plan-close{
+  background:var(--sf-paper)!important;color:var(--sf-ink)!important;border:2px solid var(--sf-border)!important;
+}
+.feature-button.pink,.btn.pink,.safari-exit-bar>a,.agenda-dialog .feature-button.danger,
+#agenda-delete{background:linear-gradient(180deg,#e28aa0 0%, var(--sf-pink) 100%)!important}
+.safari-exit-bar>span{font:750 13px system-ui,sans-serif;color:#6d7b60}
+
+/* Generic text */
+.top h1,.d-head h1,.nmg-heading h1,.feature-head h1,.section-heading h1,
+.zdt-number,.advent-construction-text,.login-card h2,.admin-card h2{color:var(--sf-green-dark)!important}
+.eyebrow,.tiny,.d-head p,.nmg-heading p,.feature-head p,.section-heading p,
+.nmg-tagline,.d-count,.today-bubble span,.today-bubble,.today-example-head p,.zdt-example-caption,
+.portal-tile strong,.integration-note,.today-panel p,.admin-small,.nmg-credit{
+  color:var(--sf-muted)!important
+}
+
+/* Main cards */
+.panel,.d-card,.nmg-card,.feature-panel,.today-panel,.today-example,.zdt-example,
+.zdt-shell,.portal-tile,.admin-card,.agenda-dialog,.login-card,.number-plan-dialog{
+  background:rgba(255,252,245,.96)!important;
+  border:2px solid var(--sf-border)!important;
+  border-radius:24px!important;
+  color:var(--sf-ink)!important;
+}
+
+/* Inputs */
+input,select,textarea{background:#fff!important;color:var(--sf-ink)!important;border:2px solid #d8ccb7!important;border-radius:12px!important}
+input::placeholder,textarea::placeholder{color:#9b8a72!important}
+.calc-line input,.number-plan-dialog input,.login-card input,#admin-todos,.agenda-dialog input,.agenda-dialog select,
+.nmg-bird select,.d-option,.nmg-option,.quiz-options button{color:var(--sf-ink)!important}
+
+/* Progress and chips */
+.track,.d-progress,.nmg-progress,.progress-track{background:#efe6d5!important}
+.track span,.d-progress-fill,.nmg-progress span,.progress-fill{background:linear-gradient(90deg,var(--sf-gold), #e7c27d)!important}
+.score,.safari-pill,.nmg-status,.d-head-tag,.day-pill,.d-chip,.d-chapter,.nmg-steps span,.quiz-progress{
+  background:#f8efdc!important;border:1px solid var(--sf-border)!important;color:var(--sf-green-dark)!important
+}
+.nmg-steps span.active,.d-chapter.active,.d-chapter.complete{background:#e7f0de!important;border-color:#a8c08c!important;color:var(--sf-green-dark)!important}
+.hearts{color:var(--sf-pink)!important}
+
+/* Maths */
+.top h1{color:var(--sf-green-dark)!important}
+.panel{background:rgba(255,252,245,.96)!important;border:2px solid var(--sf-border)!important}
+.big-formula .math-chip,.visual-line,.calc-card,.tipbox,.pill{background:#fff8ea!important;border:2px solid var(--sf-border)!important;color:var(--sf-ink)!important}
+.math-chip.new,.visual-line.extra{background:#fce9ef!important;border-color:#e7b8c5!important;color:#784558!important}
+.row-label,.explain-note,.answer-feedback{color:var(--sf-ink)!important}
+.answer-feedback.correct{color:#347047!important}.answer-feedback.incorrect{color:#a5574f!important}
+.unit{background:#b8d7c0!important;box-shadow:inset 0 -2px #668969!important}
+.visual-line.extra .unit{background:#efb6c6!important;box-shadow:inset 0 -2px #a35c72!important}
+.visual-line.removed{background:#f7ebc8!important;border-color:#d9bc74!important}.visual-line.removed .unit{background:#ead08a!important;box-shadow:inset 0 -2px #9d7d37!important}
+
+/* Deutsch */
+body .d-scene{background:#fff7ea!important;border:2px solid #ead8bc!important}
+body .d-quote, body .d-tasktitle, body .d-tasknote{color:var(--sf-ink)!important}
+body .d-option{background:#fffdf8!important;border:2px solid #e2d6c3!important;color:var(--sf-ink)!important}
+body .d-option.selected{background:#eef5e9!important;border-color:#9dbc9f!important}
+body .d-option.right{background:#e6f3e4!important;border-color:#6fa176!important}
+body .d-option.wrong{background:#fff0ec!important;border-color:#cb8779!important}
+body .d-chip{background:#f6efd8!important}
+
+/* NMG */
+.nmg-card,.nmg-bird,.nmg-table-wrap,.nmg-token-bank,.nmg-bin,.nmg-illustration,.nmg-results{background:#fffdf8!important;border-color:#dfd5c1!important}
+.nmg-card h2,.nmg-question,.nmg-bin h3,.nmg-pill{color:var(--sf-green-dark)!important}
+.nmg-pill{background:#eef5e8!important}.nmg-chip{background:#f8ecd2!important;border-color:#e0c48b!important;color:#6c5333!important}
+.nmg-chip.selected,.nmg-slot.good,.nmg-option.correct,.nmg-bird.correct{background:#edf7e9!important;border-color:#7fad81!important}
+.nmg-option,.nmg-slot,.nmg-bird select{background:#fff!important;border-color:#dfd5c1!important;color:var(--sf-ink)!important}
+.nmg-option.selected,.nmg-slot.filled{background:#eef4e6!important;border-color:#a7c08e!important}
+.nmg-option.wrong,.nmg-slot.bad,.nmg-bird.wrong{background:#fff0ea!important;border-color:#d48b79!important}
+.nmg-learn{background:#f3f8ee!important;color:#4a5d45!important}
+.nmg-featherimg{background:#f7f1e5!important}
+
+/* Tiere / Agenda */
+.safari-feature,.safari-feature h1,.safari-feature h2,.safari-feature h3{color:var(--sf-ink)!important}
+.feature-head h1{color:var(--sf-green-dark)!important}
+.feature-head p,.feature-notice{color:var(--sf-muted)!important}
+.feature-panel,.animal-card,.fact,.agenda-table td,.agenda-table th,.agenda-table td.period-title{
+  background:rgba(255,252,245,.98)!important;border:2px solid var(--sf-border)!important;color:var(--sf-ink)!important
+}
+.animal-card strong,.fact strong,.agenda-week-title,.animal-question{color:var(--sf-green-dark)!important}
+.animal-card img,.animal-photo{background:linear-gradient(180deg,#f4ead7,#e7f0e1)!important}
+.fact span,.feature-panel p,.quiz-result,.quiz-result.error{color:var(--sf-ink)!important}
+.quiz-options button{background:#fffdf8!important;border:2px solid #ded2bf!important;color:var(--sf-ink)!important}
+.quiz-options button.chosen{background:#fceff3!important;border-color:#e0afbd!important}
+.quiz-options button.right{background:#e9f5e8!important;border-color:#73a879!important}
+.quiz-options button.wrong{background:#fff0ec!important;border-color:#d18a79!important}
+.quiz-result{background:#f0f8eb!important}.quiz-result.error{background:#fff2ec!important}
+.agenda-table th{background:#f4ecdc!important}.agenda-table td.period-title{background:#ecf2e7!important;color:var(--sf-green-dark)!important}.agenda-table th.today,.agenda-table td.today{outline:2px solid var(--sf-pink)!important}
+
+/* Zahl des Tages keeps structure but uses warm palette */
+.today-joke,.today-meerkat-intro,.zdt-shell,.today-example{background:rgba(255,252,245,.96)!important;border:2px solid var(--sf-border)!important}
+.today-bubble{background:#fff6e8!important;border:2px solid #e5d0ae!important;color:var(--sf-ink)!important}
+.zdt-shell,.zdt-example{color:var(--sf-ink)!important}
+.zdt-card,.zdt-example-card{background:#fff7ea!important;border:2px solid var(--sf-border)!important}
+.zdt-card h3,.zdt-example-card h4,.zdt-example-big{color:var(--sf-green-dark)!important}
+.zdt-number,.zdt-example-big{background:#eef5e8!important}
+.zdt-chip,.zdt-example-place>div{background:#fffdf8!important;border:1px solid #d8ccb7!important;color:var(--sf-ink)!important}
+.zdt-chip.active{background:#e9f4e5!important;border-color:#92b183!important}
+.zdt-check,.zdt-reset,.zdt-approx,.zdt-artcount,.zdt-place-title,.zdt-card p,.zdt-example-card p{color:var(--sf-ink)!important}
+.zdt-artrow strong,.zdt-plus,.zdt-marker,.zdt-example-line-pin{color:var(--sf-pink)!important;background-color:var(--sf-pink)!important}
+.zdt-artitem,.zdt-example-dot{background:#eef4ea!important;border-color:#b8c8ba!important;box-shadow:none!important}
+.zdt-artitem.chosen{background-color:#e8adc0!important}
+
+/* Portals and admin */
+.portal-tile{background:#fffdf7!important;border:2px solid var(--sf-border)!important}
+.portal-tile:hover{border-color:#96b57f!important}
+.highscore-banner{background:#f8f1df!important;border:2px solid var(--sf-border)!important;color:var(--sf-green-dark)!important}
+
+@media(max-width:700px){
+  .panel,.d-card,.nmg-card,.feature-panel,.today-panel,.zdt-shell{border-radius:18px!important}
+}
+
+.shell,.game-shell,.d-shell,.view{background:transparent!important}
+.logo,.streak,.plain,.stats .streak,.book-controls .page-btn,.page-btn,.mode-btn,.rule-btn,.entry-btn,.piece-btn,.opt,.plain-btn,.control-btn{background:#fff8ea!important;color:#4f3a27!important;border:2px solid #ddcfb5!important}
+.game-shell>.nmg-card,.d-card,.panel,.piece-list,.rule-panel,.container,.card,.setup-box,.setup-overlay,.compare-card,.result-card{background:rgba(255,252,245,.98)!important;color:#4f3a27!important;border:2px solid #ddcfb5!important}
+h1,h2,h3,h4,.prompt,.question,.task-title,.rule-info h3,.info-card h3,.piece-list h2,.rule-panel h2,.block-title,.inputgroup label,.page-label,.result-detail,.feedback,.number-large,.game-over{color:#35593d!important}
+p,.sub,.description,.hint,.tiny,.small,.note,.instructions,.subtitle,.mini-help,.tiny-instruction,.sample-caption,.hero p,.top p,.head p{color:#6f614f!important}
+
+
+/* LernSafari v2.4 – final static-audit refinements, presentation only.
+   Selection colors, music note colors, place-value pieces and chess cells stay intact. */
+html{background:#f7efd9!important;color-scheme:light!important}
+body{background:radial-gradient(circle at 8% 5%,#f7e6c9 0%,transparent 36%),radial-gradient(circle at 92% 95%,#e2edda 0%,transparent 42%),#f8f1df!important;color:#4f3a27!important}
+body::before{pointer-events:none}
+
+/* Consistent controls for independent games with inline CSS. */
+body:has(.safari-exit-bar) :is(button.action,button.primary,button.donebtn,button.btn-primary,button.d-btn,button.nmg-btn,button.ls-btn,button.replay,button.game-check,button.check-button):not(.alt):not(.secondary):not(.ghost){
+  background:#567f54!important;color:#fff!important;border-color:#567f54!important;
+}
+body:has(.safari-exit-bar) :is(.tabs button,.mode-btn,.rule-btn,.entry-btn,.piece-btn,.page-btn,.reset-btn,.plain,.backlink,.nmg-btn.ghost,.nmg-btn.secondary,.d-btn.secondary,.btn-secondary){
+  background:#fff8ea!important;color:#4f3a27!important;border:2px solid #dacfba!important;
+}
+body:has(.safari-exit-bar) :is(.tabs button.active,.mode-btn.active,.rule-btn.active,.entry-btn.active,.piece-btn.active){
+  background:#e5f0df!important;color:#35593d!important;border-color:#87ad80!important;
+}
+body:has(.safari-exit-bar) :is(.panel h2,.panel h3,.board-head h2,.mission-panel h2,.heading h1,.hero h1,.hero h2,.top h1,.nmg-heading h1,.d-head h1){color:#35593d!important}
+body:has(.safari-exit-bar) :is(.hero,.board-panel,.mission-panel,.play-card,.topline,.info-panel,.sample-panel,.draw-panel,.answer-panel,.task-panel,.game-card,.explanation,.coltitle,.tray,.intro-box,.lesson-panel,.side-card,.letter-paper,.review-card,.rule-info,.info-card){
+  background:#fffdf7!important;color:#4f3a27!important;border-color:#ddcfb5!important;
+}
+body:has(.safari-exit-bar) :is(.sample,.drawarea,.staff-wrap,.rhythm-table,.answer-slot,.d-scene,.nmg-illustration){
+  background:#fffaf1!important;color:#4f3a27!important;border-color:#ddcfb5!important;
+}
+body:has(.safari-exit-bar) :is(.compare-card,.compare-card.right,.review-card,.review-item,.review-answer,.lesson-panel,.side-card,.question-box,.question-row,.small-note,.mini,.mini-note,.hint,.notice){
+  color:#4f3a27!important;
+}
+body:has(.safari-exit-bar) :is(.small-note,.notice,.helper,.hint,.question-row,.review-card,.review-answer,.mini,.mini-note){
+  background:#fff7e9!important;border-color:#e2d3b9!important;
+}
+body:has(.safari-exit-bar) :is(.answer-box label,.block-title,.inputgroup label,.compare-label,.coltitle,.tiny-instruction,.mini-help,.subtitle,.description,.legend,.page-note,.mission-panel p,.hero p,.heading p,.hint,.notice,.lyrics,.lyrics p){color:#5c4934!important}
+body:has(.safari-exit-bar) :is(.message,.message.info,.message.warn){color:#4f3a27!important}
+body:has(.safari-exit-bar) :is(.message,.message.info){background:#edf4e6!important;border-color:#bad0ae!important}
+body:has(.safari-exit-bar) .message.warn{background:#fff0e9!important;border-color:#d8aaa2!important}
+body:has(.safari-exit-bar) :is(.answer-feedback.correct,.nmg-fb.good,.d-feedback.good){color:#2b7144!important}
+body:has(.safari-exit-bar) :is(.answer-feedback.incorrect,.nmg-fb.bad,.d-feedback.bad){color:#a54843!important}
+
+/* Preserve chessboard squares and piece identities; only their frame/surroundings are styled. */
+body:has(.safari-exit-bar) .board:has(.sq){background:transparent!important;border:10px solid #a77d4d!important;color:inherit!important}
+body:has(.safari-exit-bar) .board .sq.light{background:#f5e7c6!important}
+body:has(.safari-exit-bar) .board .sq.dark{background:#c69e67!important}
+body:has(.safari-exit-bar) .board .sq.checksq{background:#ffd1d1!important}
+body:has(.safari-exit-bar) .board .sq.ai-from{background:#9fd0fb!important}
+body:has(.safari-exit-bar) .board .sq.ai-to{background:#66adea!important}
+body:has(.safari-exit-bar) .board .sq.selected{outline:4px solid #d8778f!important;outline-offset:-4px}
+body:has(.safari-exit-bar) .piece-token.white{background:#fff!important;color:#111!important}
+body:has(.safari-exit-bar) .piece-token.black{background:#222!important;color:#fff!important}
+
+/* The original homework/learning-control blocks are also light, not leftovers from Darkmode. */
+body.legacy-embedded :is(.ls-todo-head h2,.ls-section-title,.ls-assignment-main h3,.ls-admin-root h2,.ls-admin-root h3,.ls-exit-box h2,.ls-exit-child h3){color:#35593d!important}
+body.legacy-embedded :is(.ls-todo-head,.ls-admin-root,.ls-admin-live,.ls-admin-list,.ls-form,.ls-online-card,.ls-assignment,.ls-empty,.ls-exit-box,.ls-exit-child,.ls-exit-week,.ls-exit-day,.ls-exit-answer,.ls-done,.ls-helper-card){
+  background:#fffdf7!important;color:#4f3a27!important;border-color:#ddcfb5!important;
+}
+body.legacy-embedded :is(.ls-small,.ls-lead,.ls-assignment-main p,.ls-admin-top p,.ls-form p,.ls-form label,.ls-record strong,.ls-record small,.ls-online-card strong,.ls-online-card small,.ls-exit-answer p,.ls-exit-text-label,.ls-exit-record-head>span,.ls-exit-drawing-head){color:#5a4937!important}
+body.legacy-embedded :is(.ls-counter,.ls-focus-state,.ls-explore-state,.ls-notice){background:#f7edda!important;color:#4f3a27!important;border-color:#d7c4a4!important}
+body.legacy-embedded .ls-assignment.ls-finished{background:#eaf5e5!important;border-color:#8fb187!important}
+body.legacy-embedded .ls-done{background:#eef5e9!important;color:#35593d!important}
+body.legacy-embedded .ls-helper-card strong{color:#35593d!important}
+body.legacy-embedded .ls-helper-card>span{color:#4f3a27!important}
+body.legacy-embedded .ls-helper-names span{background:#f4e2e9!important;color:#7b4a5b!important}
+body.legacy-embedded .ls-game-guard{background:rgba(52,47,40,.58)!important}
+body.legacy-embedded .ls-game-guard-card{background:#fffaf0!important;color:#4f3a27!important;border-color:#d4bea0!important}
+body.legacy-embedded .ls-game-guard-card h1{color:#35593d!important}
+body.legacy-embedded .ls-game-guard-card p{color:#5a4937!important}
+body.legacy-embedded .ls-exit-canvas{background:#fff!important}
+
+/* Daily activity and teacher controls: light and readable, including extra tasks. */
+body.legacy-embedded :is(.today-head,.daily-task,.today-panel,.today-joke,.today-meerkat-intro,.zdt-card,.zdt-example-card,.admin-card,.admin-state,.admin-child-card,.today-bubble){
+  background:#fffdf7!important;color:#4f3a27!important;border-color:#ddcfb5!important
+}
+body.legacy-embedded :is(.today-head h2,.daily-task h3,.zdt-card h3,.zdt-example-card h4,.admin-card h2){color:#35593d!important}
+body.legacy-embedded :is(.today-head p,.daily-task p,.task-description,.task-tip,.zdt-example-card p,.today-bubble){color:#5a4937!important}
+body.legacy-embedded :is(.question-row,.match-row,.fill-row,.order-line,.order-bank,.order-picked,.word-tile,.choice-button,.reading-box){background:#fff8e9!important;color:#4f3a27!important;border-color:#ddcfb5!important}
+body.legacy-embedded :is(.choice-button.picked,.paint-swatch.selected){background:#e5f0df!important;border-color:#82a77c!important}
+body.legacy-embedded :is(.admin-table th,.admin-week-table th){background:#eaf0e3!important;color:#35593d!important}
+body.legacy-embedded :is(.admin-table td,.admin-week-table td){background:#fffdf7!important;color:#4f3a27!important}
+
+@media(max-width:720px){
+  body:has(.safari-exit-bar) :is(.hero,.panel,.board-panel,.mission-panel,.nmg-card,.d-card){padding:12px!important}
+  body.legacy-embedded :is(.ls-assignment,.ls-exit-box){padding:12px!important}
+}
+
+
+/* LernSafari 2.5 – strong Tages-Tal readability overrides */
+body.legacy-embedded #view-aufgaben .today-head,
+body.legacy-embedded #view-aufgaben .daily-task,
+body.legacy-embedded #view-aufgaben .today-panel,
+body.legacy-embedded #view-aufgaben .preview-note,
+body.legacy-embedded #view-aufgaben .today-joke,
+body.legacy-embedded #view-aufgaben .today-meerkat-intro,
+body.legacy-embedded #view-aufgaben .today-bubble{
+  background:#fffdf7!important;color:#4f3a27!important;border-color:#ddcfb5!important;
+}
+body.legacy-embedded #view-aufgaben .task-head h3,
+body.legacy-embedded #view-aufgaben .today-head h2,
+body.legacy-embedded #view-aufgaben .daily-task h3,
+body.legacy-embedded #view-aufgaben .preview-note,
+body.legacy-embedded #view-aufgaben .task-status{color:#35593d!important}
+body.legacy-embedded #view-aufgaben .task-description,
+body.legacy-embedded #view-aufgaben .today-head p,
+body.legacy-embedded #view-aufgaben .daily-task p,
+body.legacy-embedded #view-aufgaben .daily-progress-explain,
+body.legacy-embedded #view-aufgaben .today-bubble{color:#5a4937!important}
+body.legacy-embedded #view-aufgaben .check-button{background:linear-gradient(180deg,#6d9a67,#567f54)!important;color:#fff!important}
+body.legacy-embedded #view-aufgaben .clear-button{background:#fff8ea!important;color:#4f3a27!important;border:2px solid #ddcfb5!important}
+body.legacy-embedded #zahl-des-tages,
+body.legacy-embedded #zahl-des-tages .zdt-task,
+body.legacy-embedded #zahl-des-tages .zdt-example,
+body.legacy-embedded #zahl-des-tages .zdt-example-card{background:#fffdf7!important;color:#4f3a27!important;border-color:#ddcfb5!important}
+body.legacy-embedded #zahl-des-tages .zdt-number{color:#35593d!important;background:#e8f0df!important;border-color:#81957b!important}
+
+/* v2.8: the parent Safari view already supplies the back button and place heading. */
+body.legacy-embedded > .safari-exit-bar{display:none!important}
+body.legacy-embedded .site-header{display:none!important}
+body.legacy-embedded .shell{padding-top:10px!important}

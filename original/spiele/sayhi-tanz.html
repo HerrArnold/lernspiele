@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7efd9"><title>SayHi: Tanz – LernSafari</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;--paper:#fffdf7;--paper-2:#fff7ea;--line:#ddcfb5;--pink:#d8778f;--ink:#4f3a27;--muted:#6f614f;--green:#567f54;--green-dark:#35593d;--shadow:0 14px 34px rgba(106,78,41,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 5% 0%,#f6e5bf 0%,transparent 40%),radial-gradient(circle at 95% 80%,#dce9d4 0%,transparent 42%),linear-gradient(180deg,#faf4e7,#f7efd9);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 5% 0%,#f38aa914 0%,transparent 45%),radial-gradient(circle at 95% 80%,#7da99410 0%,transparent 42%)}
+button{font:inherit;cursor:pointer}.shell{position:relative;max-width:1440px;margin:0 auto;padding:20px clamp(14px,3vw,40px) 40px}.heading{margin:12px 0 20px}.kicker{color:var(--pink);font-weight:900;letter-spacing:.06em;font-size:13px;text-transform:uppercase;margin-bottom:7px}h1{font-size:clamp(29px,3.8vw,46px);letter-spacing:-.035em;margin:0 0 8px;line-height:1.1;color:var(--green-dark)}.heading p{font-size:clamp(16px,1.5vw,20px);color:var(--muted);line-height:1.5;margin:0;max-width:950px}.practice-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(350px,1fr);gap:19px;align-items:start}.panel{background:var(--paper);border:2px solid var(--line);border-radius:22px;padding:19px;min-width:0;box-shadow:var(--shadow)}.panel h2{color:var(--green-dark);font-size:clamp(18px,1.8vw,23px);margin:0 0 14px;display:flex;gap:10px;align-items:center}.panel h2 span{color:var(--pink)}.hint{margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.5}.video-shell{position:relative;width:100%;aspect-ratio:16/9;background:#efe6d5;border-radius:16px;overflow:hidden;box-shadow:inset 0 0 0 1px #d5c8b2}.video-shell iframe{display:block;position:absolute;inset:0;width:100%;height:100%;border:0}.video-done{position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,248,234,.96),rgba(247,239,217,.96));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;text-align:center;padding:20px;z-index:5;color:var(--ink)}.video-done[hidden]{display:none!important}.video-done strong{font-size:clamp(20px,3vw,31px);color:var(--green-dark)}.replay{border:0;background:linear-gradient(180deg,#e28aa0,#d8778f);color:#fff;font-size:18px;font-weight:900;border-radius:14px;padding:14px 25px}.replay:focus-visible{outline:3px solid #35593d;outline-offset:3px}.lyrics{background:var(--paper-2);border:2px solid var(--line);border-radius:15px;padding:clamp(18px,2vw,26px);color:var(--ink);font-size:clamp(16px,1.55vw,19px);line-height:1.8;max-height:min(72vh,780px);overflow-y:auto;scrollbar-color:#cba2b1 #fff7ea}.lyrics p{margin:0 0 21px}.lyrics .refrain{font-weight:850;color:var(--green-dark);border-left:4px solid #e1a2b7;padding-left:15px}.lyrics .intro{font-weight:750;color:#8f5b70}.lyrics .small-note{font-weight:750;color:#8f5b70}.activity{max-width:1150px}.activity .video-shell{max-height:72vh}.notice{margin-top:18px;border:2px solid var(--line);border-radius:13px;padding:13px 16px;color:var(--muted);font-size:13px;line-height:1.55;background:var(--paper)}@media(max-width:950px){.practice-grid{grid-template-columns:1fr}.lyrics{max-height:none}.panel{padding:14px}}@media(max-width:520px){.shell{padding:12px 10px 30px}.heading{margin:12px 2px 17px}.panel{border-radius:16px}.lyrics{font-size:17px}}
+</style><link rel="stylesheet" href="../assets/game-theme.css"><link rel="stylesheet" href="../assets/lernsteuerung.css?v=1"><script defer src="../assets/lernsteuerung.js?v=1"></script><script defer src="../assets/lernhelfer.js?v=1"></script><link rel="stylesheet" href="../assets/new-safari-skin.css"></head>
+<body><div class="safari-exit-bar"><span>LernSafari</span><a href="../index.html#aktuelle">✕ Spiel beenden</a></div>
+<main class="shell"><header class="heading"><div class="kicker">Musik · SayHi</div><h1>SayHi: Tanz</h1><p>Hier kannst du den Tanz vom SayHi-Song üben. Starte das Video und wiederhole Schritte, die du noch lernen möchtest. Viel Spass beim Tanzen!</p></header><section class="panel activity"><h2><span>▶</span> Tanzvideo</h2><div class="video-shell" aria-label="SayHi-Video">
+      <iframe id="sayhi-video" title="SayHi: Tanz – eingebettetes Übungsvideo" src="https://www.youtube-nocookie.com/embed/s5K5WTfpB_A?enablejsapi=1&amp;controls=1&amp;rel=0&amp;playsinline=1&amp;hl=de" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div class="video-done" id="sayhi-ended" hidden><strong>Super gemacht!</strong><span>Willst du noch einmal üben?</span><button class="replay" id="sayhi-replay" type="button">↻ Video noch einmal</button></div>
+    </div><p class="hint">Du kannst das Video anhalten, zurückspulen und dieselben Schritte noch einmal üben.</p></section>
+<p class="notice">Das Video wird von YouTube eingebettet. Wenn das Video auf diesem Gerät nicht abgespielt werden kann, kann die Schule die YouTube-Freigabe prüfen. Werbung und Verweise innerhalb des YouTube-Players können technisch nicht vollständig ausgeschaltet werden.</p>
+</main>
+<script>
+'use strict';
+(()=>{
+  const frame=document.getElementById('sayhi-video');
+  const end=document.getElementById('sayhi-ended');
+  const replay=document.getElementById('sayhi-replay');
+  let player=null;
+  function again(){end.hidden=true; if(player&&typeof player.seekTo==='function'){try{player.seekTo(0,true);player.playVideo();return;}catch(e){}}
+    // Fallback: ausschließlich dasselbe Video neu laden.
+    frame.src=frame.src.split('#')[0];
+  }
+  replay.addEventListener('click',again);
+  // Ein iframe alleine funktioniert auch, wenn die YouTube-API nicht geladen werden kann.
+  const api=document.createElement('script');
+  api.src='https://www.youtube.com/iframe_api';api.async=true;
+  window.onYouTubeIframeAPIReady=()=>{
+    try{player=new YT.Player(frame,{events:{onStateChange:e=>{
+      if(e.data===YT.PlayerState.ENDED){end.hidden=false;}
+      else if(e.data===YT.PlayerState.PLAYING){end.hidden=true;}
+    }}})}catch(e){player=null;}
+  };
+  document.head.append(api);
+})();
+</script>
+<script src="../assets/new-safari-bridge.js"></script></body></html>

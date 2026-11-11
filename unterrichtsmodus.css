@@ -1,0 +1,22 @@
+/* Classroom focus UI: visual guidance, not an authentication/security boundary. */
+.cloud-focus-locked{position:relative!important;filter:grayscale(.55);opacity:.46;cursor:not-allowed!important}
+.map-hotspot.cloud-focus-locked::after,
+.lagoon-hotspot.cloud-focus-locked::after{
+ content:'🔒';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ background:#fff9ed;border:2px solid #9b6a51;border-radius:14px;
+ padding:7px 11px;font-size:22px;box-shadow:0 3px 9px #33281544;
+ pointer-events:none;
+}
+.map-mobile-place.cloud-focus-locked,
+.lagoon-mobile-links [data-lagoon-subject].cloud-focus-locked{
+ border:2px dashed #9b6a51!important;opacity:.62;
+}
+.map-mobile-place.cloud-focus-locked::before,
+.lagoon-mobile-links [data-lagoon-subject].cloud-focus-locked::before{content:'🔒 '}
+@media(prefers-reduced-motion:reduce){.cloud-focus-locked{transition:none!important}}
+
+/* Pause an already opened game when newly assigned duties activate. */
+.cloud-focus-interrupted{margin:12px auto;max-width:650px;padding:26px 20px;text-align:center;background:#fff9e9;color:#4a392b;border:2px solid #c49a6a;border-radius:18px;box-shadow:0 6px 18px #503c2320}
+.cloud-focus-interrupted h3{font-size:clamp(19px,2.4vw,27px);color:#685037;margin:0 0 12px}
+.cloud-focus-interrupted p{line-height:1.6;margin-bottom:18px}
+.cloud-focus-interrupted .pd-action{min-height:44px}

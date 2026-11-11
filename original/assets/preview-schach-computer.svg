@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<rect width="640" height="360" fill="#F3FBF8"/>
+<circle cx="80" cy="60" r="90" fill="#f8ead0"/><circle cx="560" cy="300" r="100" fill="#e8f0de"/>
+<rect x="18" y="18" width="604" height="324" rx="30" fill="#F3FBF8" stroke="#e0d0b2" stroke-width="4"/>
+<rect x="34" y="30" width="572" height="64" rx="22" fill="#637D59"/>
+<text x="52" y="68" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#fff8ec">OASE</text>
+<text x="48" y="158" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#4f3a27">Schach gegen den Computer</text>
+<text x="48" y="190" font-family="Arial, sans-serif" font-size="18" fill="#6f614f">Eine echte Partie spielen</text>
+<circle cx="500" cy="192" r="90" fill="#fffdf7" stroke="#8EC6B0" stroke-width="5"/>
+<rect x="34" y="274" width="572" height="48" rx="12" fill="#fffaf0" stroke="#e6d4b9" stroke-width="2"/>
+<text x="132" y="295" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#637D59">LernSafari</text>
+<text x="132" y="314" font-family="Arial, sans-serif" font-size="15" fill="#7f6f58">spielerisch entdecken</text>
+<circle cx="563" cy="297" r="23" fill="#8EC6B0"/>
+<text x="551" y="305" font-family="Arial, sans-serif" font-size="18" fill="#fff">LS</text>
+</svg>

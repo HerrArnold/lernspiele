@@ -1,0 +1,139 @@
+
+/* LernSafari – tighter visual integration of preserved original content */
+.original-collection,.original-lagoon,.original-baobab,.original-place,.original-integration{max-width:1240px;margin:auto}
+.integration-shell{display:grid;gap:18px}
+.integration-trail{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:#81664a;font-size:13px;font-weight:800}
+.integration-pill{display:inline-flex;align-items:center;gap:6px;background:#fff7e6;border:1px solid #dcc5a0;border-radius:999px;padding:7px 12px;box-shadow:0 2px 5px rgba(95,67,35,.06)}
+.integration-pill.is-current{background:#ecf4e6;border-color:#9fba93;color:#35593d}
+.integration-chevron{opacity:.45}
+.integration-top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.integration-back{border:2px solid #d6b684;border-radius:15px;background:#fff8ea;padding:10px 16px;color:#593e27;font-weight:850;cursor:pointer;box-shadow:0 4px 10px rgba(95,67,35,.08);transition:transform .15s,box-shadow .15s,border-color .15s}
+.integration-back:hover{transform:translateY(-1px);border-color:#7ca476;box-shadow:0 8px 18px rgba(66,110,50,.14)}
+.integration-heading{margin:0 auto;text-align:center;max-width:760px}
+.integration-kicker{color:#53805a;font-weight:900;letter-spacing:.03em;text-transform:uppercase;font-size:13px}
+.integration-heading h2,.integration-hero-text h2{font-size:clamp(28px,4.7vw,44px);color:#674328;margin:6px 0 10px;line-height:1.1}
+.integration-heading p,.integration-hero-text p{line-height:1.58;color:#6d583b;margin:0}
+.integration-hero{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:linear-gradient(180deg,#fffaf1,#fff4de);border:2px solid #e2c99e;border-radius:28px;padding:22px 24px;box-shadow:0 12px 24px rgba(101,70,38,.08)}
+.integration-hero-text{display:grid;gap:6px}
+.integration-icon{width:84px;height:84px;border-radius:24px;display:grid;place-items:center;font-size:42px;background:radial-gradient(circle at 30% 30%,#fffef9,#f0debc 75%);border:2px solid #dfc396;box-shadow:inset 0 1px 0 #fff, 0 8px 16px rgba(101,70,38,.09)}
+.integration-side-note{justify-self:end;align-self:start;background:#fffdf7;border:1px solid #dec9a8;border-radius:18px;padding:12px 14px;max-width:280px;color:#6d583b;font-size:13px;line-height:1.5;box-shadow:0 4px 10px rgba(95,67,35,.06)}
+.integration-side-note strong{display:block;color:#35593d;margin-bottom:2px}
+.integration-context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.integration-context-card{background:#fffdf8;border:2px solid #e5d3b5;border-radius:20px;padding:15px 16px;box-shadow:0 5px 12px rgba(95,67,35,.05);min-width:0}
+.integration-context-card strong{display:block;color:#35593d;font-size:15px;margin-bottom:5px}
+.integration-context-card p{margin:0;color:#6d583b;font-size:14px;line-height:1.5}
+.integration-scene-card{background:#fffdf8;border:2px solid #e5d3b5;border-radius:24px;padding:14px;box-shadow:0 8px 18px rgba(95,67,35,.06)}
+.integration-lagoon-scene,.integration-baobab-scene{position:relative;overflow:hidden;border-radius:20px;border:3px solid #d2ab79;background:#f4e8cf}
+.integration-lagoon-scene img,.integration-baobab-scene img{display:block;width:100%;height:auto;pointer-events:none}
+.integration-stone{position:absolute;background:transparent;border:3px solid transparent;border-radius:18px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .15s}
+.integration-stone:hover,.integration-stone:focus-visible{border-color:#fff9e7;box-shadow:0 0 0 3px #53855b99;background:#ffffff26;transform:translateY(-1px)}
+.integration-stone-math{left:8%;top:39%;width:23%;height:25%}.integration-stone-german{left:35%;top:45%;width:22%;height:26%}.integration-stone-nmg{left:64%;top:37%;width:28%;height:28%}.integration-stone-music{left:10%;top:68%;width:29%;height:25%}.integration-stone-english{left:55%;top:66%;width:31%;height:27%}
+.integration-subjects,.integration-choice-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0}
+.integration-subjects button,.integration-choice-grid button{padding:12px 18px;border:2px solid #d8ba8b;border-radius:18px;background:#fff5df;color:#62452c;font-weight:850;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+.integration-subjects button:hover,.integration-choice-grid button:hover{background:#e2efcf;border-color:#7ca476;transform:translateY(-1px)}
+.integration-game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.integration-game-card{position:relative;border:2px solid #d7b888;border-radius:22px;background:#fff9ec;padding:0 0 14px;text-align:left;overflow:hidden;cursor:pointer;box-shadow:0 7px 14px rgba(110,73,49,.11);display:flex;flex-direction:column;color:#563d28;transition:transform .18s,box-shadow .18s,border-color .18s}
+.integration-game-card:hover{transform:translateY(-2px);border-color:#7ca476;box-shadow:0 12px 22px rgba(66,110,50,.16)}
+.integration-game-card:focus-visible{outline:3px solid #45816c;outline-offset:3px}
+.integration-game-card img{width:100%;height:150px;object-fit:cover;background:#f2e5cb}
+.integration-game-caption{padding:13px 16px 0;display:grid;gap:6px}
+.integration-game-caption strong{font-size:17px;line-height:1.25}.integration-game-caption small{font-size:13px;line-height:1.45;color:#775e45}
+.integration-arrow{position:absolute;right:12px;bottom:8px;font-size:26px;color:#558359}.integration-game-fallback{font-size:60px;text-align:center;padding:35px}
+.integration-note{color:#76614b;font-size:13px;margin:0;line-height:1.55}
+.integration-frame-card{background:linear-gradient(180deg,#fffdf8,#fff8eb);border:2px solid #e2c99e;border-radius:24px;padding:14px;box-shadow:0 10px 22px rgba(101,70,38,.08);display:grid;gap:12px}
+.integration-frame-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#f6edd8;border:1px solid #e0cda7;border-radius:18px;padding:10px 14px;color:#6b573d;font-size:13px;font-weight:700}
+.integration-frame-toolbar strong{color:#35593d}
+.integration-frame-wrap{background:#fffefb;border:2px solid #ead9bb;border-radius:18px;padding:10px;box-shadow:inset 0 1px 0 #fff}
+.original-frame{display:block;width:100%;height:min(72vh,850px);min-height:540px;border:0;border-radius:12px;background:#fffaf0}
+.original-frame.original-daily{height:min(78vh,1100px);min-height:650px}
+.integration-mission{display:grid;grid-template-columns:1.3fr .9fr;gap:14px;align-items:start}
+.integration-tip-box{background:#eef5e8;border:2px solid #bdd1b5;border-radius:18px;padding:14px 16px;color:#436043;line-height:1.55;font-size:14px}
+.integration-tip-box strong{display:block;color:#35593d;margin-bottom:4px}
+.integration-daily-hero{height:220px;border-radius:18px;overflow:hidden;border:2px solid #e5d3b5;box-shadow:0 8px 18px rgba(95,67,35,.06)}
+.integration-daily-hero img{width:100%;height:100%;object-fit:cover}
+.integration-launch{text-align:center}.integration-launch-button{background:#4b8559;color:white;border:0;border-radius:15px;padding:13px 20px;font-weight:800}.integration-launch p{color:#76614b}
+.original-baobab .integration-baobab-scene{max-height:580px}.original-baobab .integration-baobab-scene img{max-height:580px;object-fit:cover}
+.is-lagoon .destination-panel,.is-baobab .destination-panel,.is-valley .destination-panel{max-width:1280px;width:100%}
+@media(max-width:960px){.integration-context-grid,.integration-mission{grid-template-columns:1fr}.integration-side-note{justify-self:stretch;max-width:none}.integration-hero{grid-template-columns:auto 1fr}.original-frame{min-height:500px}}
+@media(max-width:650px){.integration-game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.integration-game-card img{height:100px}.integration-game-caption{padding:8px}.integration-game-caption strong{font-size:13px}.integration-game-caption small{font-size:11px}.original-frame{height:75vh;min-height:490px}.integration-heading h2,.integration-hero-text h2{font-size:26px}.integration-hero{padding:16px;grid-template-columns:1fr}.integration-icon{width:68px;height:68px;font-size:34px}.integration-frame-card{padding:10px}.integration-frame-wrap{padding:6px}}
+
+
+/* v2.7 · tighter safari-native integration */
+.integration-shell{gap:20px}
+.integration-area-lagoon,.integration-area-valley,.integration-area-baobab,.integration-area-oasis{position:relative}
+.integration-area-lagoon:before,.integration-area-valley:before,.integration-area-baobab:before,.integration-area-oasis:before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.22;background-repeat:no-repeat;background-size:160px 160px,180px 180px;background-position:right -35px top -30px,left -55px bottom -45px}
+.integration-area-lagoon:before{background-image:radial-gradient(circle at 50% 50%,#b8dfdb 0,#b8dfdb 42%,transparent 44%),radial-gradient(circle at 50% 50%,#dcefd1 0,#dcefd1 42%,transparent 44%)}
+.integration-area-valley:before{background-image:radial-gradient(circle at 50% 50%,#f5df9f 0,#f5df9f 42%,transparent 44%),radial-gradient(circle at 50% 50%,#d8e8c1 0,#d8e8c1 42%,transparent 44%)}
+.integration-area-baobab:before{background-image:radial-gradient(circle at 50% 50%,#e2d39e 0,#e2d39e 42%,transparent 44%),radial-gradient(circle at 50% 50%,#cfe1b7 0,#cfe1b7 42%,transparent 44%)}
+.integration-area-oasis:before{background-image:radial-gradient(circle at 50% 50%,#c6e4db 0,#c6e4db 42%,transparent 44%),radial-gradient(circle at 50% 50%,#efe2b4 0,#efe2b4 42%,transparent 44%)}
+.integration-top,.integration-hero,.integration-context-grid,.integration-scene-card,.integration-game-grid,.integration-frame-card{position:relative;z-index:1}
+.integration-top{padding:0 2px}
+.integration-trail{font-size:12.5px}
+.integration-pill{padding:8px 13px;font-weight:850}
+.integration-hero{gap:20px;grid-template-columns:auto minmax(0,1fr) minmax(230px,280px);padding:24px 26px;border-radius:30px}
+.integration-hero-text{min-width:0}
+.integration-hero-text h2{font-size:clamp(30px,4.6vw,46px)}
+.integration-hero-text p{font-size:15px}
+.integration-side-note{align-self:stretch;display:flex;flex-direction:column;justify-content:center;border:2px solid #dec9a8;background:linear-gradient(180deg,#fffdf8,#fff6e6)}
+.integration-context-grid{gap:16px}
+.integration-context-card{border-radius:22px;padding:16px 17px;min-height:112px}
+.integration-context-card strong{font-size:16px}
+.integration-context-card p{font-size:14px}
+.integration-subjects button,.integration-choice-grid button,.integration-back,.integration-launch-button{font-size:15px;line-height:1.2;min-height:46px}
+.integration-game-grid{gap:20px}
+.integration-game-card{border-radius:24px}
+.integration-game-card img{height:156px}
+.integration-game-caption{padding:14px 16px 4px}
+.integration-game-caption strong{font-size:17px}
+.integration-frame-card{padding:15px;border-radius:26px;gap:14px}
+.integration-frame-toolbar{padding:12px 15px;font-size:13px;border-radius:18px}
+.integration-frame-wrap{padding:12px;border-radius:20px}
+.integration-tip-box{border-radius:20px;padding:16px 18px;align-self:start;position:sticky;top:16px}
+.integration-note{font-size:13px}
+.original-frame{border-radius:14px}
+.integration-icon{position:relative;overflow:hidden}
+.integration-icon:after{content:'';position:absolute;inset:auto -8px -14px auto;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.45);filter:blur(2px)}
+.integration-area-lagoon .integration-icon{background:radial-gradient(circle at 30% 30%,#fcfffe,#caece6 75%);border-color:#9ecfc5}
+.integration-area-valley .integration-icon{background:radial-gradient(circle at 30% 30%,#fffdf8,#efe0b5 75%);border-color:#dfc589}
+.integration-area-baobab .integration-icon{background:radial-gradient(circle at 30% 30%,#fffdf5,#e8d4a6 75%);border-color:#d3b378}
+.integration-area-oasis .integration-icon{background:radial-gradient(circle at 30% 30%,#fffef8,#d2ece4 75%);border-color:#a8d0c5}
+.integration-area-lagoon .integration-kicker{color:#397d75}
+.integration-area-valley .integration-kicker{color:#9a6b2d}
+.integration-area-baobab .integration-kicker{color:#7b5b2a}
+.integration-area-oasis .integration-kicker{color:#3f7e65}
+.integration-game-card::after{content:'';position:absolute;left:14px;right:14px;top:calc(150px + 8px);height:1px;background:linear-gradient(90deg,transparent,#e8d5b4,transparent)}
+.integration-game-card img + .integration-game-caption{padding-top:18px}
+.integration-scene-card{padding:16px;border-radius:26px}
+.integration-subject-page .integration-context-card,.integration-oasis-page .integration-context-card,.integration-baobab-page .integration-context-card{background:linear-gradient(180deg,#fffdf8,#fff8eb)}
+@media(max-width:1020px){.integration-hero{grid-template-columns:auto 1fr}.integration-side-note{grid-column:1/-1}.integration-mission{grid-template-columns:1fr}.integration-tip-box{position:static}}
+@media(max-width:650px){.integration-shell{gap:16px}.integration-hero{padding:16px 16px 18px;border-radius:22px}.integration-game-card::after{top:calc(100px + 6px)}.integration-context-card{min-height:0}.integration-frame-toolbar{font-size:12px;padding:10px 12px}.integration-subjects button,.integration-choice-grid button,.integration-back,.integration-launch-button{font-size:14px}}
+
+/* v2.8 – Feinschliff Lern-Lagune, Tages-Tal, Baobab und Oase */
+.destination-screen:has(.original-integration) .dest-hero,.destination-screen:has(.original-collection) .dest-hero,.destination-screen:has(.original-lagoon) .dest-hero,.destination-screen:has(.original-baobab) .dest-hero{display:none!important}
+.destination-screen:has(.original-integration) .destination-panel,.destination-screen:has(.original-collection) .destination-panel,.destination-screen:has(.original-lagoon) .destination-panel,.destination-screen:has(.original-baobab) .destination-panel{width:100%;max-width:1380px;padding:18px 23px;border-width:3px}
+.integration-shell{gap:15px}
+.integration-context-grid,.integration-side-note,.integration-tip-box{display:none!important}
+.integration-hero{grid-template-columns:auto minmax(0,1fr);gap:14px;padding:17px 20px;border-radius:22px}
+.integration-icon{width:60px;height:60px;font-size:32px;border-radius:18px}
+.integration-hero-text h2{font-size:clamp(25px,3.2vw,37px);margin:3px 0 5px}
+.integration-hero-text p{font-size:15px}
+.integration-pill{padding:5px 11px;font-size:12px;box-shadow:none}
+.integration-game-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.integration-game-card{min-height:235px;border-radius:19px}
+.integration-game-card img{height:145px}
+.integration-game-caption{padding:10px 14px 0}
+.integration-game-caption strong{font-size:16px}
+.integration-game-card img+.integration-game-caption{padding-top:10px}
+.integration-game-card::after{display:none}
+.integration-scene-card{padding:8px;border-radius:19px}
+.integration-lagoon-scene,.integration-baobab-scene{border-radius:14px}
+.integration-subjects button,.integration-choice-grid button{border-radius:14px;padding:10px 15px}
+.integration-play-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px}
+.integration-play-title{display:flex;align-items:center;gap:12px;min-width:0}
+.integration-play-title h2{margin:3px 0 0;line-height:1.15;color:#35593d;font-size:clamp(21px,2.8vw,30px)}
+.integration-play-emoji{display:grid;place-items:center;width:50px;height:50px;flex:none;border-radius:15px;background:#eaf1df;border:2px solid #b9cea8;font-size:27px}
+.integration-game-surface{border:2px solid #dfcaa6;background:#fffdf8;border-radius:19px;padding:8px;box-shadow:0 7px 20px rgba(104,75,37,.09)}
+.original-frame{display:block;width:100%;height:clamp(650px,82vh,1080px);min-height:650px;border:0;border-radius:12px;background:#fffdf8}
+.original-frame.original-daily{height:clamp(720px,86vh,1120px);min-height:720px}
+.destination-screen:has(.original-integration) .destination-actions{margin-top:14px;padding-top:10px}
+@media(max-width:700px){.destination-screen:has(.original-integration) .destination-panel,.destination-screen:has(.original-collection) .destination-panel,.destination-screen:has(.original-lagoon) .destination-panel,.destination-screen:has(.original-baobab) .destination-panel{padding:12px;border-width:2px}.integration-play-title{width:100%}.integration-play-title h2{font-size:22px}.integration-play-emoji{width:42px;height:42px;font-size:23px}.integration-game-surface{padding:4px;border-radius:14px}.original-frame{min-height:580px;height:78vh}.original-frame.original-daily{min-height:620px;height:80vh}.integration-game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.integration-game-card{min-height:195px}.integration-game-card img{height:100px}}

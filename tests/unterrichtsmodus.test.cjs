@@ -1,0 +1,58 @@
+const assert=require('node:assert/strict');
+const {makeState}=require('../unterrichtsmodus.js');
+const catalog={Mathe:[{file:'einmaleins-dreier.html',title:'3er'}],Musik:[{file:'rhythmus-trio.html',title:'Rhythmus'}],Allgemein:[{file:'schach-computer.html',title:'Schach'}]};
+const plan={blocks:['andere-spiele','schach','tiere'],assignments:[
+{id:1,kind:'pflicht',target:'game:einmaleins-dreier'},
+{id:2,kind:'pflicht',target:'number:word'},
+{id:3,kind:'zusatz',target:'game:rhythmus-trio'}],done:[]};
+const restricted=makeState(plan,catalog);
+assert.equal(restricted.restricted,true);
+assert.equal(restricted.pending.length,2);
+assert.equal(restricted.allowDestination('lagoon'),true);
+assert.equal(restricted.allowDestination('valley'),true);
+assert.equal(restricted.allowDestination('oasis'),false);
+assert.equal(restricted.allowDestination('baobab'),false);
+assert.equal(restricted.allowDestination('camp'),true);
+assert.equal(restricted.allowSubject('math'),true);
+assert.equal(restricted.allowSubject('music'),true,'assigned extra may be visited from to-do');
+assert.equal(restricted.allowSubject('nmg'),false);
+assert.equal(restricted.allowGame('einmaleins-dreier'),true);
+assert.equal(restricted.allowGame('schach-computer'),false);
+assert.equal(restricted.allowTarget('number:word'),true);
+assert.equal(restricted.allowTarget('number:line'),false);
+assert.equal(makeState({...plan,done:[1]},catalog).restricted,true);
+assert.equal(makeState({...plan,done:[1,2]},catalog).restricted,false,'old completed tasks remain done');
+assert.equal(makeState({...plan,done:[1,2],assignments:[...plan.assignments,{id:4,kind:'pflicht',target:'game:rhythmus-trio'}]},catalog).restricted,true,'new assignment re-locks');
+assert.equal(makeState({...plan,blocks:[]},catalog).restricted,false,'no focus mode means no lock');
+assert.equal(makeState({blocks:['andere-spiele'],assignments:[],done:[]},catalog).restricted,false,'legacy focus without tasks cannot establish a to-do duty');
+
+const subjectMode={kind:'subject',subject:'Mathe',required_assignment_ids:[1],require_verified:true,expires_at:'2026-11-12T20:00:00Z'};
+const preparedPlan={...plan,classroomMode:subjectMode,done:[1],verified:[]};
+const beforeApproval=require('../unterrichtsmodus.js').classroomState(preparedPlan,catalog,new Date('2026-11-11T10:00:00Z'));
+assert.equal(beforeApproval.restricted,true,'A child checkmark is not verified mastery');
+assert.equal(beforeApproval.allowGame('einmaleins-dreier'),true);
+assert.equal(beforeApproval.allowGame('rhythmus-trio'),false,'extra outside current subject is blocked');
+assert.equal(beforeApproval.allowDestination('valley'),false,'daily tasks are not in active subject duty');
+assert.equal(beforeApproval.allowDestination('lagoon'),true);
+const approved=require('../unterrichtsmodus.js').classroomState({...preparedPlan,verified:[1]},catalog,new Date('2026-11-11T10:00:00Z'));
+assert.equal(approved.restricted,false,'Teacher or verified achievement unlocks after required task');
+const newDuty=require('../unterrichtsmodus.js').classroomState({...preparedPlan,verified:[1],classroomMode:{...subjectMode,required_assignment_ids:[1,4]},assignments:[...plan.assignments,{id:4,kind:'pflicht',target:'game:rhythmus-trio'}]},catalog,new Date('2026-11-11T10:00:00Z'));
+assert.equal(newDuty.restricted,true,'Additional required task re-locks even after earlier work approved');
+assert.equal(newDuty.allowGame('rhythmus-trio'),true,'New required target remains accessible');
+const arrival=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'arrival',required_assignment_ids:[2]},verified:[]},catalog);
+assert.equal(arrival.allowDestination('valley'),true);
+assert.equal(arrival.allowDestination('lagoon'),false);
+const closed=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'closed',required_assignment_ids:[1]}},catalog);
+assert.equal(closed.allowDestination('lagoon'),false);
+assert.equal(closed.allowGame('einmaleins-dreier'),false);
+assert.equal(closed.allowDestination('camp'),true);
+const free=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'free',required_assignment_ids:[1]}},catalog);
+assert.equal(free.restricted,false);
+const expired=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'subject',required_assignment_ids:[1],expires_at:'2026-11-10T10:00:00Z'}},catalog,new Date('2026-11-11T10:00:00Z'));
+assert.equal(expired.restricted,false,'Expired classroom modes cannot lock pupils indefinitely');
+const unknownDuty=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'subject',required_assignment_ids:[999]},verified:[999]},catalog);
+assert.equal(unknownDuty.restricted,true,'Missing assignment must not accidentally unlock');
+const unsetDuty=require('../unterrichtsmodus.js').classroomState({...plan,classroomMode:{kind:'arrival',required_assignment_ids:[]}},catalog);
+assert.equal(unsetDuty.restricted,true,'An active class mode with no tasks is not automatically free');
+
+console.log('PASS: LernSafari focus compatibility checks');
