@@ -1,0 +1,44 @@
+name: Publish LernSafari to lernspiele
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-lernsafari.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target website
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Checkout current working LernSafari without blocking access overlay
+        uses: actions/checkout@v4
+        with:
+          repository: HerrArnold/Lernspiele2
+          ref: 25290618a8d72648985c911d4c602c44a54bdd68
+          path: _lernsafari_source
+
+      - name: Copy complete website including images and learning games
+        run: |
+          rsync -a _lernsafari_source/lernsafari-test/ ./
+          rm -rf _lernsafari_source
+          test -f index.html
+          test -f original/assets/new-safari-bridge.js
+          ! grep -q 'game-zugang.js' original/assets/new-safari-bridge.js
+
+      - name: Commit and push updated main website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish current LernSafari camp and games without access shield"
+            git push origin HEAD:main
+          fi
