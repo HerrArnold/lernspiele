@@ -1,4 +1,4 @@
-name: Publish LernSafari to lernspiele
+name: Publish current LernSafari2 to lernspiele
 on:
   push:
     branches: [main]
@@ -9,36 +9,45 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: publish-lernsafari-main
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target website
+      - name: Checkout main website
         uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Checkout current working LernSafari without blocking access overlay
+      - name: Checkout current Lernspiele2 main
         uses: actions/checkout@v4
         with:
           repository: HerrArnold/Lernspiele2
-          ref: 25290618a8d72648985c911d4c602c44a54bdd68
+          ref: main
           path: _lernsafari_source
 
-      - name: Copy complete website including images and learning games
+      - name: Copy complete current website including images and games
         run: |
-          rsync -a _lernsafari_source/lernsafari-test/ ./
+          test -f _lernsafari_source/index.html
+          test -f _lernsafari_source/original/assets/login-config.js
+          test -d _lernsafari_source/spiele
+          test -d _lernsafari_source/assets
+          rsync -a --exclude='.git/' --exclude='.github/' --exclude='_lernsafari_source/' _lernsafari_source/ ./
           rm -rf _lernsafari_source
           test -f index.html
-          test -f original/assets/new-safari-bridge.js
-          ! grep -q 'game-zugang.js' original/assets/new-safari-bridge.js
+          test -f cloudflare-integration.js
+          test -f unterrichtsmodus-admin.js
+          grep -q 'lernsafari-api.ergohd02.workers.dev' original/assets/login-config.js
 
-      - name: Commit and push updated main website
+      - name: Commit and publish synced main website
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "Publish current LernSafari camp and games without access shield"
+            git commit -m "Sync current Lernspiele2 main to Lernspiele"
             git push origin HEAD:main
           fi
