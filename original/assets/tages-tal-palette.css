@@ -1,0 +1,50 @@
+/* Oranges Tages-Tal: the entire embedded Zahl des Tages stays readable. */
+#view-aufgaben{
+ --valley-blue:#cc6d22;--valley-deep:#83400d;
+ --valley-paper:#fffbf4;--valley-border:#e4bc8e;
+ color:#213c4d!important;
+}
+#view-aufgaben .today-panel,#view-aufgaben .today-example,
+#view-aufgaben .zdt-shell,#view-aufgaben .zdt-task,
+#view-aufgaben .zdt-example,#view-aufgaben .zdt-example-card,
+#view-aufgaben .zdt-place,#view-aufgaben .zdt-line-wrap{
+ background:#fffbf3!important;border-color:#e9c89b!important;
+ color:#253e4c!important;
+}
+#view-aufgaben :is(h1,h2,h3,h4),
+#view-aufgaben .today-label,#view-aufgaben .zdt-header{
+ color:var(--valley-deep)!important;-webkit-text-fill-color:var(--valley-deep)!important;
+}
+#view-aufgaben .zdt-check,#view-aufgaben .zdt-reset,
+#view-aufgaben button.primary,#view-aufgaben .today-panel .primary{
+ background:#aa5314!important;color:#fff!important;
+ -webkit-text-fill-color:#fff!important;border-color:#783a0d!important;
+}
+#view-aufgaben .zdt-check:hover,#view-aufgaben .zdt-reset:hover{
+ background:#89410f!important;
+}
+#view-aufgaben .zdt-number{
+ background:#fff0d9!important;border:3px solid #cb8b48!important;
+ color:#7e4015!important;-webkit-text-fill-color:#7e4015!important;
+ box-shadow:0 4px 14px #7a4c2728!important;
+}
+#view-aufgaben .zdt-progress>span{background:#cd791b!important}
+#view-aufgaben .zdt-input,#view-aufgaben .zdt-decomp input,
+#view-aufgaben .zdt-counters input{
+ background:#fff!important;color:#253c50!important;
+ -webkit-text-fill-color:#253c50!important;border-color:#d5a372!important;
+}
+#view-aufgaben input::placeholder{color:#766251!important;opacity:1!important}
+#view-aufgaben .zdt-example-dots .zdt-example-dot,
+#view-aufgaben .zdt-dots .zdt-dot{
+ background:#e39a4d!important;box-shadow:0 0 0 1px #a85d26!important;
+}
+#view-aufgaben .zdt-place strong,#view-aufgaben .zdt-place-name{
+ color:#874615!important;-webkit-text-fill-color:#874615!important;
+}
+#view-aufgaben .zdt-choices button,#view-aufgaben .zdt-approx{
+ border-color:#d2a474!important;color:#7c3a15!important;-webkit-text-fill-color:#7c3a15!important;
+}
+#view-aufgaben :is(input,button,select):focus-visible{
+ outline:3px solid #a34b12!important;outline-offset:2px;
+}

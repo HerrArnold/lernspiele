@@ -305,3 +305,82 @@
 .place,.agenda-entry,.letter{border-radius:16px}
 .eyebrow{letter-spacing:1.7px}
 @media(max-width:700px){.destination-panel{padding:18px 16px 22px;border-radius:22px}.dest-hero{gap:12px;margin-bottom:18px}.dest-emoji{font-size:62px}.brand{font-size:19px}.topbar{padding:8px 12px;min-height:58px}}
+
+
+/* Laptoplayout v2: Camp gross, Karten passend zur Fensterhoehe.
+   Keine Veraenderung an der produktiven Webseite herrarnold/lernspiele. */
+@media (min-width:900px) and (min-height:550px) {
+  /* Das Camp soll wie zuvor die verfuegbare Breite und Hoehe ausnutzen. */
+  .camp-screen .scene {
+    width:min(100vw,calc((100dvh - 108px) * 1.7768));
+  }
+
+  /* Die Karte ist ein Panorama in einem kompakten Dialog.
+     Die komplette Illustration inkl. unterer Orte bleibt sichtbar. */
+  .modal-layer {padding:12px 10px}
+  .modal-kind-map {
+    width:min(97vw,calc((100dvh - 158px) * 1.5 + 36px));
+    max-height:calc(100dvh - 24px);
+  }
+  .modal-kind-map .modal-header {padding:7px 16px 5px}
+  .modal-kind-map .modal-header h2 {font-size:clamp(23px,2.6vw,30px)}
+  .modal-kind-map .modal-icon {font-size:26px}
+  .modal-kind-map .modal-body {padding:5px 8px 7px;overflow:visible}
+  .modal-kind-map .modal-footer {padding:5px 14px}
+  .modal-kind-map .map-intro {font-size:13px;margin:0 0 3px}
+  .modal-kind-map .map-footnote {margin:3px 0 0}
+  .modal-kind-map .map-scroll {
+    display:flex;justify-content:center;overflow:visible;
+  }
+  .modal-kind-map .safari-map {
+    min-width:0;flex:none;
+    width:min(100%,calc((100dvh - 166px) * 1.5));
+    aspect-ratio:3/2;
+  }
+
+  /* Weniger Rahmen um die grossen illustrierten Bereichskarten. */
+  .destination-screen.is-lagoon,
+  .destination-screen.is-baobab {padding:7px 9px 12px}
+  .is-lagoon .destination-panel,
+  .is-baobab .destination-panel {
+    width:min(1400px,100%);
+    padding:8px 12px 10px;
+  }
+  .is-lagoon .lagoon-scroller {display:flex;justify-content:center;overflow:visible}
+  .is-lagoon .lagoon-scene {
+    min-width:0;flex:none;
+    width:min(100%,calc((100dvh - 210px) * 1.5));
+    aspect-ratio:3/2;
+  }
+  .is-baobab .baobab-map {
+    width:min(100%,calc((100dvh - 175px) * 2.0024));
+    margin-inline:auto;
+  }
+}
+
+/* 2026-11: Compact, sign-free safari map: labels are actual buttons. */
+.modal-kind-map{width:min(1570px,99vw)!important;max-height:min(96dvh,920px)!important}
+.modal-kind-map .modal-header{padding:7px 16px}
+.modal-kind-map .modal-header h2{font-size:clamp(19px,2.2vw,27px)}
+.modal-kind-map .modal-body{padding:5px 12px!important;overflow-y:auto}
+.modal-kind-map .modal-footer{padding:5px 15px}
+.modal-kind-map .map-intro{margin:0 0 5px;text-align:center;font-size:clamp(13px,1.2vw,16px)}
+.modal-kind-map .map-scroll{width:100%;overflow:visible;max-height:min(79dvh,775px);display:flex;justify-content:center}
+.modal-kind-map .safari-map{width:min(100%,calc(79dvh * 16 / 9));min-width:0;aspect-ratio:16/9;border:3px solid #e0c69e;border-radius:16px;box-shadow:0 7px 20px #57432329}
+.modal-kind-map .safari-map>img{object-fit:cover}
+.modal-kind-map .map-hotspot{display:flex;align-items:center;justify-content:center;width:auto;height:auto;min-width:14%;padding:.55% 1.5%;border:3px solid #e9d59b;border-radius:999px;background:linear-gradient(150deg,#496b3a,#235d44);box-shadow:0 4px 0 #6f5030,0 6px 15px #342b2480;color:#fffceb;font-family:inherit;font-size:clamp(11px,1.55vw,25px);font-weight:900;line-height:1.1;text-align:center;white-space:nowrap;transform:translate(-50%,-50%);cursor:pointer}
+.modal-kind-map .map-hotspot>span{display:block}
+.modal-kind-map .map-hotspot:focus-visible,.modal-kind-map .map-hotspot:hover{background:linear-gradient(155deg,#c18a36,#8c612e);border-color:#fff8d5;box-shadow:0 0 0 4px #fff9c2b7,0 7px 16px #44291566}
+.modal-kind-map .map-hotspot-valley{left:24%;top:24%}
+.modal-kind-map .map-hotspot-lagoon{left:77%;top:24%}
+.modal-kind-map .map-hotspot-camp{left:50%;top:57%}
+.modal-kind-map .map-hotspot-baobab{left:22%;top:81%;min-width:21%}
+.modal-kind-map .map-hotspot-oasis{left:78%;top:80%}
+.modal-kind-map .map-mobile-links{display:none}
+@media(max-width:720px){
+ .modal-kind-map .map-scroll{overflow:visible;max-height:none}
+ .modal-kind-map .safari-map{min-width:0;width:100%}
+ .modal-kind-map .map-hotspot{font-size:clamp(9px,2vw,15px);border-width:2px;padding:1% 1.7%;min-width:0;white-space:normal}
+ .modal-kind-map .map-hotspot-baobab{min-width:21%}
+ .modal-kind-map .map-mobile-links{display:flex;justify-content:center}
+}

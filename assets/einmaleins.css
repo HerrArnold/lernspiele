@@ -3,3 +3,5 @@
 /* Auf den hellen Eingabefeldern muss die Schrift dunkel bleiben. */
 body:has(.safari-exit-bar) .calc-line input{background:#f7f8f7 !important;color:#23313b !important;border-color:#eeadc4 !important}
 body:has(.safari-exit-bar) .calc-line input::placeholder{color:#758692 !important;opacity:1}
+
+.visual-line.removed{border-color:#d7c07a;background:#5a5038}.visual-line.removed .row-label{color:#fff0c3;text-decoration:line-through;text-decoration-thickness:2px}.visual-line.removed .unit{background:#f0d68a;box-shadow:inset 0 -2px #9a7d30}

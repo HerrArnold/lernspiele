@@ -4,7 +4,7 @@
 .zdt-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .zdt-header h2{color:#f38aa9;font-size:clamp(24px,3vw,36px);margin:0}
 .zdt-header p{color:#c3d0d5;margin:4px 0}
-.zdt-number{font-size:clamp(54px,8.5vw,98px);color:#fff;text-align:center;font-weight:900;letter-spacing:2px;line-height:1.2;margin:6px auto 14px;text-shadow:0 4px 10px #0004}
+.zdt-number{font-size:clamp(54px,8.5vw,98px);color:#fff;text-align:center;font-weight:900;letter-spacing:2px;line-height:1.2;margin:6px auto 14px;text-shadow:0 4px 10px #0004;position:sticky;top:74px;z-index:8;background:#45535b;border:2px solid #6f7f88;border-radius:24px;padding:6px 22px;width:fit-content;box-shadow:0 10px 24px #0006}
 .zdt-progress{color:#f5b8ca;background:#344149;border:1px solid #5b6971;border-radius:99px;padding:8px 12px;font-size:14px;font-weight:800}
 .zdt-tasks{display:grid;gap:14px}
 .zdt-task{background:#303b42;border:1px solid #52636b;border-radius:17px;padding:14px;min-width:0}
@@ -50,7 +50,7 @@
 .zdt-tick::before{content:'';position:absolute;height:9px;width:2px;left:50%;background:#f4f8f8;top:-19px}
 .zdt-marker{position:absolute;top:-15px;transform:translateX(-50%);height:40px;width:21px;background:#f38aa9;border:2px solid #fff;border-radius:11px;box-shadow:0 2px 12px #0009;pointer-events:none;z-index:1}
 .zdt-approx{color:#f4d0db;text-align:center;font-size:16px;font-weight:800;margin-top:22px}
-@media(max-width:700px){.zdt-shell{padding:12px}.zdt-place-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zdt-artrow{grid-template-columns:1fr}.zdt-artitem.h{width:48px;height:48px}.zdt-artitem.t{height:48px}.zdt-tick{font-size:10px}.zdt-decomp{gap:4px}.zdt-plus{font-size:18px}}
+@media(max-width:700px){.zdt-shell{padding:12px}.zdt-number{top:62px;padding:4px 16px;border-radius:18px}.zdt-place-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zdt-artrow{grid-template-columns:1fr}.zdt-artitem.h{width:48px;height:48px}.zdt-artitem.t{height:48px}.zdt-tick{font-size:10px}.zdt-decomp{gap:4px}.zdt-plus{font-size:18px}}
 
 /* Gelöstes, nicht interaktives Beispiel vor der eigentlichen Tageszahl. */
 .zdt-example{background:#34434b;border:2px solid #73828a;border-radius:19px;padding:clamp(14px,2vw,22px);margin:0 0 26px;color:#f4f7f9}

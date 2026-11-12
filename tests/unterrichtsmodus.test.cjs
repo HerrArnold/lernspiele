@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict');
 const {makeState}=require('../unterrichtsmodus.js');
-const catalog={Mathe:[{file:'einmaleins-dreier.html',title:'3er'}],Musik:[{file:'rhythmus-trio.html',title:'Rhythmus'}],Allgemein:[{file:'schach-computer.html',title:'Schach'}]};
+const catalog={Mathe:[{file:'einmaleins-dreier.html',title:'3er'},{file:'einmaleins-mix.html',title:'Einmaleins-Mix'}],Musik:[{file:'rhythmus-trio.html',title:'Rhythmus'}],Allgemein:[{file:'schach-computer.html',title:'Schach'}]};
 const plan={blocks:['andere-spiele','schach','tiere'],assignments:[
 {id:1,kind:'pflicht',target:'game:einmaleins-dreier'},
 {id:2,kind:'pflicht',target:'number:word'},
@@ -31,6 +31,9 @@ const preparedPlan={...plan,classroomMode:subjectMode,done:[1],verified:[]};
 const beforeApproval=require('../unterrichtsmodus.js').classroomState(preparedPlan,catalog,new Date('2026-11-11T10:00:00Z'));
 assert.equal(beforeApproval.restricted,true,'A child checkmark is not verified mastery');
 assert.equal(beforeApproval.allowGame('einmaleins-dreier'),true);
+assert.equal(beforeApproval.allowGame('einmaleins-mix'),true,'Fachunterricht allows other games from Mathe, even if not mandatory');
+assert.equal(beforeApproval.allowTarget('game:einmaleins-mix'),true);
+assert.equal(beforeApproval.allowSubject('Mathe'),true);
 assert.equal(beforeApproval.allowGame('rhythmus-trio'),false,'extra outside current subject is blocked');
 assert.equal(beforeApproval.allowDestination('valley'),false,'daily tasks are not in active subject duty');
 assert.equal(beforeApproval.allowDestination('lagoon'),true);

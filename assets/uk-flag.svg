@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" role="img" aria-label="Grossbritannien">
+<clipPath id="a"><rect width="60" height="36" rx="1.5"/></clipPath>
+<g clip-path="url(#a)">
+<path fill="#012169" d="M0 0h60v36H0z"/>
+<path stroke="#fff" stroke-width="8" d="M-3-2l66 40m0-40L-3 38"/>
+<path stroke="#C8102E" stroke-width="3" d="M-3-2l66 40m0-40L-3 38"/>
+<path stroke="#fff" stroke-width="12" d="M30 0v36M0 18h60"/>
+<path stroke="#C8102E" stroke-width="7" d="M30 0v36M0 18h60"/>
+</g></svg>

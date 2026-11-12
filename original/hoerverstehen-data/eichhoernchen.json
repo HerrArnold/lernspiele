@@ -1,0 +1,172 @@
+{
+  "id": "eichhoernchen",
+  "title": "Das Eichhörnchen",
+  "total": 54,
+  "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Das_Eichhoernchen.mp3",
+  "source": "https://grundschul-blog.de/hoerverstehenstests/",
+  "gap": "Das {{Eichhörnchen}}\n\nDiese putzigen {{Tierchen}} leben nicht nur in unseren {{Wäldern}}, sondern auch in {{Parks}} und {{Gärten}}. Eichhörnchen wohnen auf {{Bäumen}}. Dort haben sie auch ihr Nest, das {{Kobel}} genannt wird.\n\nSie können sehr {{schnell}} an einem Baumstamm rauf- und {{runter}}flitzen. Auch das {{Springen}} von Ast zu Ast macht ihnen keine Mühe. Dabei hilft diesen Tieren ihr {{langer}} und buschiger {{Schwanz}}.",
+  "tf": [
+    [
+      "Eichhörnchen leben nur im Wald.",
+      "f"
+    ],
+    [
+      "Die Männchen sind grösser als die Weibchen.",
+      "n"
+    ],
+    [
+      "Eichhörnchen wohnen auf Bäumen. Dort haben sie auch ihr Nest.",
+      "r"
+    ],
+    [
+      "Es wird Hobel genannt.",
+      "f"
+    ],
+    [
+      "Ihr Fell ist rotbraun, manchmal auch schwarz.",
+      "r"
+    ],
+    [
+      "Sie haben eine kleine Nase.",
+      "n"
+    ],
+    [
+      "An den kurzen Vorderbeinen und kräftigen langen Hinterbeinen haben sie scharfe Krallen.",
+      "r"
+    ],
+    [
+      "Kleine Haarbüschel an ihren Ohren sehen wie Schwämme aus.",
+      "f"
+    ]
+  ],
+  "pick": [
+    [
+      [
+        "Eichhörnchen haben einen kurzen buschigen Schwanz.",
+        "Eichhörnchen haben einen langen buschigen Schwanz.",
+        "Eichhörnchen haben einen kurzen rötlichen Schwanz."
+      ],
+      1
+    ],
+    [
+      [
+        "Ihr Fell ist rotbraun, manchmal auch schwarz.",
+        "Ihr Fell ist rotbraun, manchmal auch weiss.",
+        "Ihr Fell ist grau, manchmal auch schwarz."
+      ],
+      0
+    ],
+    [
+      [
+        "An den langen Vorderbeinen und kräftigen kurzen Hinterbeinen haben sie scharfe Krallen.",
+        "An den kurzen Vorderbeinen und kräftigen langen Hinterbeinen haben sie kleine Krallen.",
+        "An den kurzen Vorderbeinen und kräftigen langen Hinterbeinen haben sie scharfe Krallen."
+      ],
+      2
+    ],
+    [
+      [
+        "Grosse Haarbüschel an ihren Ohren sehen wie Pinsel aus, deshalb heissen sie auch Pinselohren.",
+        "Kleine Haarbüschel an ihren Ohren sehen wie Pinsel aus, deshalb heissen sie auch Pinselohren.",
+        "Kleine Haarbüschel an ihren Ohren sehen wie Pinsel aus, deshalb heissen sie auch Büschelohren."
+      ],
+      1
+    ],
+    [
+      [
+        "Eichhörnchen fressen Samen, Nüsse, Bucheckern und auch Pilze und grosse Tiere.",
+        "Eichhörnchen fressen Samen, Nüsse, Bucheckern und auch Pilze und Früchte.",
+        "Eichhörnchen lesen Samen, Nüsse, Bucheckern und auch Pilze und Früchte."
+      ],
+      1
+    ],
+    [
+      [
+        "Sogar Echseneier und junge Vögel gehören zu ihrer Nahrung.",
+        "Sogar Echseneier und junge Hasen gehören zu ihrer Nahrung.",
+        "Sogar Vogeleier und junge Vögel gehören zu ihrer Nahrung."
+      ],
+      2
+    ],
+    [
+      [
+        "Sie sind Tagestiere.",
+        "Sie sind Magentiere.",
+        "Sie sind Nagetiere."
+      ],
+      2
+    ]
+  ],
+  "correct": [
+    [
+      "Ihre Haare wachsen immer wieder nach.",
+      "Ihre Zähne wachsen immer wieder nach.",
+      [
+        "Zähne"
+      ]
+    ],
+    [
+      "Deshalb brauchen diese Tiere auch Nüsse oder die Zapfen der Nadelbäume, um daran zu schaben.",
+      "Deshalb brauchen diese Tiere auch Nüsse oder die Zapfen der Nadelbäume, um daran zu nagen.",
+      [
+        "nagen"
+      ]
+    ],
+    [
+      "Einmal im Jahr bekommt das weibliche Tier drei bis vier Junge.",
+      "Zweimal im Jahr bekommt das weibliche Tier drei bis acht Junge.",
+      [
+        "Zweimal",
+        "acht"
+      ]
+    ],
+    [
+      "Zuerst sind die Kleinen blond und werden von der Mutter gesäugt.",
+      "Zuerst sind die Kleinen blind und werden von der Mutter gesäugt.",
+      [
+        "blind"
+      ]
+    ],
+    [
+      "Doch schon nach etwa acht Tagen sind die Jungtiere erwachsen und suchen sich ein eigenes Revier.",
+      "Doch schon nach etwa acht Wochen suchen sich die Jungtiere ein eigenes Revier.",
+      [
+        "Wochen"
+      ]
+    ],
+    [
+      "Im Winter sammeln die Eichhörnchen fleissig Nahrung und vergraben dann die Nüsse und Samen im Waldboden.",
+      "Im Herbst sammeln die Eichhörnchen fleissig Nahrung und vergraben die Nüsse und Samen im Waldboden.",
+      [
+        "Herbst"
+      ]
+    ],
+    [
+      "Wenn Frost und Wärme die Natur bestimmen, verkriechen sie sich in ihr warmes mit Moos und Gras bedecktes Bett und schlafen.",
+      "Wenn dann Frost und Kälte die Natur bestimmen, verkriechen sie sich in ihr warmes, mit Moos und Gras ausgepolstertes Nest. Hier schlafen die Tiere.",
+      [
+        "Kälte",
+        "Nest"
+      ]
+    ],
+    [
+      "Sie wachen aber auch immer wieder auf und suchen nach ihrem vergrabenen Trinken.",
+      "Sie wachen aber immer wieder auf, um nach ihrer vergrabenen Nahrung zu suchen.",
+      [
+        "Nahrung"
+      ]
+    ],
+    [
+      "Eichhörnchen halten Winterschlaf.",
+      "Eichhörnchen halten Winterruhe.",
+      [
+        "Winterruhe"
+      ]
+    ]
+  ],
+  "gapAlternatives": {
+    "1": [
+      "Tiere"
+    ]
+  }
+}

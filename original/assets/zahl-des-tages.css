@@ -110,3 +110,184 @@
 .zdt-artitems.e .zdt-artitem:nth-child(6){grid-column:7}
 .zdt-artitem.t{width:124px;height:18px;background:repeating-linear-gradient(90deg,#ebf0e9 0,#ebf0e9 calc(10% - 1px),#96a4a2 calc(10% - 1px),#96a4a2 10%)}
 @media(max-width:700px){.zdt-artitems.h{grid-template-columns:repeat(5,48px);gap:6px}.zdt-artitems.t{grid-template-rows:repeat(5,14px);grid-auto-columns:88px;column-gap:12px;row-gap:5px}.zdt-artitem.t{width:88px;height:14px}.zdt-artitems.e{grid-template-columns:repeat(5,20px) 14px repeat(5,20px);gap:5px}.zdt-artitem.e{width:20px;height:20px}}
+
+
+/* 2026-11-11 Laptop layout: number task gets the full available lesson width. */
+.shell:has(#view-aufgaben:not([hidden])){width:min(1640px,calc(100% - 28px));max-width:none}
+.today-flow{width:100%;min-width:0}
+.today-intro-duo{display:block;grid-template-columns:none;width:100%}
+.today-intro-duo>.today-mascot{display:none}
+.today-intro-duo>.today-example{width:100%;max-width:none}
+.today-example .zdt-example{width:100%}
+.zdt-example-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,210px);align-items:center;gap:18px}
+.zdt-example-flamingo{display:block;width:100%;max-width:195px;height:auto;max-height:190px;object-fit:contain;justify-self:end}
+.zdt-example-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.zdt-example-material{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,292px),1fr));gap:12px;align-items:start}
+.zdt-example-material>span{min-width:0;max-width:100%}
+.zdt-example-material .zdt-example-tiles{max-width:100%;min-width:0}
+.zdt-example-material .zdt-artitems.h{grid-template-columns:repeat(5,minmax(0,52px));gap:6px}
+.zdt-example-material .zdt-artitem.h{width:52px;height:52px}
+.zdt-example-material .zdt-artitems.t{grid-template-rows:repeat(5,17px);grid-auto-columns:110px;column-gap:12px;row-gap:6px}
+.zdt-example-material .zdt-artitem.t{width:110px;height:17px}
+.zdt-example-material .zdt-artitems.e{grid-template-columns:repeat(5,19px) 10px repeat(5,19px);gap:5px}
+.zdt-example-material .zdt-artitem.e{width:19px;height:19px}
+
+/* Clear material labels: prevent older site-wide text/button styles
+   from turning the names into coloured bars. */
+#zahl-des-tages .zdt-artrow{display:grid;grid-template-columns:minmax(142px,170px) minmax(0,1fr);align-items:start;gap:12px;margin:14px 0}
+#zahl-des-tages .zdt-artrow>strong{display:block;position:static;background:none!important;background-image:none!important;color:var(--zdt-green-dark)!important;width:auto!important;height:auto!important;min-height:0!important;padding:6px 0!important;margin:0!important;box-shadow:none!important;border:0!important;font-size:15px;line-height:1.4;white-space:normal}
+#zahl-des-tages .zdt-artrow>div{min-width:0;max-width:100%}
+#zahl-des-tages .zdt-artitems{max-width:100%;min-width:0}
+#zahl-des-tages .zdt-artitem{appearance:none;-webkit-appearance:none;border-style:solid;box-shadow:none}
+#zahl-des-tages .zdt-artitem.chosen{outline-color:#c89942;box-shadow:none}
+#zahl-des-tages .zdt-artitems.h{grid-template-columns:repeat(5,61px)}
+#zahl-des-tages .zdt-artitems.t{grid-template-rows:repeat(5,18px);grid-auto-flow:column;grid-auto-columns:124px}
+#zahl-des-tages .zdt-artitems.e{grid-template-columns:repeat(5,25px) 19px repeat(5,25px)}
+
+/* The number remains visible while scrolling, without covering exercise text. */
+#zahl-des-tages .zdt-number{
+  position:sticky;top:72px;z-index:6;
+  width:max-content;max-width:33vw;margin:4px 2% 10px auto;
+  padding:5px 17px;border-radius:19px;border-width:2px;
+  font-size:clamp(30px,4.1vw,54px);line-height:1.05;letter-spacing:0;
+  box-shadow:0 5px 14px rgba(56,87,54,.14);
+}
+@media(max-width:840px){
+  .zdt-example-head{grid-template-columns:minmax(0,1fr) minmax(100px,145px)}
+  .zdt-example-flamingo{max-width:140px}
+  .zdt-example-grid{grid-template-columns:1fr}
+  #zahl-des-tages .zdt-artrow{grid-template-columns:1fr;gap:3px}
+  #zahl-des-tages .zdt-number{top:58px;max-width:40vw;font-size:clamp(29px,6vw,43px);padding:4px 12px}
+}
+@media(max-width:560px){
+  .zdt-example-head{grid-template-columns:minmax(0,1fr) 90px}
+  .zdt-example-flamingo{max-width:88px}
+  .zdt-example-material{grid-template-columns:1fr}
+  #zahl-des-tages .zdt-artitems.h{grid-template-columns:repeat(5,48px)}
+  #zahl-des-tages .zdt-artitems.t{grid-auto-columns:88px;grid-template-rows:repeat(5,14px)}
+  #zahl-des-tages .zdt-artitems.e{grid-template-columns:repeat(5,20px) 14px repeat(5,20px)}
+}
+
+
+/* 2026-11: contrast fixes for Zahl des Tages (example + actual task). */
+.zdt-example-dot {
+  background:#7ca768!important;
+  box-shadow:0 0 0 1px #4b7948!important;
+}
+.zdt-example-dots {gap:7px}
+.zdt-decomp .zdt-plus {
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 25px!important;
+  min-width:25px!important;
+  width:25px!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0 0 15px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  color:#4f3a27!important;
+  font-size:28px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  opacity:1!important;
+}
+.zdt-decomp label input::placeholder {font-size:clamp(12px,1.45vw,17px);opacity:1;color:#756c56}
+@media(max-width:650px) {
+  .zdt-decomp .zdt-plus {margin:0!important}
+}
+
+/* 2026-11-12: Correct number example and interactive materials. */
+#view-aufgaben .today-flow,
+#view-aufgaben .today-intro-duo,
+#view-aufgaben .today-example,
+#view-aufgaben #zdt-example,
+#view-aufgaben #zdt-example .zdt-example{
+  width:100%!important;max-width:none!important;min-width:0!important;
+}
+#view-aufgaben .today-intro-duo{display:block!important;grid-template-columns:minmax(0,1fr)!important}
+#view-aufgaben .today-intro-duo>.today-mascot{display:none!important}
+#view-aufgaben .zdt-example-head{
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(120px,190px)!important;
+ align-items:center!important;gap:clamp(12px,3vw,32px)!important;
+}
+#view-aufgaben .zdt-example-hornvogel{
+ display:block!important;width:100%!important;height:auto!important;
+ max-width:190px!important;max-height:200px!important;
+ object-fit:contain!important;justify-self:end!important;
+}
+#view-aufgaben .zdt-example-big{display:none!important}
+#view-aufgaben .zdt-example-dots .zdt-example-dot{
+ display:block!important;width:17px!important;height:17px!important;min-width:17px;
+ background:#4d8a3d!important;border:2px solid #30602d!important;
+ box-shadow:0 0 0 1px #eff5e7!important;opacity:1!important;filter:none!important;
+}
+#view-aufgaben .zdt-example-material{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:clamp(9px,1.5vw,20px)!important;align-items:start!important;
+}
+#view-aufgaben .zdt-example-material>span{min-width:0!important;overflow:hidden!important}
+#view-aufgaben .zdt-example-material .zdt-artitems.h{
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ max-width:320px!important;gap:6px!important;
+}
+#view-aufgaben .zdt-example-material .zdt-artitem.h{
+ width:100%!important;height:auto!important;aspect-ratio:1/1!important;
+ max-width:54px!important;
+}
+#view-aufgaben .zdt-example-material .zdt-artitems.t{
+ display:grid!important;grid-template-rows:repeat(5,17px)!important;
+ grid-auto-flow:column!important;grid-auto-columns:minmax(0,1fr)!important;
+ width:min(100%,260px)!important;column-gap:10px!important;
+}
+#view-aufgaben .zdt-example-material .zdt-artitem.t{
+ width:100%!important;min-width:0!important;height:17px!important;
+}
+#view-aufgaben .zdt-example-material .zdt-artitems.e{
+ grid-template-columns:repeat(5,minmax(0,21px)) 9px repeat(5,minmax(0,21px))!important;
+ max-width:280px!important;gap:5px!important;
+}
+/* Exercise 4: the plus signs are TEXT, not coloured boxes. */
+#view-aufgaben #zahl-des-tages .zdt-decomp > .zdt-plus{
+ all:unset!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 25px!important;align-self:flex-end!important;margin:0 0 17px!important;
+ font:900 27px/1 "Trebuchet MS",Verdana,Arial,sans-serif!important;
+ color:#523b26!important;-webkit-text-fill-color:#523b26!important;
+ background:transparent!important;background-image:none!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important;
+}
+/* Exercise 5: preserve Hundertertafeln / Zehnerstreifen / Einerwürfel text. */
+#view-aufgaben #zahl-des-tages .zdt-artrow > strong{
+ all:unset!important;
+ display:block!important;align-self:start!important;
+ font:800 clamp(13px,1.15vw,16px)/1.4 "Trebuchet MS",Verdana,Arial,sans-serif!important;
+ color:#463623!important;-webkit-text-fill-color:#463623!important;
+ background:transparent!important;background-image:none!important;
+ border:0!important;box-shadow:none!important;border-radius:0!important;
+ padding:7px 0!important;margin:0!important;opacity:1!important;visibility:visible!important;
+}
+#view-aufgaben #zahl-des-tages .zdt-artrow > strong::before,
+#view-aufgaben #zahl-des-tages .zdt-artrow > strong::after,
+#view-aufgaben #zahl-des-tages .zdt-decomp > .zdt-plus::before,
+#view-aufgaben #zahl-des-tages .zdt-decomp > .zdt-plus::after{
+ content:none!important;display:none!important;
+}
+#view-aufgaben #zahl-des-tages .zdt-artrow{grid-template-columns:minmax(132px,168px) minmax(0,1fr)!important}
+#view-aufgaben #zahl-des-tages .zdt-artrow > div{min-width:0!important}
+@media(max-width:850px){
+ #view-aufgaben .zdt-example-material{grid-template-columns:1fr!important}
+ #view-aufgaben .zdt-example-head{grid-template-columns:minmax(0,1fr) 125px!important}
+ #view-aufgaben .zdt-example-hornvogel{max-width:125px!important}
+ #view-aufgaben #zahl-des-tages .zdt-artrow{grid-template-columns:1fr!important}
+ #view-aufgaben #zahl-des-tages .zdt-decomp > .zdt-plus{margin-bottom:7px!important}
+}
+@media(max-width:490px){
+ #view-aufgaben .zdt-example-head{grid-template-columns:minmax(0,1fr) 90px!important}
+ #view-aufgaben .zdt-example-hornvogel{max-width:90px!important}
+}

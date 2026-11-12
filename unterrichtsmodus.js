@@ -36,18 +36,20 @@
   const subjects=new Set(assignedGames.map(x=>x.subject).filter(Boolean));
   const daily=[...allowed].some(x=>x.startsWith('daily:')||x.startsWith('number:')||x==='page:aufgaben');
   const subjectCodes={math:'Mathe',german:'Deutsch',nmg:'NMG',music:'Musik',english:'Englisch'};
-  const allowTarget=x=>!restricted||kind!=='closed'&&allowed.has(x);
+  const allowedSubject=kind==='subject'?mode.subject:null;
+  const isCurrentSubjectGame=id=>allowedSubject&&catalog.get(id)?.subject===allowedSubject;
+  const allowTarget=x=>!restricted||kind!=='closed'&&(allowed.has(x)||(x.startsWith('game:')&&isCurrentSubjectGame(x.slice(5))));
   const allowDestination=area=>{
    if(!restricted||area==='camp'||area==='map')return true;
    if(kind==='closed')return false;
    if(area==='valley')return daily;
-   if(area==='lagoon')return assignedGames.some(x=>x.subject!=='Allgemein');
+   if(area==='lagoon')return kind==='subject'||assignedGames.some(x=>x.subject!=='Allgemein');
    if(area==='oasis')return assignedGames.some(x=>x.subject==='Allgemein');
    if(area==='baobab')return ['page:tiere','page:advent'].some(x=>allowed.has(x));
    return false;
   };
-  const allowSubject=code=>!restricted||kind!=='closed'&&subjects.has(subjectCodes[code]||code);
-  const allowGame=id=>!restricted||kind!=='closed'&&allowed.has('game:'+id);
+  const allowSubject=code=>!restricted||kind!=='closed'&&(allowedSubject=== (subjectCodes[code]||code)||subjects.has(subjectCodes[code]||code));
+  const allowGame=id=>!restricted||kind!=='closed'&&(allowed.has('game:'+id)||isCurrentSubjectGame(id));
   return {kind,focus:kind!=='free',restricted,pending,missing,requiredIds,
    assigned:allowed,assignedGames,hasDaily:daily,subjects,allowTarget,allowDestination,allowSubject,allowGame,
    verificationRequired:requireVerified,expired};

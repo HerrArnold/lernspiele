@@ -6,7 +6,7 @@ let current=null;
 const verified=new Map();
 const service=createClassroomService({
  now:()=>at,
- catalog:{'einmaleins-dreier':'Mathe','rhythmus-trio':'Musik'},
+ catalog:{'einmaleins-dreier':'Mathe','einmaleins-mix':'Mathe','rhythmus-trio':'Musik'},
  auth:{requireAdmin:async r=>r.headers.has('x-school-admin')?{username:'teacher'}:null,optionalChild:async r=>r.headers.get('x-test-child')?{username:r.headers.get('x-test-child')}:null},
  store:{
   loadMode:async()=>current,saveMode:async mode=>{current=mode},
@@ -27,6 +27,7 @@ const mode={kind:'subject',subject:'Mathe',required_assignment_ids:[2],expires_a
 assert.equal((await call(req('/admin-classroom-mode','POST',mode,{'x-school-admin':'1'}))).status,200);
 assert.equal((await call(req('/classroom-access?game=einmaleins-dreier'))).data.allowed,false);
 assert.equal((await call(req('/classroom-access?game=einmaleins-dreier','GET',null,{'x-test-child':'Zebra'}))).data.allowed,true);
+assert.equal((await call(req('/classroom-access?game=einmaleins-mix','GET',null,{'x-test-child':'Zebra'}))).data.allowed,true,'the entire selected subject is accessible');
 assert.equal((await call(req('/classroom-access?game=rhythmus-trio','GET',null,{'x-test-child':'Zebra'}))).data.allowed,false);
 assert.equal((await call(req('/admin-verify-assignment','POST',{username:'Zebra',assignment_id:2,verified:true},{'x-school-admin':'1'}))).status,200);
 assert.equal((await call(req('/classroom-access?game=rhythmus-trio','GET',null,{'x-test-child':'Zebra'}))).data.allowed,true);
@@ -35,6 +36,7 @@ assert.equal((await call(req('/admin-classroom-mode','POST',{...mode,required_as
 assert.equal((await call(req('/admin-classroom-mode','POST',{...mode,subject:'NMG'},{'x-school-admin':'1'}))).status,400);
 assert.equal((await call(req('/admin-verify-assignment','POST',{username:'Loewe',assignment_id:3,verified:true},{'x-school-admin':'1'}))).status,400);
 assert.equal((await call(req('/admin-classroom-mode','POST',{kind:'free',expires_at:mode.expires_at},{'x-school-admin':'1'}))).status,200);
-assert.equal((await call(req('/classroom-access?game=einmaleins-dreier'))).data.allowed,true);
+assert.equal((await call(req('/classroom-access?game=einmaleins-dreier'))).data.allowed,false,'login is required even in Entdeckungszeit');
+assert.equal((await call(req('/classroom-access?game=einmaleins-dreier','GET',null,{'x-test-child':'Zebra'}))).data.allowed,true);
 assert.equal(activeMode({kind:'subject',expires_at:'2026-11-10T09:00:00Z'},at).kind,'free');
 console.log('PASS classroom worker logic');

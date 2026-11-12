@@ -28,9 +28,13 @@ const paths={
   ['Notenname · Notenbild · Rhythmussprache','rhythmus-trio-profi.html','preview-rhythm-profi.webp','Rhythmen schreiben und zeichnen'],
   ['Teste dein Wissen','teste-dein-wissen-musik.html',null,'24 Punkte · 12 Aufgaben']],
  Mathe:[
+  ['Einmaleins-Tafel erforschen','einmaleins-tafel-entdecken.html','preview-einmaleins-tafel.svg','Zusammenhänge finden · Neue Reihen mit Merkaufgaben lösen'],
   ['Einmaleins-Mix','einmaleins-mix.html','preview-einmaleins-mix.svg','2er-, 5er- und 10er-Reihe gemischt üben'],
   ['Die 3er-Reihe','einmaleins-dreier.html','preview-einmaleins-dreier.svg','Mit der 2er-Reihe die 3er-Reihe entdecken'],
+  ['Die 4er-Reihe','einmaleins-vierer.html','preview-einmaleins-vierer.svg','Mit der 2er-Reihe die 4er-Reihe entdecken'],
   ['Die 6er-Reihe','einmaleins-sechser.html','preview-einmaleins-sechser.svg','Mit der 5er-Reihe die 6er-Reihe entdecken'],
+  ['Die 9er-Reihe','einmaleins-neuner.html','preview-einmaleins-neuner.svg','Mit der 10er-Reihe die 9er-Reihe entdecken'],
+  ['Einmaleins-Mix · 3, 4, 6 und 9','einmaleins-mix-neue-reihen.html','preview-einmaleins-mix-neue-reihen.svg','3er-, 4er-, 6er- und 9er-Reihe gemischt üben'],
   ['Finde die Zahl','finde-die-zahl.html','preview-finde-die-zahl.webp','Zahlen im Tausenderbuch suchen'],
   ['Stellentafel','stellentafel.html','preview-stellentafel.webp','Hunderter, Zehner und Einer'],
   ['Hunderter, Zehner und Einer zerlegen','hunderter-zehner-einer-zerlegen.html','preview-hunderter-zehner-einer-zerlegen.webp','Zahlen zerlegen'],
@@ -66,8 +70,9 @@ function dayIndex(iso){
 }
 function prettyDate(iso){return new Intl.DateTimeFormat('de-CH',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Zurich'}).format(new Date(`${iso}T12:00:00Z`))}
 function viewShow(view){
- const available=['aufgaben','aktuelle','archiv','lernportale','tiere','agenda','advent','admin'];
+ const available=['aufgaben','todo','aktuelle','archiv','lernportale','tiere','agenda','advent','admin'];
  if(['agenda','advent'].includes(view)&&!(window.SafariLogin?.auth()||siteState.adminUnlocked)){location.hash='#aufgaben';view='aufgaben'}
+ if(view==='todo'&&!window.SafariLogin?.auth()&&window.SafariLogin?.ready()){location.hash='#aufgaben';view='aufgaben'}
  if(view==='admin'&&!siteState.adminUnlocked){location.hash='#aufgaben';view='aufgaben'}
  siteState.route=view;
  available.forEach(id=>{$('view-'+id).hidden=id!==view});
@@ -77,7 +82,7 @@ function viewShow(view){
 function route(){
  const value=decodeURIComponent(location.hash.slice(1));let name='aufgaben',section=null;
  if(value.startsWith('aktuelle')){name='aktuelle';section=value.split('--')[1]}
- else if(['archiv','lernportale','tiere','agenda','advent','admin'].includes(value))name=value;
+ else if(['todo','archiv','lernportale','tiere','agenda','advent','admin'].includes(value))name=value;
  viewShow(name);
  if(section){requestAnimationFrame(()=>document.getElementById('fach-'+section)?.scrollIntoView({behavior:'smooth',block:'start'}))}
 }
@@ -153,7 +158,7 @@ function renderToday(force=false){let iso=daySwiss();let newIdx=dayIndex(iso);if
  $('day-pill').textContent=(d.reserve?'Reserve · ': 'Geplant · ')+d.tag;
  $('preview-notice').hidden=!isPreview;
  $('daily-tasks').innerHTML=d.exercises.map((ex,i)=>`<section class="daily-task" id="exercise-${i}"><div class="task-head"><span class="task-count">Aufgabe ${i+1}</span><h3>${htmlEscape(ex.title)}</h3><div class="task-status" id="status-${i}" aria-live="polite"></div></div><p class="task-description">${htmlEscape(ex.desc)}</p><div class="task-body" id="task-${i}"></div><div class="task-actions"><button type="button" class="check-button" data-check="${i}">Überprüfen</button><button type="button" class="clear-button" data-reset="${i}">Neu versuchen</button><span class="check-feedback" id="feedback-${i}" aria-live="polite"></span></div></section>`).join('');
- d.exercises.forEach((_,i)=>renderTask(newIdx,i));updateProgress();restoreSavedProgress();
+ d.exercises.forEach((_,i)=>renderTask(newIdx,i));updateProgress();restoreSavedProgress();window.SafariFocus?.apply();
 }
 function updateProgress(){if(siteState.dayIndex===null)return;const arr=session(siteState.dayIndex);const n=arr.filter(x=>x.success).length;$('daily-progress').textContent=`${n} von 4 Aufgaben geschafft`;$('daily-progress-bar').style.width=`${n*25}%`}
 function reRender(i){renderTask(siteState.dayIndex,i);updateProgress();}
@@ -270,6 +275,19 @@ async function loadAdminNotes(){
 function mondayOf(iso){
  const date=new Date(iso+'T12:00:00Z');date.setUTCDate(date.getUTCDate()-((date.getUTCDay()+6)%7));return date.toISOString().slice(0,10);
 }
+function numberDayStepInfo(source){
+ const raw=String(source||'');
+ const match=/(word|parity|place|decomp|art|line)/.exec(raw);
+ const step=match?match[1]:'';
+ return {
+  word:{name:'Zahl des Tages · Zahl als Wort',preview:'assets/preview-zdt-word.svg'},
+  parity:{name:'Zahl des Tages · Gerade oder ungerade?',preview:'assets/preview-zdt-parity.svg'},
+  place:{name:'Zahl des Tages · Stellentafel mit Punkten',preview:'assets/preview-stellentafel.webp'},
+  decomp:{name:'Zahl des Tages · Zerlegung',preview:'assets/preview-hunderter-zehner-einer-zerlegen.webp'},
+  art:{name:'Zahl des Tages · Hunderter, Zehner und Einer',preview:'assets/preview-wie-viele-brauchst-du.webp'},
+  line:{name:'Zahl des Tages · Zahlenstrahl',preview:'assets/preview-zdt-zahlenstrahl.svg'}
+ }[step]||{name:'Zahl des Tages',preview:'assets/flamingo-zahl-des-tages.webp'};
+}
 function previewForGame(game){
  const slug=String(game||'').replace(/^spiele\//,'').replace(/\.html$/,'');
  if(slug==='zahl-des-tages')return {name:'Zahl des Tages',preview:'flamingo-zahl-des-tages.webp'};
@@ -286,7 +304,9 @@ function previewForGame(game){
 function adminPreviewUrl(game){const info=previewForGame(game);if(!info.preview)return '';
  return /^https?:/.test(info.preview)||info.preview.startsWith('assets/')?info.preview:'assets/'+info.preview;
 }
-function adminAttemptCard(a){const info=previewForGame(a.game),image=adminPreviewUrl(a.game);
+function adminAttemptCard(a){
+ const info=a.game==='zahl-des-tages'?numberDayStepInfo(`${a.task_ref||a.task||''} ${a.details||''}`):previewForGame(a.game);
+ const image=info.preview?(/^https?:/.test(info.preview)||info.preview.startsWith('assets/')?info.preview:'assets/'+info.preview):'';
  const bad=!Boolean(a.is_correct),stamp=swissStamp(a.happened_at);
  const parsed=(()=>{try{const v=JSON.parse(a.details);return v&&typeof v==='object'&&!Array.isArray(v)?v:null}catch(_){return null}})();
  const detailText=parsed?Object.entries(parsed).filter(([k])=>!['answer','expected'].includes(k)).map(([k,v])=>`${k}: ${typeof v==='string'?v:JSON.stringify(v)}`).join(' · '):a.details;

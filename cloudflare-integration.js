@@ -38,9 +38,9 @@
    if(typeof response.token!=='string'||!response.token)throw Error('Cloudflare hat kein gültiges Sitzungstoken geliefert.');
    // Check role server-side before granting a personal area.
    const identity=await call('/me',{token:response.token});
-   if(identity.role!=='child')throw Error('Dieses Konto ist kein Kinderkonto. Verwende den Lehrpersonenzugang.');
+   if(!['child','class'].includes(identity.role))throw Error('Dieses Konto ist kein Kinder- oder Klassenkonto.');
    childToken=response.token;person=identity;
-   try{localStorage.setItem(CHILD_KEY,childToken)}catch(_){/* transient session only */}
+   try{localStorage.setItem(CHILD_KEY,childToken)}catch(_){/* browser storage unavailable */}
    document.querySelector('#password').value='';
    enter('cloudflare-child',String(identity.username||response.username||username));
    refreshClassFocus();
@@ -56,8 +56,8 @@
    if(!result?.token)throw Error('Cloudflare hat keinen Adminzugang erteilt.');
    await call('/admin-session',{admin:true,token:result.token});
    adminToken=result.token;try{sessionStorage.setItem(ADMIN_KEY,adminToken)}catch(_){/* just this tab */}
-   document.querySelector('#teacherDialog').hidden=true;
-   enter('cloudflare-admin','Lehrperson');
+   const legacyDialog=document.querySelector('#teacherDialog');if(legacyDialog)legacyDialog.hidden=true;
+   enter('cloudflare-admin','Flamingo');
    setTimeout(()=>{if(loggedTeacher()&&state.screen==='camp')showModal('admin')},760);
   }catch(e){const el=document.querySelector('#teacherError');if(el)el.textContent=errorText(e);notify('Admin-Anmeldung fehlgeschlagen.');}
   finally{pending=false}
@@ -65,17 +65,17 @@
  async function signOut(){
   if(childToken){try{await call('/logout',{method:'POST',body:{}})}catch(_){/* invalidate locally anyway */}}
   childToken='';person=null;adminToken='';plan=null;adminData=null;focusGate=null;
-  try{localStorage.removeItem(CHILD_KEY);sessionStorage.removeItem(ADMIN_KEY)}catch(_){}
+  try{sessionStorage.removeItem(CHILD_KEY);localStorage.removeItem(CHILD_KEY);sessionStorage.removeItem(ADMIN_KEY)}catch(_){}
  }
  async function restore(){
-  try{childToken=localStorage.getItem(CHILD_KEY)||'';adminToken=sessionStorage.getItem(ADMIN_KEY)||''}catch(_){childToken='';adminToken=''}
+  try{childToken=localStorage.getItem(CHILD_KEY)||sessionStorage.getItem(CHILD_KEY)||'';adminToken=sessionStorage.getItem(ADMIN_KEY)||'';if(childToken)localStorage.setItem(CHILD_KEY,childToken);sessionStorage.removeItem(CHILD_KEY)}catch(_){childToken='';adminToken=''}
   if(adminToken){
-   try{await call('/admin-session',{admin:true});enter('cloudflare-admin','Lehrperson');return}
+   try{await call('/admin-session',{admin:true});enter('cloudflare-admin','Flamingo');return}
    catch(_){adminToken='';try{sessionStorage.removeItem(ADMIN_KEY)}catch(_){}}
   }
   if(childToken){
-   try{const identity=await call('/me');if(identity.role!=='child')throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));refreshClassFocus();return}
-   catch(_){childToken='';try{localStorage.removeItem(CHILD_KEY)}catch(_){}}
+   try{const identity=await call('/me');if(!['child','class'].includes(identity.role))throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));refreshClassFocus();return}
+   catch(_){childToken='';try{sessionStorage.removeItem(CHILD_KEY);localStorage.removeItem(CHILD_KEY)}catch(_){}}
   }
  }
  const originalRender=renderModal;
@@ -83,10 +83,28 @@
    if(state.modal==='logbook'&&loggedChild()){renderChildLogbook();return;}
    if(state.modal==='admin'&&loggedTeacher()){renderCloudAdmin();return;}
    if(state.modal==='agenda'&&(loggedChild()||loggedTeacher())){renderCloudAgenda();return;}
+   if(state.modal==='mail'&&loggedChild()){renderCloudMail(originalRender);return;}
    originalRender();
  };
 
 
+ // The mailbox is enabled only after the existing Cloudflare Worker confirms
+ // an authenticated, child-filtered GET /messages endpoint.
+ async function renderCloudMail(fallback){
+   const host=DOM.modalBody;
+   host.innerHTML='<div class="pd-panel"><h3>✉️ Mein Briefkasten</h3><p>Nachrichten werden geladen …</p></div>';
+   try{
+     const response=await call('/messages');
+     if(state.modal!=='mail'||!loggedChild())return;
+     if(response.available!==true||!Array.isArray(response.messages))throw Error('Nachrichten noch nicht eingerichtet');
+     const rows=response.messages;
+     host.innerHTML='<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">✉️ Persönlicher Briefkasten</span><h3>Meine Post</h3><p>Nachrichten der Lehrperson</p></div><div class="pd-total"><strong>'+rows.length+'</strong><span>Nachrichten</span></div></div>'+
+       '<div class="pd-items">'+(rows.length?rows.map(row=>'<article class="pd-panel cloud-mail-message"><strong>'+html(row.subject||'Nachricht')+'</strong><small>'+html(row.created_at||'')+'</small><p>'+html(row.body||'').replace(/\n/g,'<br>')+'</p></article>').join(''):
+       '<div class="pd-panel"><p>Du hast noch keine Nachrichten erhalten.</p></div>')+'</div></div>';
+   }catch(_){
+     if(state.modal==='mail'&&loggedChild())fallback();
+   }
+ }
  // Cloudflare contains authentic results; an attempt/highscore is not proof of a finished assignment.
  const scoreIndex=rows=>{const scores=new Map();for(const row of Array.isArray(rows)?rows:[]){if(!row||typeof row.game!=='string'||!row.game)continue;const value=Number(row.score);if(!Number.isFinite(value)||value<0)continue;scores.set(row.game,Math.max(scores.get(row.game)??0,value));}return scores;};
  const taskScore=(target,scores)=>target.startsWith('game:')?scores.get(target.slice(5)):undefined;
@@ -269,22 +287,76 @@
    host.querySelectorAll('[data-cloud-remove]').forEach(b=>b.onclick=async()=>{if(!confirm('Diesen Auftrag wirklich aus Cloudflare löschen?'))return;try{await call('/admin-assignments',{admin:true,method:'DELETE',body:{id:Number(b.dataset.cloudRemove)}});await renderCloudAdmin()}catch(e){notify(errorText(e))}});
    host.querySelector('#cloudRefreshAdmin').onclick=renderCloudAdmin;
    host.querySelector('#cloudOpenLegacy').onclick=()=>{host.innerHTML='<div class="cloud-legacy-header"><button type="button" id="cloudBackAdmin" class="pd-secondary">← Zur Aufgabenverwaltung</button><p>Bestehende Cloudflare-Verwaltung (aus der bisherigen LernSafari)</p></div><iframe class="cloud-admin-frame" title="Bisherige Cloudflare-Verwaltung" src="original/index.html#admin"></iframe>';host.querySelector('#cloudBackAdmin').onclick=renderCloudAdmin};
+   // Present the existing authenticated Cloudflare controls as five navigable workspaces.
+   // All write actions above retain their server-side checks and existing handlers.
+   window.LernSafariAdminDashboard?.mount({host,kids,jobs,pres,done,verified:report.verified||[],targets:targets(),call,renderAdminProgress,renderCloudAdmin});
   }catch(e){host.innerHTML=`<div class="pd-panel"><h3>Verwaltung nicht erreichbar</h3><p>${html(errorText(e))}</p><button class="pd-action" id="retryCloudAdmin">Erneut versuchen</button></div>`;host.querySelector('#retryCloudAdmin').onclick=renderCloudAdmin;}
  }
  function mondayOfZurich(){const day=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Zurich',weekday:'short'}).format(new Date());const idx={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[day]||0;const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const utc=new Date(today+'T12:00:00Z');utc.setUTCDate(utc.getUTCDate()-((idx+6)%7));return utc.toISOString().slice(0,10)}
- async function renderCloudAgenda(){
-  const host=DOM.modalBody;
-  const week=mondayOfZurich();
-  host.innerHTML='<div class="pd-panel">🧭 Wochenagenda wird von Cloudflare geladen …</div>';
-  try{
-   const result=await call((loggedTeacher()?'/admin-agenda':'/agenda')+'?week='+week,{admin:loggedTeacher()});if(state.modal!=='agenda')return;
-   const events=Array.isArray(result.events)?result.events:[];
-   const days=Array.from({length:7},(_,i)=>{const d=new Date(week+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10)});
-   const names=['Mo','Di','Mi','Do','Fr','Sa','So'];
-   host.innerHTML=`<div class="pd-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🧭 Cloudflare-Agenda</span><h3>Diese Woche</h3><p>Hausaufgaben, Lernkontrollen und Termine aus deiner bisherigen LernSafari.</p></div></div><div class="cloud-week">${days.map((date,i)=>`<article class="cloud-day"><h4>${names[i]} · ${html(dateFormat(date))}</h4>${events.filter(e=>e.day_date===date).map(e=>`<div class="cloud-event"><strong>${html(e.type==='lk'?'Lernkontrolle':e.type==='ha'?'Hausaufgabe':e.type==='free'?'Schulfrei':'Termin')}</strong><p>${html(e.text||'')}</p></div>`).join('')||'<p>Keine Einträge</p>'}</article>`).join('')}</div>${loggedTeacher()?'<p class="pd-warning">Termine bearbeiten: in der erweiterten Verwaltung unter «Agenda».</p>':''}</div>`;
-  }catch(e){host.innerHTML=`<div class="pd-panel"><h3>Agenda nicht erreichbar</h3><p>${html(errorText(e))}</p></div>`}
- }
 
+ const agendaDisplayText=e=>{
+  const original=String(e.text||'').trim();
+  const type=String(e.type||'special');
+  if(type==='special')return original;
+  const clean=original.replace(/^(?:HA:\s*|Frei:\s*|LK\s+(?:Deutsch|Englisch|Mathe|Musik|NMG|Sport|Fach)\s*:\s*)/i,'').trim();
+  if(type==='ha')return 'HA: '+clean;
+  if(type==='lk')return 'LK '+String(e.subject||'Fach')+': '+clean;
+  if(type==='free')return 'Frei: '+clean;
+  return original;
+ };
+ let cloudAgendaWeekOffset=0;
+ let cloudAgendaRequestNumber=0;
+ const agendaWeekStart=offset=>{
+   const d=new Date(mondayOfZurich()+'T12:00:00Z');
+   d.setUTCDate(d.getUTCDate()+offset*7);
+   return d.toISOString().slice(0,10);
+ };
+ async function renderCloudAgenda(){
+   const host=DOM.modalBody;
+   const offset=cloudAgendaWeekOffset;
+   const requestNumber=++cloudAgendaRequestNumber;
+   const week=agendaWeekStart(offset);
+   const days=Array.from({length:7},(_,i)=>{
+     const d=new Date(week+'T12:00:00Z');
+     d.setUTCDate(d.getUTCDate()+i);
+     return d.toISOString().slice(0,10);
+   });
+   const names=['Mo','Di','Mi','Do','Fr','Sa','So'];
+   const todayInZurich=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+   const weekLabel=dateFormat(week)+' – '+dateFormat(days[6]);
+   const away=offset!==0;
+   const toolbar='<nav class="cloud-agenda-nav" aria-label="Kalenderwoche wechseln">'+
+     '<button type="button" class="cloud-agenda-week-button" id="cloudAgendaPrevious">◀ Letzte Woche</button>'+
+     '<div class="cloud-agenda-week-center"><strong>'+html(weekLabel)+'</strong><small>Montag bis Sonntag</small></div>'+
+     '<button type="button" class="cloud-agenda-week-button" id="cloudAgendaNext">Nächste Woche ▶</button>'+
+     '</nav>'+
+     '<div class="cloud-agenda-actions"><button type="button" class="cloud-agenda-today-button" id="cloudAgendaToday" '+(!away?'disabled aria-current="date"':'')+'>Aktuelle Woche</button>'+
+     (away?'<p class="cloud-agenda-other-week" role="status">📅 Du schaust gerade '+(offset<0?'eine frühere':'eine spätere')+' Woche an – nicht die aktuelle Woche.</p>':
+     '<p class="cloud-agenda-current-week" role="status">✓ Du bist in der aktuellen Woche.</p>')+'</div>';
+   host.innerHTML='<div class="pd-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🧭 Wochenagenda</span><h3>'+html(weekLabel)+'</h3><p>Hausaufgaben, Lernkontrollen und Termine</p></div></div>'+
+     toolbar+'<div id="cloudAgendaDays" aria-live="polite"><p class="cloud-agenda-loading">Wochentermine werden geladen …</p></div></div>';
+   host.querySelector('#cloudAgendaPrevious').onclick=()=>{cloudAgendaWeekOffset--;renderCloudAgenda()};
+   host.querySelector('#cloudAgendaNext').onclick=()=>{cloudAgendaWeekOffset++;renderCloudAgenda()};
+   host.querySelector('#cloudAgendaToday').onclick=()=>{cloudAgendaWeekOffset=0;renderCloudAgenda()};
+   const area=host.querySelector('#cloudAgendaDays');
+   try{
+     const result=await call((loggedTeacher()?'/admin-agenda':'/agenda')+'?week='+encodeURIComponent(week),{admin:loggedTeacher()});
+     if(state.modal!=='agenda'||requestNumber!==cloudAgendaRequestNumber||!area.isConnected)return;
+     const events=Array.isArray(result.events)?result.events:[];
+     area.innerHTML='<div class="cloud-week">'+days.map((date,i)=>
+       '<article class="cloud-day '+(date===todayInZurich?'is-today':'')+'"><h4>'+names[i]+' · '+html(dateFormat(date))+
+       (date===todayInZurich?' <span class="cloud-day-today">Heute</span>':'')+'</h4>'+
+       events.filter(e=>e.day_date===date).map(e=>'<div class="cloud-event cloud-event-'+(e.type==='ha'?'ha':e.type==='lk'?'lk':e.type==='free'?'free':'special')+'"><strong>'+
+          html(e.type==='lk'?'Lernkontrolle':e.type==='ha'?'Hausaufgabe':e.type==='free'?'Schulfrei':'Besonderer Termin')+
+          '</strong><p>'+html(agendaDisplayText(e))+'</p></div>').join('')+
+       (events.some(e=>e.day_date===date)?'':'<p class="cloud-agenda-no-events">Keine Einträge</p>')+'</article>').join('')+'</div>'+
+       (loggedTeacher()?'<p class="pd-warning">Termine bearbeiten: Verwaltung → Agenda</p>':'');
+   }catch(e){
+     if(requestNumber!==cloudAgendaRequestNumber||!area.isConnected||state.modal!=='agenda')return;
+     area.innerHTML='<div class="pd-panel cloud-agenda-error"><h3>Termine konnten nicht geladen werden</h3><p>'+html(errorText(e))+'</p><button type="button" id="cloudAgendaRetry" class="cloud-agenda-today-button">Erneut versuchen</button></div>';
+     area.querySelector('#cloudAgendaRetry').onclick=renderCloudAgenda;
+   }
+ }
  // Existing Worker returns active blocks and assignments; this is a pedagogical UI gate,
  // NOT a verified mastery signal or security protection for public HTML files.
  function updateClassFocus(p){
@@ -362,11 +434,17 @@
  // the compass/letterbox available, as they are navigational and informational.
  document.addEventListener('click',e=>{
   if(!loggedChild()||!focusGate?.restricted)return;
-  const button=e.target.closest('[data-map-destination],[data-lagoon-subject],[data-open],[data-baobab-section]');
+  const button=e.target.closest('[data-map-destination],[data-lagoon-subject],[data-open],[data-baobab-section],[data-baobab-new]');
   if(!button)return;
   let locked=false;
   if(button.hasAttribute('data-map-destination'))locked=blockedInClass(button.dataset.mapDestination,'area');
   else if(button.hasAttribute('data-lagoon-subject'))locked=blockedInClass(button.dataset.lagoonSubject,'subject');
+  else if(button.hasAttribute('data-baobab-new')){
+   const section=button.dataset.baobabNew;
+   locked=section==='animals'?blockedInClass('page:tiere','page'):
+     section==='advent'?blockedInClass('page:advent','page'):
+     !!focusGate?.restricted;
+  }
   else if(button.hasAttribute('data-baobab-section'))locked=blockedInClass('page:tiere','page');
   else if(button.dataset.open&&!['logbook','map','agenda','mail','clock','help','admin'].includes(button.dataset.open))locked=true;
   if(locked){e.preventDefault();e.stopImmediatePropagation();showFocusNotice();}
@@ -388,18 +466,39 @@
  window.addEventListener('focus',()=>refreshClassFocus());
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClassFocus()});
  setInterval(()=>{if(loggedChild()&&!document.hidden)refreshClassFocus()},20000);
+ // Minimal, authenticated, short-lived presence reports. Never send guest data,
+ // answer text, keyboard input, device identifiers or browser location.
+ let activityEndpointUnavailable=false;
+ async function heartbeat(){
+   if(!loggedChild()||document.hidden||activityEndpointUnavailable)return;
+   let area='camp',game='';
+   if(state.modal==='mail')area='mail';
+   else if(state.modal==='agenda')area='agenda';
+   else if(state.modal==='logbook')area='logbook';
+   else if(state.screen==='destination'){
+     area=state.destination||'camp';
+     if(safariGame?.file&&/^[a-z0-9-]+\.html$/i.test(safariGame.file)){
+       area='game';game=safariGame.file.replace(/\.html$/i,'');
+     }
+   }
+   if(!['camp','map','logbook','lagoon','valley','baobab','oasis','agenda','mail','help','game'].includes(area))area='camp';
+   try{await call('/activity-heartbeat',{method:'POST',body:{area,game}});}
+   catch(err){if(/404|405|Not Found|not found|Methode nicht erlaubt/.test(String(err.message||err)))activityEndpointUnavailable=true;}
+ }
+ setInterval(heartbeat,45000);
+ window.addEventListener('focus',()=>{activityEndpointUnavailable=false;heartbeat()});
+
 
  // Existing app.js login placeholder handles submit in bubble phase; intercept for authenticated login.
- document.querySelector('#loginForm').addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();childLogin(document.querySelector('#username').value,document.querySelector('#password').value)},{capture:true});
+ document.querySelector('#loginForm').addEventListener('submit',e=>{
+   e.preventDefault();e.stopImmediatePropagation();
+   const username=document.querySelector('#username').value.trim();
+   const password=document.querySelector('#password').value;
+   // Same Cloudflare administration password as before; never stored in source.
+   if(username.toLocaleLowerCase('de-CH')==='flamingo')adminLogin(password);
+   else childLogin(username,password);
+ },{capture:true});
  document.querySelector('#logoutBtn').addEventListener('click',e=>{if(!loggedChild()&&!loggedTeacher())return;e.preventDefault();e.stopImmediatePropagation();signOut().finally(()=>exit())},{capture:true});
- document.querySelector('#cloudTeacher').addEventListener('click',()=>{document.querySelector('#teacherDialog').hidden=false;document.querySelector('#teacherCode').focus()});
- const dialog=document.createElement('div');dialog.id='teacherDialog';dialog.className='cloud-dialog';dialog.hidden=true;
- dialog.innerHTML='<div class="cloud-dialog-card" role="dialog" aria-modal="true" aria-labelledby="teacherTitle"><button type="button" id="teacherClose" class="cloud-dialog-close" aria-label="Schliessen">×</button><span class="pd-eyebrow">Cloudflare · Lehrperson</span><h2 id="teacherTitle">🔐 Sicher anmelden</h2><p>Gib den bisherigen Cloudflare-Admincode ein. Der Code wird nur an deinen Cloudflare Worker übermittelt.</p><form id="teacherForm"><label for="teacherCode">Admincode</label><input id="teacherCode" type="password" autocomplete="current-password" required><button type="submit" class="pd-action">Mit Cloudflare prüfen</button><p id="teacherError" role="status"></p></form><p class="pd-warning">Kein Demo-Zugang: Cloudflare prüft und erteilt die Berechtigung.</p></div>';
- document.body.append(dialog);
- document.querySelector('#teacherClose').onclick=()=>{dialog.hidden=true;document.querySelector('#teacherCode').value=''};
- dialog.onclick=e=>{if(e.target===dialog)dialog.hidden=true};
- document.querySelector('#teacherForm').onsubmit=e=>{e.preventDefault();const c=document.querySelector('#teacherCode');adminLogin(c.value).finally(()=>c.value='')};
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!dialog.hidden)dialog.hidden=true});
  restore();
  window.LernSafariCloud={getIdentity:()=>person?.username||null,hasChild:loggedChild,hasAdmin:loggedTeacher,refreshLogbook:renderChildLogbook};
 })();

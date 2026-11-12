@@ -298,3 +298,24 @@ body.legacy-embedded #zahl-des-tages .zdt-number{color:#35593d!important;backgro
 body.legacy-embedded > .safari-exit-bar{display:none!important}
 body.legacy-embedded .site-header{display:none!important}
 body.legacy-embedded .shell{padding-top:10px!important}
+
+
+/* Einmaleins: previous dark-theme lettering remained white on cream cards.
+   Force dark, high-contrast typography for every multiplication game. */
+body[data-mode] .calc-card .calc-line,
+body[data-mode] .calc-card .calc-line :not(input),
+body[data-mode] #question .calc-line,
+body[data-mode] .quiz-counter {
+  color:#285c3b!important;
+  -webkit-text-fill-color:#285c3b!important;
+}
+body[data-mode] .calc-line input {
+  -webkit-text-fill-color:#23313b!important;
+  color:#23313b!important;
+}
+body[data-mode] .calc-line input::placeholder {
+  color:#647383!important;
+  -webkit-text-fill-color:#647383!important;
+  opacity:1!important;
+}
+body[data-mode] .quiz-counter {color:#425d51!important}

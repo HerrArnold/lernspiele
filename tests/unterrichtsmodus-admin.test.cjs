@@ -26,4 +26,8 @@ assert.equal(p.required_assignment_ids.length,0);
 assert.throws(()=>payloadOf({kind:'subject',subject:'Fantasiefach',assignmentIds:[3],expiresAt:future}));
 assert.throws(()=>payloadOf({kind:'subject',subject:'Mathe',assignmentIds:[],expiresAt:future}));
 assert.throws(()=>payloadOf({kind:'arrival',assignmentIds:[1],expiresAt:old}));
+// Newly added subject-topic games are not necessarily in the legacy registry.
+globalThis.LernSafariTopicCatalog={Deutsch:[{name:'Hörverständnis',games:[['Der Dachs','hoerverstehen-dachs.html']]}]};
+const extended=[...assignments,{id:8,target:'game:hoerverstehen-dachs',kind:'pflicht',start_at:old,end_at:future}];
+assert.deepEqual(matchingAssignments(extended,'subject','Deutsch').map(x=>x.id),[8]);
 console.log('PASS: Teacher classroom mode selection and safe payloads');

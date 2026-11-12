@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 315" role="img" aria-label="Blauer Hornvogel">
+<defs><linearGradient id="body" x2=".7" y2="1"><stop stop-color="#479bef"/><stop offset="1" stop-color="#12288b"/></linearGradient><linearGradient id="beak" x2="0.85" y2="1"><stop stop-color="#ffdb50"/><stop offset=".5" stop-color="#fa7c0f"/><stop offset="1" stop-color="#e53912"/></linearGradient></defs>
+<g stroke="#fff" stroke-width="11" stroke-linejoin="round" stroke-linecap="round">
+<path d="M194 175Q261 101 286 93L276 157 294 161l-54 31 45 24-82 12-21-34" fill="#1a42ac"/>
+<path d="M146 124q-73 38-54 121 19 67 92 43 58-35 40-114" fill="url(#body)"/>
+<path d="M144 160q21 46 64 80l-46 29q-58-34-43-77" fill="#faf8ee"/>
+<ellipse cx="147" cy="102" rx="64" ry="68" fill="url(#body)"/>
+<path d="M128 55Q108 10 130 8q21 16 23 38m17 12q10-36 28-30 3 23-14 42" fill="#1d285d"/>
+<path d="M103 104Q54 37 13 75q-20 29 2 59 50 25 104-11z" fill="url(#beak)"/>
+<path d="M10 135q36 16 100-11-34 50-86 37" fill="#fa6515"/>
+<ellipse cx="174" cy="95" rx="32" ry="39" fill="#fff" stroke="#1a2550" stroke-width="5"/>
+<circle cx="183" cy="95" r="20" fill="#151a3b" stroke="#fff" stroke-width="4"/>
+<circle cx="191" cy="88" r="7" fill="#fff" stroke="none"/>
+<path d="M125 231l-10 48m66-26 11 27" stroke="#ff8724" stroke-width="14"/>
+<path d="M98 282h43l-10 16h-28zm77 0h46l-9 16h-32z" fill="#ed831f"/>
+</g>
+</svg>

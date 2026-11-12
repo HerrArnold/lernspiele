@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="de-CH">
 <head>
-  <!-- LernSafari: GitHub Pages Veroeffentlichung auf /lernspiele/ -->
   <!-- Cloudflare Pages: neues Production-Deployment fuer LernSafari-Camp -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,14 +10,20 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="integration.css">
   <script src="app.js" defer></script>
-  <script src="integration.js?v=20261111-baobab2" defer></script>
-  <link rel="stylesheet" href="profile-demo.css">
-  <script src="profile-demo.js" defer></script>
+  <link rel="stylesheet" href="baobab-projects.css">
+  <script src="baobab-projects.js" defer></script>
+  <script src="integration.js" defer></script>
+  <script src="topic-navigation.js" defer></script>
   <script src="original/assets/login-config.js"></script>
   <link rel="stylesheet" href="cloudflare-integration.css">
   <link rel="stylesheet" href="unterrichtsmodus.css">
   <script src="unterrichtsmodus.js" defer></script>
   <script src="unterrichtsmodus-admin.js" defer></script>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <link rel="stylesheet" href="safari-area-theme.css">
+  <link rel="stylesheet" href="admin-progress.css">
+  <script src="admin-progress.js" defer></script>
+  <script src="admin-dashboard.js" defer></script>
   <script src="cloudflare-integration.js" defer></script>
 </head>
 <body>
@@ -46,11 +51,10 @@
               <label class="sr-only" for="password">Passwort</label>
               <input id="password" name="password" type="password" placeholder="Passwort" autocomplete="current-password" aria-label="Passwort">
               <button type="submit" class="login-submit">Anmelden</button>
-              <button type="button" id="guestBtn" class="login-guest">Als Gast fortfahren</button>
             </form>
           </div>
         </div>
-        <div class="login-bottom"><span>🌞 Willkommen in der Klasse 3b!</span><button id="demoChild" class="text-action">Demo als Kind ausprobieren (ohne Konto)</button><button id="demoTeacher" class="text-action">Verwaltung testen (Demo)</button><button id="cloudTeacher" class="text-action">🔐 Lehrperson anmelden</button></div>
+        <div class="login-bottom"><span>🦩 Willkommen auf der LernSafari! Melde dich mit deinem Konto an.</span></div>
       </section>
 
       <section id="campScreen" class="camp-screen" aria-label="Safari-Camp" hidden>
@@ -74,6 +78,13 @@
           <div id="destinationContent"></div>
           <div class="destination-actions"><button id="backToCamp" class="primary">⛺ Zurück ins Camp</button></div>
         </div>
+      </section>
+      <section id="adminScreen" class="admin-screen" hidden aria-label="LernSafari-Verwaltung">
+        <div class="admin-screen-top">
+          <button type="button" id="adminPageBack" class="admin-screen-back">← Zurück ins Camp</button>
+          <div><span class="admin-screen-kicker">🦩 Flamingo · Verwaltung</span><h1>LernSafari verwalten</h1><p>Wähle einen Bereich, den du bearbeiten möchtest.</p></div>
+        </div>
+        <div id="adminPageBody" class="admin-screen-body" aria-live="polite"></div>
       </section>
     </main>
 

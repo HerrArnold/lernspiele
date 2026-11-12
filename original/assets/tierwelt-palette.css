@@ -1,0 +1,116 @@
+/* 2026-11-11: light, warm and accessible Tierwelt inside the Baobab.
+   This file intentionally loads AFTER the older dark-theme and safari skin. */
+#view-tiere.safari-feature{
+ --animal-ink:#342817;--animal-muted:#614e35;
+ --animal-sand:#fff8e8;--animal-white:#fffdf7;
+ --animal-gold:#b87a27;--animal-border:#cba96d;
+ --animal-leaf:#315c3f;--animal-green:#ecf3df;
+ background:transparent!important;color:var(--animal-ink)!important;
+}
+#view-tiere .feature-head,#view-tiere .animal-detail,#view-tiere .feature-panel,#view-tiere .animal-story,
+#view-tiere .animal-card,#view-tiere .fact,#view-tiere .animal-question,
+#view-tiere .feature-notice,#view-tiere .quiz-progress,#view-tiere .feature-head p{
+ color:var(--animal-ink)!important;
+}
+#view-tiere h1,#view-tiere h2,#view-tiere h3,#view-tiere h4,
+#view-tiere .feature-head h1,#view-tiere .animal-detail h2,#view-tiere .animal-story h3,
+#view-tiere .memory-panel .feature-head h2{
+ color:#654215!important;-webkit-text-fill-color:#654215!important;
+}
+#view-tiere .feature-panel,#view-tiere .animal-story,#view-tiere .baobab-info{
+ background:var(--animal-white)!important;border:2px solid #dbc29a!important;
+ box-shadow:0 8px 18px #6b4a211c!important;border-radius:20px;
+}
+#view-tiere .feature-panel p,#view-tiere .animal-story p,
+#view-tiere .feature-panel li,#view-tiere .animal-story li,
+#view-tiere .feature-panel span:not(.memory-front):not(.memory-back),
+#view-tiere .animal-story span{
+ color:#392e1f!important;-webkit-text-fill-color:currentColor!important;
+}
+#view-tiere .animal-facts .fact,#view-tiere .fact,
+#view-tiere .animal-tab-head{
+ background:#fff8e8!important;
+}
+#view-tiere .fact{border:2px solid #ddc89d!important;min-height:105px}
+#view-tiere .fact strong{
+ display:block;color:#315b3d!important;-webkit-text-fill-color:#315b3d!important;
+ font-size:17px!important;
+}
+#view-tiere .fact span,#view-tiere .fact p{color:#352c1e!important;-webkit-text-fill-color:#352c1e!important}
+#view-tiere .animal-card{
+ background:#fff9ee!important;border:2px solid #d7b581!important;
+ color:#382917!important;box-shadow:0 3px 12px #66472416!important;
+}
+#view-tiere .animal-card:hover,#view-tiere .animal-card:focus-visible{
+ border-color:#8a6029!important;background:#f6e9cb!important;
+ outline:3px solid #f0ca70;outline-offset:2px;
+}
+#view-tiere .animal-card strong{color:#4b331c!important;-webkit-text-fill-color:#4b331c!important}
+#view-tiere .animal-card img,#view-tiere .animal-photo{
+ background:#f1eddd!important;
+}
+#view-tiere .animal-tab-head button,#view-tiere .feature-button.alt,
+#view-tiere .quiz-options button,#view-tiere .memory-card{
+ background:#f7edd6!important;color:#4b331c!important;
+ border:2px solid #c9a16a!important;-webkit-text-fill-color:#4b331c!important;
+ font-weight:800;
+}
+#view-tiere .animal-tab-head button.active,#view-tiere .quiz-options button.chosen,
+#view-tiere .memory-card.open{
+ background:#e8d29e!important;border-color:#855b22!important;color:#392718!important;
+ -webkit-text-fill-color:#392718!important;
+}
+#view-tiere .animal-tab-head button:hover,#view-tiere .quiz-options button:hover,
+#view-tiere .feature-button.alt:hover{
+ background:#f0ddb5!important;border-color:#9c6926!important;
+}
+#view-tiere .feature-button,#view-tiere .feature-button.pink{
+ background:#77501f!important;color:#fffaf0!important;
+ -webkit-text-fill-color:#fffaf0!important;border:2px solid #65451e!important;
+ font-size:16px!important;line-height:1.35;
+}
+#view-tiere .feature-button:hover,#view-tiere .feature-button:focus-visible{
+ background:#5c3e1a!important;outline:3px solid #e6bd75;outline-offset:2px;
+}
+#view-tiere .quiz-options button.right{
+ background:#dbefce!important;border-color:#3e8046!important;color:#214627!important;
+ -webkit-text-fill-color:#214627!important;
+}
+#view-tiere .quiz-options button.wrong{
+ background:#f7dcda!important;border-color:#b54842!important;color:#682824!important;
+ -webkit-text-fill-color:#682824!important;
+}
+#view-tiere .quiz-result,#view-tiere .quiz-progress,
+#view-tiere .memory-status,#view-tiere .feature-notice{
+ background:#e9f0dd!important;color:#254a30!important;border-radius:12px;
+ -webkit-text-fill-color:#254a30!important;
+}
+#view-tiere .quiz-result.error{background:#f8e0d9!important;color:#6e2b21!important;
+ -webkit-text-fill-color:#6e2b21!important}
+#view-tiere .memory-card .memory-front{background:#cfaa71!important;color:#33240f!important;
+ -webkit-text-fill-color:#33240f!important}
+#view-tiere .memory-card .memory-back{background:#f8f4e9!important;color:#2e321f!important;
+ -webkit-text-fill-color:#2e321f!important}
+#view-tiere .memory-message,#view-tiere .spelling-feedback{color:#65401a!important;
+ -webkit-text-fill-color:#65401a!important}
+#view-tiere #spell-article,#view-tiere .spelling-name,#view-tiere .spelling-name label,
+#view-tiere #spell-article label,#view-tiere #spell-article legend,
+#view-tiere .spelling-row label{color:#3d2d1a!important;-webkit-text-fill-color:#3d2d1a!important}
+#view-tiere #spell-article{border:2px solid #cda772!important;background:#fff9e9!important}
+#view-tiere input:not([type=radio]):not([type=checkbox]),#view-tiere select,
+#view-tiere textarea{
+ background:#fffdf6!important;color:#2f2a20!important;border:2px solid #bc9b66!important;
+ -webkit-text-fill-color:#2f2a20!important;
+}
+#view-tiere input::placeholder,#view-tiere textarea::placeholder{
+ color:#74624b!important;-webkit-text-fill-color:#74624b!important;opacity:1!important;
+}
+#view-tiere :is(button,input,select,textarea):focus-visible{
+ outline:3px solid #286d89!important;outline-offset:3px;
+}
+#view-tiere .photo-credit{color:#4a5f79!important;-webkit-text-fill-color:#4a5f79!important}
+#view-tiere .animal-photo-wrap .animal-photo{background:#f4f1e8!important}
+@media(max-width:720px){
+ #view-tiere .animal-facts{grid-template-columns:1fr}
+ #view-tiere .feature-panel{padding:14px}
+}

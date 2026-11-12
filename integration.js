@@ -1,7 +1,7 @@
 /* LernSafari 2.0 - original learning content mounted without changes to game rules */
 'use strict';
 const ORIGINAL_GAMES = {"Deutsch": [{"title": "Gefühle und direkte Rede", "file": "gefuehle-direkte-rede.html", "preview": "preview-gefuehle.webp", "description": "Direkte Rede, Gesichter und Stimmen · 3 Teile"}, {"title": "Briefe entdecken", "file": "briefe-entdecken.html", "preview": "preview-briefe.webp", "description": "Briefarten, Briefaufbau und passende Sätze · 3 Teile"}], "NMG": [{"title": "Verschiedene Rabenvögel", "file": "verschiedene-rabenvoegel.html", "preview": "preview-rabenvoegel.webp", "description": "10 Rabenvögel auf Fotos erkennen und benennen"}, {"title": "Lebensraum der Vögel", "file": "lebensraum-voegel.html", "preview": "preview-lebensraum.webp", "description": "Was hilft und was schadet Vögeln? · 2 Teile"}, {"title": "Federtypen", "file": "federtypen.html", "preview": "preview-federn.webp", "description": "Federn erkennen und ihre Aufgaben verstehen"}, {"title": "Teste dein Wissen", "file": "teste-dein-wissen-nmg.html", "preview": "preview-wissen-nmg.webp", "description": "18 Aufgaben · 3 Teile · 18 Punkte"}], "Allgemein": [{"title": "Schach-Lexikon", "file": "schach-lexikon.html", "preview": "preview-schach-lexikon.svg", "description": "Figuren und wichtige Regeln einfach erklärt"}, {"title": "Schach gegen den Computer", "file": "schach-computer.html", "preview": "preview-schach-computer.svg", "description": "Spiele eine echte Partie gegen den Computer"}], "Musik": [{"title": "SayHi: Singen", "file": "sayhi-singen.html", "preview": "preview-sayhi-singen.svg", "description": "Musikvideo anschauen und mit Liedtext mitsingen"}, {"title": "SayHi: Tanz", "file": "sayhi-tanz.html", "preview": "preview-sayhi-tanz.svg", "description": "Die Tanzschritte mit Video üben"}, {"title": "Solmisationsleiter", "file": "solmisationsleiter.html", "preview": "preview-solmisationsleiter.webp", "description": "Silben ordnen und Farben finden"}, {"title": "Solmisationsspiel", "file": "solmisationsspiel.html", "preview": "preview-solmi.webp", "description": "Do liegt auf C"}, {"title": "Solmisationsspiel schwer", "file": "solmisationsspiel-profi.html", "preview": "preview-solmi-profi.webp", "description": "Do liegt auf verschiedenen Tönen"}, {"title": "Rhythmus-Trio", "file": "rhythmus-trio.html", "preview": "preview-rhythm-trio.webp", "description": "Drei passende Karten finden"}, {"title": "Notenname · Notenbild · Rhythmussprache", "file": "rhythmus-trio-profi.html", "preview": "preview-rhythm-profi.webp", "description": "Rhythmen schreiben und zeichnen"}, {"title": "Teste dein Wissen", "file": "teste-dein-wissen-musik.html", "preview": "preview-teste-wissen-musik.svg", "description": "24 Punkte · 12 Aufgaben"}], "Mathe": [{"title": "Einmaleins-Tafel erforschen", "file": "einmaleins-tafel-entdecken.html", "preview": "preview-einmaleins-tafel.svg", "description": "Zusammenhänge finden · Neue Reihen mit Merkaufgaben lösen"}, {"title": "Einmaleins-Mix", "file": "einmaleins-mix.html", "preview": "preview-einmaleins-mix.svg", "description": "2er-, 5er- und 10er-Reihe gemischt üben"}, {"title": "Die 3er-Reihe", "file": "einmaleins-dreier.html", "preview": "preview-einmaleins-dreier.svg", "description": "Mit der 2er-Reihe die 3er-Reihe entdecken"}, {"title": "Die 4er-Reihe", "file": "einmaleins-vierer.html", "preview": "preview-einmaleins-vierer.svg", "description": "Mit der 2er-Reihe die 4er-Reihe entdecken"}, {"title": "Die 6er-Reihe", "file": "einmaleins-sechser.html", "preview": "preview-einmaleins-sechser.svg", "description": "Mit der 5er-Reihe die 6er-Reihe entdecken"}, {"title": "Die 9er-Reihe", "file": "einmaleins-neuner.html", "preview": "preview-einmaleins-neuner.svg", "description": "Mit der 10er-Reihe die 9er-Reihe entdecken"}, {"title": "Einmaleins-Mix · 3, 4, 6 und 9", "file": "einmaleins-mix-neue-reihen.html", "preview": "preview-einmaleins-mix-neue-reihen.svg", "description": "3er-, 4er-, 6er- und 9er-Reihe gemischt üben"}, {"title": "Finde die Zahl", "file": "finde-die-zahl.html", "preview": "preview-finde-die-zahl.webp", "description": "Zahlen im Tausenderbuch suchen"}, {"title": "Stellentafel", "file": "stellentafel.html", "preview": "preview-stellentafel.webp", "description": "Hunderter, Zehner und Einer"}, {"title": "Hunderter, Zehner und Einer zerlegen", "file": "hunderter-zehner-einer-zerlegen.html", "preview": "preview-hunderter-zehner-einer-zerlegen.webp", "description": "Zahlen zerlegen"}, {"title": "Wie viele Hundertertafeln, Zehnerstangen und Einerwürfel?", "file": "wie-viele-brauchst-du.html", "preview": "preview-wie-viele-brauchst-du.webp", "description": "Mit Stellenwertmaterial arbeiten"}, {"title": "Welche Zahl ist das?", "file": "welche-zahl-ist-das.html", "preview": "preview-welche-zahl-ist-das.webp", "description": "Stellenwertmaterial erkennen"}, {"title": "Teste dein Wissen", "file": "teste-dein-wissen.html", "preview": "preview-teste-wissen-mathe.svg", "description": "Lernkontrolle · 15 Aufgaben"}]};
-const SUBJECTS=[['Mathe','Mathematik','🔢'],['Deutsch','Deutsch','📚'],['NMG','NMG','🐦‍⬛'],['Musik','Musik','🎵'],['Englisch','Englisch','🇬🇧']];
+const SUBJECTS=[['Mathe','Mathe','<img class="safari-subject-badge" src="assets/math-badge.svg" alt="" aria-hidden="true">'],['Deutsch','Deutsch','<img class="safari-subject-badge" src="assets/german-flag.svg" alt="" aria-hidden="true">'],['NMG','NMG','<img class="safari-subject-badge" src="assets/nmg-leaf.svg" alt="" aria-hidden="true">'],['Musik','Musik','<img class="safari-subject-badge" src="assets/music-badge.svg" alt="" aria-hidden="true">'],['Englisch','Englisch','<img class="safari-subject-badge" src="assets/uk-flag.svg" alt="" aria-hidden="true">']];
 let safariSubject=null;
 let safariGame=null;
 let safariGameOrigin='lagoon';
@@ -32,8 +32,42 @@ function integrationTrail(areaLabel,contextLabel,title){
   const parts=['LernSafari',areaLabel];
   if(contextLabel)parts.push(contextLabel);
   if(title)parts.push(title);
-  return `<nav class="integration-trail" aria-label="Pfad">${parts.map((part,i)=>`${i?'<span class="integration-chevron">›</span>':''}<span class="integration-pill ${i===parts.length-1?'is-current':''}">${htmlSafe(part)}</span>`).join('')}</nav>`;
+  return `<nav class="integration-trail" aria-label="Pfad">${parts.map((part,i)=>{
+    const current=i===parts.length-1;
+    const item=current
+      ?`<span class="integration-pill is-current" aria-current="page">${htmlSafe(part)}</span>`
+      :`<button type="button" class="integration-pill integration-trail-link" data-trail-index="${i}" aria-label="Zurück zu ${htmlSafe(part)}">${htmlSafe(part)}</button>`;
+    return `${i?'<span class="integration-chevron" aria-hidden="true">›</span>':''}${item}`;
+  }).join('')}</nav>`;
 }
+/* Breadcrumb navigation is delegated: every new view replaces destinationContent,
+   so handlers attached to individual pills would be lost after each render. */
+document.getElementById('destinationContent').addEventListener('click',event=>{
+  const pill=event.target.closest('button[data-trail-index]');
+  if(!pill||!event.currentTarget.contains(pill))return;
+  const index=Number(pill.dataset.trailIndex);
+  const labels=[...pill.closest('.integration-trail').querySelectorAll('.integration-pill')].map(el=>el.textContent.trim());
+  if(index===0){
+    safariGame=null;safariSubject=null;
+    goCamp();
+    return;
+  }
+  if(index===1){
+    safariGame=null;safariSubject=null;
+    const area=labels[1];
+    if(area==='Lern-Lagune'){activeLagoonSubject=null;renderLagoon();}
+    else if(area==='Baobab-Baum'){baobabSection=null;renderBaobab();}
+    else if(area==='Tages-Tal'){renderValley();}
+    else if(area==='Oase'){renderDestination(places.find(p=>p.id==='oasis'));}
+    return;
+  }
+  if(index===2 && labels[1]==='Lern-Lagune'){
+    safariGame=null;
+    const subject=SUBJECTS.find(x=>x[1]===labels[2]||x[0]===labels[2]);
+    if(subject){safariSubject=subject[0];renderLagoon();}
+    else {safariSubject=null;renderLagoon();}
+  }
+});
 function originalFrame(relative,title,opts={}){
  const root=document.getElementById('destinationContent');
  const back=integrationBackConfig(),areaId=opts.areaId||back.areaId||'lagoon',area=integrationAreaMeta(areaId),kind=opts.kind||'exercise';
@@ -53,7 +87,7 @@ function renderOriginalSubject(subject){
   document.getElementById('backOriginalSubject').onclick=()=>{safariSubject=null;renderLagoon()};
   root.querySelectorAll('[data-original-game]').forEach(btn=>btn.onclick=()=>{
     const game=games[Number(btn.dataset.originalGame)];safariGame=game;safariGameOrigin=subject;
-    originalFrame('original/spiele/'+encodeURIComponent(game.file),game.title,{areaId:'lagoon',contextLabel:label,headline:game.title,intro:`${label}: ${game.description}. Das Spiel selbst bleibt erhalten, nur die Einbettung passt jetzt besser zur LernSafari.`,toolbarLead:`${SUBJECTS.find(s=>s[0]===subject)?.[2]||'🎒'} ${label}`,toolbarNote:'Die Übung läuft direkt im Safari-Fenster. Aufgaben und Auswertung bleiben unverändert.',tip:'Wenn du fertig bist, gehst du mit dem Zurück-Knopf wieder sauber zurück in die Lern-Lagune.'})
+    originalFrame('original/spiele/'+encodeURIComponent(game.file),game.title,{areaId:'lagoon',contextLabel:label,headline:game.title,intro:`${label}: ${game.description}. Das Spiel selbst bleibt erhalten, nur die Einbettung passt jetzt besser zur LernSafari.`,toolbarLead:`📘 ${label}`,toolbarNote:'Die Übung läuft direkt im Safari-Fenster. Aufgaben und Auswertung bleiben unverändert.',tip:'Wenn du fertig bist, gehst du mit dem Zurück-Knopf wieder sauber zurück in die Lern-Lagune.'})
   });
 }
 renderLagoon=function(){
@@ -72,10 +106,35 @@ renderLagoon=function(){
 renderValley=function(){
   originalFrame('original/index.html#aufgaben','Aufgaben des Tages',{areaId:'valley',contextLabel:'Tagesaufgaben',headline:'Deine Aufgaben des Tages',intro:'Die «Zahl des Tages» und die weiteren Tagesaufgaben bleiben in ihrer bekannten Struktur erhalten. Neu ist vor allem der engere LernSafari-Rahmen rundherum.',kind:'daily',toolbarLead:'🌞 Tages-Tal · Heutige Aufgaben',toolbarNote:'Auch hier bleiben Tageswechsel, Aufgabenserien und Auswertung aus der bisherigen LernSafari bestehen.',tip:'Oben im eingebetteten Bereich bearbeitest du die Aufgaben wie bisher. Mit «Zurück» gelangst du wieder sauber ins Tages-Tal.'});
 };
-// The illustrated Baobab is the primary, interactive navigation, not a static preview.
-// Reuse the six labelled hotspots and responsive fallbacks from app.js.
 renderBaobab=function(){
-  return originalBaobab();
+ const root=document.getElementById('destinationContent');
+ root.innerHTML=`<section class="integration-baobab-new" aria-label="Baobab-Baum und Klassenwelt">
+   <div class="baobab-intro">🌳 Unser Baobab-Baum – entdecke unsere Klassentiere und Erlebnisse!</div>
+   <div class="baobab-map baobab-new-map">
+     <img src="assets/baobab-stickerwelt.webp" onload="if(this.currentSrc.includes('baobab-stickerwelt.webp')||this.currentSrc.includes('baobab.jpg'))this.parentNode.classList.add('baobab-has-character-art')" onerror="if(!this.dataset.fallback){this.dataset.fallback='original';this.src='assets/baobab.jpg'}else{this.onerror=null;this.src='assets/baobab-ohne-schilder.svg'}" alt="Ein grosser Baobab-Baum in einer zusammenhängenden Savanne. Im Vordergrund ein Löwe, ein Warzenschwein und genau ein Erdmännchen. Links sitzt ein Hornvogel." draggable="false">
+     <img class="baobab-extra-flamingo" src="original/assets/tiersticker/flamingo.png" alt="" aria-hidden="true" draggable="false">
+     <button class="baobab-hotspot baobab-animals" type="button" data-baobab-new="animals"><span>🐾 Unsere Klassentiere</span></button>
+     <button class="baobab-hotspot baobab-advent" type="button" data-baobab-new="advent"><span>🎄 Adventskalender<small>🔒 Noch nicht verfügbar</small></span></button>
+     <button class="baobab-hotspot baobab-projects" type="button" data-baobab-new="projects"><span>📸 Projekte und Erlebnisse</span></button>
+   </div>
+   <div class="baobab-mobile-links"><button type="button" data-baobab-new="animals">🐾 Unsere Klassentiere</button><button type="button" data-baobab-new="advent">🎄 Adventskalender 🔒</button><button type="button" data-baobab-new="projects">📸 Projekte und Erlebnisse</button></div>
+   <p class="integration-note">Ein Klick auf ein Holzschild führt dich direkt zum passenden Bereich.</p>
+ </section>`;
+ root.querySelectorAll('[data-baobab-new]').forEach(button=>button.addEventListener('click',()=>{
+   const id=button.dataset.baobabNew;
+   if(id==='animals'){
+     originalFrame('original/index.html#tiere','Unsere Klassentiere',{areaId:'baobab',contextLabel:'Tierwelt'});
+   }else if(id==='advent'){
+     const placeholder=document.createElement('section');placeholder.className='baobab-coming-soon';
+     placeholder.innerHTML='<button type="button" class="integration-back" id="backFromAdvent">← Zum Baobab-Baum</button><div class="baobab-coming-icon">🎄</div><h2>Adventskalender</h2><p>🛠️ Noch nicht verfügbar</p><small>Hier entsteht später unser Adventskalender.</small>';
+     root.replaceChildren(placeholder);
+     placeholder.querySelector('#backFromAdvent').onclick=()=>renderBaobab();
+   }else if(id==='projects'){
+     root.innerHTML='<div class="baobab-gallery-page"><button type="button" class="integration-back" id="returnFromProjects">← Zum Baobab-Baum</button><div id="baobabGalleryContent"></div></div>';
+     root.querySelector('#returnFromProjects').onclick=()=>renderBaobab();
+     window.LernSafariProjects?.render(root.querySelector('#baobabGalleryContent'));
+   }
+ }));
 };
 renderDestination=function(place){
  if(place.id==='lagoon'){safariSubject=null;safariGame=null;return renderLagoon()}

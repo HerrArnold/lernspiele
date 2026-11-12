@@ -1,0 +1,49 @@
+/* Baobab 2026 - compact illustrated entry and Polaroid class album. */
+.destination-screen.is-baobab{padding:7px 12px 17px}
+.is-baobab .destination-panel{width:min(1580px,100%);padding:9px 12px;border-color:#af9461}
+.is-baobab .dest-hero{display:none}
+.is-baobab .destination-actions{margin:5px 0 0}
+.is-baobab .destination-actions button{padding:7px 12px}
+.integration-baobab-new .baobab-intro{margin:2px 0 7px;font-size:clamp(14px,1.3vw,18px)}
+.baobab-new-map{aspect-ratio:16/8.5;width:min(100%,calc((75dvh - 15px) * 1600 / 850));margin:0 auto;position:relative;overflow:hidden;border:3px solid #d6b97c;border-radius:18px;box-shadow:0 5px 19px #5e452b3b}
+.baobab-new-map>img{display:block;width:100%;height:100%;object-fit:cover}
+.baobab-new-map .baobab-hotspot{position:absolute;width:auto;height:auto;min-width:19%;padding:10px 14px;color:#53371f;background:linear-gradient(#ffedbb,#d9ab67);border:4px solid #79542d;border-radius:19px;box-shadow:inset 0 0 0 2px #fff5ce,0 6px 4px #5a3d266b;transform:translate(-50%,-50%);font:inherit;font-size:clamp(12px,1.55vw,24px);font-weight:900;text-align:center;line-height:1.2;cursor:pointer}
+.baobab-new-map .baobab-hotspot:hover,.baobab-new-map .baobab-hotspot:focus-visible{border-color:#ecdb9f;background:linear-gradient(#fff6d0,#f6cb84);outline:3px solid #355f45;outline-offset:2px}
+.baobab-new-map .baobab-hotspot small{display:block;font-size:.58em;margin-top:5px;color:#674d38}
+.baobab-new-map .baobab-animals{left:20%;top:31%;width:25%}
+.baobab-new-map .baobab-advent{left:81%;top:30%;width:27%}
+.baobab-new-map .baobab-projects{left:80%;top:64%;width:29%}
+.baobab-new-map~.baobab-mobile-links{display:none}
+.baobab-coming-soon{min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fff9e9;border:2px dashed #c5b18f;border-radius:18px;position:relative;padding:45px}
+.baobab-coming-soon .integration-back{position:absolute;top:16px;left:16px}
+.baobab-coming-icon{font-size:70px}
+.baobab-coming-soon h2{font-size:clamp(24px,3vw,36px);color:#436342;margin:8px}
+.baobab-coming-soon p{font-size:22px;color:#936c46;font-weight:850}
+.baobab-coming-soon small{color:#645b48}
+.baobab-gallery-page{padding:10px 5px 20px;min-height:360px}
+.baobab-projects-intro{text-align:center;padding:9px}
+.baobab-projects-intro h2{font-size:clamp(24px,3vw,35px);color:#355940;margin:2px 0}
+.baobab-projects-intro p{margin:3px 0 14px;color:#67563e}
+.baobab-projects-empty{border:2px dashed #ceb48c;border-radius:15px;background:#fffaf0;color:#74573d;text-align:center;padding:45px 18px;font-size:17px}
+.baobab-polaroids{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:22px;justify-items:center;padding:20px 18px 50px}
+.baobab-polaroid{margin:0;padding:12px 12px 25px;background:#fffdf7;max-width:295px;width:100%;box-shadow:0 8px 22px #3c322545;transform:rotate(var(--polaroid-tilt));transition:transform .16s;border:1px solid #e4dfd2}
+.baobab-polaroid:hover{transform:rotate(0) translateY(-4px)}
+.baobab-polaroid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e0e7d8}
+.baobab-polaroid figcaption{display:grid;gap:5px;text-align:center;padding:10px 2px 0;color:#554432}
+.baobab-polaroid figcaption time{font-size:12px;color:#786d5b}
+.baobab-polaroid figcaption strong{font-size:17px}
+.baobab-polaroid figcaption span{font-size:13px;line-height:1.3}
+.admin-project-list{display:grid;gap:8px}
+.admin-project-list article{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:9px;border:1px solid #d8c6a0;border-radius:12px;background:#fff9ed}
+.admin-project-permission{display:flex!important;align-items:flex-start;gap:9px}
+.admin-project-permission input{width:19px;height:19px;flex:none}
+@media(max-width:800px){
+ .baobab-new-map{width:100%;max-height:none}
+ .baobab-new-map .baobab-hotspot{font-size:clamp(9px,2vw,16px);min-width:0;border-width:2px;border-radius:12px;padding:5px}
+ .baobab-new-map .baobab-animals{width:28%}
+ .baobab-new-map .baobab-advent{width:29%}
+ .baobab-new-map .baobab-projects{width:29%}
+ .baobab-new-map~.baobab-mobile-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .baobab-new-map~.baobab-mobile-links button{font-size:12px}
+}
+@media(max-width:540px){.baobab-new-map .baobab-hotspot{font-size:9px}.baobab-polaroids{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;padding:12px 4px}.baobab-polaroid{padding:7px 7px 18px}.baobab-polaroid figcaption strong{font-size:13px}}

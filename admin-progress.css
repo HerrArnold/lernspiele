@@ -1,0 +1,29 @@
+
+/* LernSafari: data-backed pupil results with expandable attempt mistakes. */
+.admin-progress-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}
+.admin-progress-filters label{display:grid;gap:5px;font-weight:800;color:#473827}
+.admin-progress-filters select{background:#fffdf5;color:#342b22;padding:10px;border:2px solid #c7a97b;border-radius:11px;min-width:0;font:inherit}
+.admin-progress-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0}
+.admin-progress-summary article{display:grid;gap:5px;padding:15px;background:#f5ecd7;border:2px solid #d9bc8f;border-radius:14px}
+.admin-progress-summary strong{font-size:clamp(24px,2.5vw,37px);color:#2f5d40}
+.admin-progress-summary span{font-size:13px;color:#5b4937;font-weight:700}
+.admin-progress-topic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.admin-progress-topic-list article{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:13px;border:2px solid #d5c09b;border-radius:13px;background:#fffaf1}
+.admin-progress-topic-list article strong{flex:1 1 100%;font-size:15px;color:#384b36}
+.admin-progress-topic-list article span{border-radius:20px;background:#e6f0e0;padding:5px 9px;color:#32513b;font-size:13px;font-weight:750}
+.admin-progress-topic-list article small{flex:1 1 100%;color:#795b35}
+.admin-progress-game-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:12px}
+.admin-progress-game{background:#fffaf0;border:2px solid #dcc49d;border-radius:16px;padding:14px;min-width:0}
+.admin-progress-game h6{font-size:clamp(16px,1.25vw,19px);color:#31523c;margin:0 0 7px;overflow-wrap:anywhere}
+.admin-progress-game p{font-size:13px;color:#5a4935;margin:0 0 13px}
+.admin-detail-attempt{border:1px solid #d4bc99;border-radius:10px;background:#fffdf8;margin:7px 0;padding:8px;color:#3c3025}
+.admin-detail-attempt summary{font-weight:800;cursor:pointer;color:#335842;line-height:1.45}
+.admin-detail-attempt summary:focus-visible{outline:3px solid #2b7396;outline-offset:2px}
+.admin-detail-facts{display:grid;grid-template-columns:minmax(100px,max-content) minmax(0,1fr);gap:8px 12px;border-top:1px solid #e7d7be;padding-top:10px;margin:10px 0 0}
+.admin-detail-facts dt{font-weight:850;color:#5a4531}
+.admin-detail-facts dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#332a20}
+.admin-detail-missing,.admin-progress-method{font-size:13px;color:#65513b;line-height:1.5}
+.admin-progress-method{padding:12px 16px;border-left:4px solid #a97d43;background:#f7ecd8;border-radius:8px;margin-top:18px}
+#adminProgressReport h5{color:#355d40;margin:24px 0 8px}
+@media(max-width:900px){.admin-progress-game-list,.admin-progress-topic-list{grid-template-columns:1fr}}
+@media(max-width:630px){.admin-progress-filters,.admin-progress-summary{grid-template-columns:1fr}.admin-detail-facts{grid-template-columns:1fr}}

@@ -1,0 +1,278 @@
+/* LernSafari five-area visual identity, November 2026.
+   Warm neutral paper is preserved; distinctive, accessible accents belong
+   to controls and surrounding panels, never to text on incompatible surfaces. */
+:root{
+ --sf-pink:#b84270;--sf-pink-dark:#772f4e;--sf-pink-light:#fff1f4;
+ --sf-brown:#8b591f;--sf-brown-dark:#59401f;--sf-gold-light:#fff4d9;
+ --sf-valley:#d87521;--sf-valley-dark:#86410f;--sf-valley-light:#fff4e5;
+ --sf-lagoon:#2e7850;--sf-lagoon-dark:#205037;--sf-lagoon-light:#eff8e9;
+ --sf-oasis:#247ba2;--sf-oasis-dark:#145376;--sf-oasis-light:#eafaff;
+}
+/* CAMP · flamingo pink. Keep the camp illustration untouched. */
+.camp-screen .camp-hint,
+.camp-screen .hotspot-label{
+ background:var(--sf-pink-light)!important;
+ color:var(--sf-pink-dark)!important;
+ border:2px solid #d88eab!important;
+}
+.camp-screen+.camp-bottom,
+.camp-bottom{background:#fff0f3;border-top:2px solid #e7afc2}
+.camp-bottom button,.camp-bottom .pill-link,
+.camp-screen .text-action{
+ background:#f8d9e3!important;border:2px solid #a8446c!important;
+ color:#642541!important;font-weight:800!important;
+}
+.camp-bottom button:hover,.camp-bottom .pill-link:hover{
+ background:#f1bed0!important;
+}
+/* MAP · one matching landscape + category-coloured polished wood signs.
+   All labels remain real HTML and share the exact hit target. */
+.modal-kind-map .map-hotspot{
+ --sign-top:#ffecbd;--sign-bottom:#dfb46d;--sign-edge:#805228;
+ background:linear-gradient(165deg,var(--sign-top),var(--sign-bottom))!important;
+ color:#3b2c1a!important;
+ border:3px solid var(--sign-edge)!important;border-radius:14px!important;
+ box-shadow:inset 0 2px 0 #fff8da,0 4px 0 #76512c,0 7px 15px #5239245c!important;
+ padding:.7% 1.8%!important;
+ font-size:clamp(11px,1.42vw,22px)!important;
+ font-weight:900!important;
+ text-shadow:0 1px 0 #fff8dd;
+ white-space:nowrap!important;
+}
+.modal-kind-map .map-hotspot:focus-visible,.modal-kind-map .map-hotspot:hover{
+ filter:brightness(1.07);outline:3px solid #fffdf5;outline-offset:3px;
+}
+.modal-kind-map .map-hotspot-valley{--sign-top:#ffe8b7;--sign-bottom:#e9ac63;--sign-edge:#a25a1f;left:22%;top:24%}
+.modal-kind-map .map-hotspot-lagoon{--sign-top:#e4f6d1;--sign-bottom:#b9d68f;--sign-edge:#356d43;left:78%;top:23%}
+.modal-kind-map .map-hotspot-camp{--sign-top:#ffdaea;--sign-bottom:#e99dbb;--sign-edge:#a4426a;left:50%;top:57%}
+.modal-kind-map .map-hotspot-baobab{--sign-top:#ffedb3;--sign-bottom:#deb575;--sign-edge:#8e5b2b;left:22%;top:79%}
+.modal-kind-map .map-hotspot-oasis{--sign-top:#d0f4fc;--sign-bottom:#91d1e5;--sign-edge:#21647e;left:79%;top:79%}
+.modal-kind-map .map-mobile-place{
+ background:#fff7e9!important;color:#49331e!important;border:2px solid #ad814a!important;
+}
+/* Common legibility of all destination containers. */
+.destination-screen .destination-panel,
+.destination-screen .destination-panel :is(h1,h2,h3,h4,p,small,strong){
+ text-shadow:none;
+}
+.destination-screen .destination-panel{color:#302b24}
+.destination-screen :is(.back-link,.integration-back,.integration-trail-link):focus-visible,
+.destination-screen button:focus-visible{
+ outline:3px solid #236e82!important;outline-offset:2px;
+}
+/* DAY VALLEY · warm orange; the hornbill remains blue for contrast. */
+.destination-screen.is-valley{
+ background:linear-gradient(160deg,#ffecd1,#f7d8ad 55%,#fff6e8)!important;
+}
+.is-valley .destination-panel{background:#f7fcff!important;border-color:#d9a16a!important}
+.is-valley .dest-hero h1,.is-valley .integration-hero h2,
+.is-valley .integration-kicker,.is-valley .valley-heading h2{
+ color:var(--sf-valley-dark)!important;
+}
+.is-valley .integration-hero,.is-valley .integration-context-card,
+.is-valley .integration-game-surface{background:var(--sf-valley-light)!important;border-color:#e7c398!important}
+.is-valley :is(.primary,.integration-back,.integration-game-card:hover,
+.integration-game-card:focus-visible){border-color:#ab641e!important}
+.is-valley :is(.primary,.integration-back){
+ background:var(--sf-valley)!important;color:white!important;
+}
+.is-valley .integration-back:hover{background:#a95318!important}
+/* LAGOON · green active learning. */
+.destination-screen.is-lagoon{background:linear-gradient(155deg,#d6eacd,#b6d9bb 58%,#e5eed6)!important}
+.is-lagoon .destination-panel{background:#fbfff7!important;border-color:#7fae88!important}
+.is-lagoon .integration-hero,.is-lagoon .integration-context-card{
+ background:var(--sf-lagoon-light)!important;border-color:#bbd5b5!important;
+}
+.is-lagoon .integration-hero h2,.is-lagoon .integration-kicker,
+.is-lagoon .lagoon-heading{color:var(--sf-lagoon-dark)!important}
+.is-lagoon :is(.primary,.integration-back){
+ background:var(--sf-lagoon)!important;border-color:#276546!important;color:#fff!important;
+}
+/* BAOBAB · warm ochre wood, calm cream text surfaces. */
+.destination-screen.is-baobab{background:linear-gradient(165deg,#f3e2ac,#eed29a 55%,#f6ebcd)!important}
+.is-baobab .destination-panel{background:#fffbf0!important;border-color:#ba8b4b!important}
+.is-baobab :is(.back-link,.integration-kicker,.baobab-intro){color:#66421c!important}
+.is-baobab :is(.integration-back,.primary){background:#8b5e28!important;color:#fffaf0!important;border-color:#65441d!important}
+.is-baobab :is(.baobab-projects-empty,.baobab-coming-soon){
+ background:#fff8e7!important;border-color:#d0ab75!important;color:#60431f!important;
+}
+.baobab-new-map .baobab-hotspot{
+ background:linear-gradient(145deg,#ffecb8,#d9aa66)!important;
+ color:#4b3218!important;
+ border:3px solid #845327!important;border-radius:15px!important;
+ box-shadow:inset 0 2px 0 #fff6dc,0 5px 0 #87582c,0 7px 15px #5540245c!important;
+}
+.baobab-new-map .baobab-hotspot:focus-visible,.baobab-new-map .baobab-hotspot:hover{
+ background:linear-gradient(145deg,#fff5ce,#e8c285)!important;
+ outline:3px solid #fffef2!important;outline-offset:3px;
+}
+.baobab-new-map .baobab-animals{left:21%;top:31%}
+.baobab-new-map .baobab-advent{left:80%;top:29%}
+.baobab-new-map .baobab-projects{left:79%;top:64%}
+/* OASIS · quieter deep turquoise-blue, different from Valley sky-blue.
+   It remains a leisure area, with clear and readable card contrasts. */
+.destination-screen.is-oasis{background:linear-gradient(160deg,#cce8ef,#a4d8e7 55%,#dfedf2)!important}
+.is-oasis .destination-panel{background:#f7fdff!important;border-color:#569bb2!important}
+.is-oasis .integration-hero,.is-oasis .integration-context-card,
+.is-oasis .integration-game-card{
+ background:#eaf8fc!important;border-color:#a2d1df!important;
+}
+.is-oasis .integration-hero h2,.is-oasis .integration-kicker,
+.is-oasis .integration-context-card strong{
+ color:var(--sf-oasis-dark)!important;
+}
+.is-oasis :is(.primary,.integration-back){
+ background:var(--sf-oasis)!important;border-color:var(--sf-oasis-dark)!important;color:white!important;
+}
+.is-oasis .integration-game-card:hover{border-color:#216a84!important}
+@media(max-width:720px){
+ .modal-kind-map .map-hotspot{font-size:clamp(8px,1.85vw,13px)!important;padding:1% 1%!important;border-width:2px!important;white-space:normal!important}
+ .baobab-new-map .baobab-hotspot{border-width:2px!important}
+}
+
+/* Mascot images share each map landmark and never intercept the button click. */
+.modal-kind-map .safari-map .map-mascot{
+ position:absolute;display:block;object-fit:contain;pointer-events:none;
+ border:none;background:none;user-select:none;
+ filter:drop-shadow(0 4px 3px #4a331f50);
+ height:auto;z-index:1;
+}
+.modal-kind-map .safari-map .map-hotspot{z-index:2}
+.modal-kind-map .map-mascot-valley{left:27%;top:14%;width:8.5%}
+.modal-kind-map .map-mascot-lagoon{right:6%;top:23%;width:10%}
+.modal-kind-map .map-mascot-camp{left:60%;top:43%;width:8.5%}
+.modal-kind-map .map-mascot-baobab{left:3%;bottom:7%;width:11%}
+.modal-kind-map .map-mascot-oasis{right:6%;bottom:6%;width:13%}
+
+.baobab-new-map>img.baobab-extra-flamingo{
+ position:absolute;left:58%;top:46%;width:12%;height:auto;
+ max-height:41%;object-fit:contain;z-index:1;pointer-events:none;
+ filter:drop-shadow(0 5px 4px #4b361c55);
+}
+.baobab-new-map .baobab-hotspot{z-index:2}
+
+/* Full hand-painted artwork already includes the five animals;
+   only the illustration fallback needs separately positioned stickers. */
+.modal-kind-map .map-has-character-art .map-mascot{display:none!important}
+.baobab-new-map.baobab-has-character-art>img.baobab-extra-flamingo{display:none!important}
+
+/* Generated panorama aspect ratio: never crop the hornbill, flamingo or tree. */
+.baobab-new-map{
+ aspect-ratio:1672 / 941!important;
+ width:min(100%,calc((75dvh - 15px) * 1672 / 941))!important;
+}
+.baobab-new-map>img:first-child{object-fit:contain!important}
+.modal-kind-map .safari-map>img:first-child{object-fit:contain!important}
+
+/* Accessible orange states: white labels on warm dark-orange controls. */
+.is-valley :is(.integration-back,.primary,.integration-action,.integration-start-game){
+ background:#ac581a!important;color:#fffef7!important;
+ -webkit-text-fill-color:#fffef7!important;border-color:#87400e!important;
+}
+.is-valley :is(.integration-back,.primary,.integration-action,.integration-start-game):hover{
+ background:#86420e!important;
+}
+.is-valley :is(.integration-game-card,.integration-context-card,.integration-tip-box){
+ color:#422e1c!important;
+}
+.is-valley :is(.integration-game-caption,.integration-context-card p,.integration-tip-box p){
+ color:#4d392a!important;
+}
+
+/* Laptop map overlay: use the viewport, never force a hidden vertical scroll. */
+.modal-layer:has(.modal-kind-map){padding:8px 10px!important}
+.modal-kind-map{max-height:calc(100dvh - 16px)!important;overflow:hidden!important}
+.modal-kind-map .modal-body{overflow-y:auto!important;min-height:0}
+.modal-kind-map .map-scroll{max-height:min(78dvh,760px)}
+.modal-kind-map .safari-map{width:min(100%,calc(78dvh * 16 / 9))}
+@media(max-height:690px){
+ .modal-kind-map .map-scroll{max-height:70dvh}
+ .modal-kind-map .safari-map{width:min(100%,calc(70dvh * 16 / 9))}
+}
+
+/* Sign locations are based on the supplied final images (1672x941).
+   Avoid covering faces, the waterfall, the logbook and the Polaroid props. */
+.modal-kind-map .map-hotspot-valley{left:23%;top:22%}
+.modal-kind-map .map-hotspot-lagoon{left:73%;top:31%}
+.modal-kind-map .map-hotspot-camp{left:50%;top:58%}
+.modal-kind-map .map-hotspot-baobab{left:23%;top:83%}
+.modal-kind-map .map-hotspot-oasis{left:75%;top:76%}
+.baobab-new-map .baobab-animals{left:75%;top:16%;width:27%}
+.baobab-new-map .baobab-advent{left:80%;top:33%;width:27%}
+.baobab-new-map .baobab-projects{left:77%;top:50%;width:29%}
+@media(max-width:800px){
+ .baobab-new-map .baobab-animals{left:73%;top:16%;width:30%}
+ .baobab-new-map .baobab-advent{left:80%;top:34%;width:30%}
+ .baobab-new-map .baobab-projects{left:77%;top:51%;width:32%}
+}
+
+/* 2026-11-12: Whole-page area-specific backgrounds, not only the inner card. */
+html:has(#campScreen:not([hidden])),
+body:has(#campScreen:not([hidden])),
+.app:has(#campScreen:not([hidden])),
+#campScreen:not([hidden]),#campScreen:not([hidden]) .camp-wrap,
+#campScreen:not([hidden]) .scene-wrap{
+ background:#f8dce5!important;
+ background-image:linear-gradient(160deg,#fff0f5 0%,#f8dbe5 52%,#edc8d7 100%)!important;
+}
+html:has(#destinationScreen.is-valley:not([hidden])),
+body:has(#destinationScreen.is-valley:not([hidden])),
+.app:has(#destinationScreen.is-valley:not([hidden])),
+#destinationScreen.is-valley:not([hidden]){
+ background:#f9e1c3!important;
+ background-image:linear-gradient(155deg,#fff4e5 0%,#f6dab4 52%,#f2cda4 100%)!important;
+}
+html:has(#destinationScreen.is-lagoon:not([hidden])),
+body:has(#destinationScreen.is-lagoon:not([hidden])),
+.app:has(#destinationScreen.is-lagoon:not([hidden])),
+#destinationScreen.is-lagoon:not([hidden]){
+ background:#d8ead1!important;
+ background-image:linear-gradient(155deg,#eff8e8 0%,#d6e8cf 53%,#bdd8ba 100%)!important;
+}
+html:has(#destinationScreen.is-oasis:not([hidden])),
+body:has(#destinationScreen.is-oasis:not([hidden])),
+.app:has(#destinationScreen.is-oasis:not([hidden])),
+#destinationScreen.is-oasis:not([hidden]){
+ background:#d2eaf3!important;
+ background-image:linear-gradient(155deg,#f0faff 0%,#d4e9f3 53%,#b7d6e8 100%)!important;
+}
+html:has(#destinationScreen.is-baobab:not([hidden])),
+body:has(#destinationScreen.is-baobab:not([hidden])),
+.app:has(#destinationScreen.is-baobab:not([hidden])),
+#destinationScreen.is-baobab:not([hidden]){
+ background:#f0ddaf!important;
+ background-image:linear-gradient(155deg,#fff4d9 0%,#efd9a6 54%,#e6c993 100%)!important;
+}
+/* Hornbill character on the Tages-Tal welcome title. */
+.is-valley .dest-hero{
+ display:flex!important;gap:clamp(12px,2vw,23px)!important;
+ align-items:center!important;
+}
+.is-valley .dest-emoji{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 clamp(80px,11vw,142px)!important;
+ width:clamp(80px,11vw,142px)!important;
+ height:clamp(80px,11vw,142px)!important;overflow:visible!important;
+ font-size:initial!important;
+}
+.is-valley .valley-hornvogel-title{
+ display:block!important;width:100%!important;height:100%!important;
+ max-height:142px!important;object-fit:contain!important;
+ filter:drop-shadow(0 4px 4px rgba(92,55,27,.16));
+}
+.is-valley .dest-hero h1{color:#87410d!important}
+.is-valley .dest-hero .eyebrow{color:#8c531e!important}
+.is-valley .dest-hero p{color:#524332!important}
+/* Light accessible content surfaces remain legible on each coloured background. */
+.destination-screen .destination-panel,
+.destination-screen .destination-panel :is(.integration-hero,.integration-context-card,.integration-game-surface){
+ color:#3e3226;
+}
+.is-valley .destination-panel{background:#fffaf2!important;border-color:#d3a06b!important}
+.is-lagoon .destination-panel{background:#fbfff8!important;border-color:#96be90!important}
+.is-oasis .destination-panel{background:#f8fdff!important;border-color:#85b8d1!important}
+.is-baobab .destination-panel{background:#fffcf2!important;border-color:#c6a06a!important}
+@media(max-width:650px){
+ .is-valley .dest-emoji{flex-basis:82px!important;width:82px!important;height:82px!important}
+ .is-valley .valley-hornvogel-title{max-height:82px!important}
+}

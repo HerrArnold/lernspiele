@@ -1,0 +1,174 @@
+/* LernSafari Admin 2026: teacher-first 5-section dashboard. */
+.modal-kind-admin{width:min(1520px,98vw);max-height:calc(100dvh - 16px)}
+.modal-kind-admin .modal-body{padding:10px 15px;overflow-y:auto}
+.modal-kind-admin .pd-shell{max-width:none;width:100%}
+.admin-deck{display:grid;gap:15px}
+.admin-deck-intro{padding:8px 8px 0}
+.admin-deck-intro h4{font-size:clamp(21px,2.4vw,30px);color:#315940;margin:0 0 4px}
+.admin-deck-intro p{margin:0;color:#776248;font-size:14px}
+.admin-deck-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.admin-deck-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:8px;padding:21px 18px 23px;min-height:165px;cursor:pointer;color:#4d3a2d;background:linear-gradient(140deg,#fffaf0,#ecf2d9);border:2px solid #cfb88a;border-radius:21px;box-shadow:0 5px 15px #493a1c14;transition:transform .14s,border-color .14s}
+.admin-deck-card:hover,.admin-deck-card:focus-visible{border-color:#628a65;transform:translateY(-2px);background:#e7f0db}
+.admin-deck-card:nth-child(2){background:linear-gradient(140deg,#fff9ee,#e0e8f6)}
+.admin-deck-card:nth-child(3){background:linear-gradient(140deg,#fff8ef,#e0efdf)}
+.admin-deck-card:nth-child(4){background:linear-gradient(140deg,#fff8ef,#f5e4d3)}
+.admin-deck-card:nth-child(5){background:linear-gradient(140deg,#fff8ef,#f4e0e7)}
+.admin-deck-card strong{font-size:clamp(18px,1.7vw,23px);color:#315a43}
+.admin-deck-card small{font-size:13px;color:#68563d;line-height:1.4;max-width:92%}
+.admin-deck-icon{font-size:34px}
+.admin-deck-arrow{position:absolute;right:17px;bottom:13px;font-size:24px;font-weight:850;color:#6c956c}
+.admin-workspace[hidden],.admin-deck[hidden]{display:none!important}
+.admin-workspace{display:grid;gap:14px;width:100%}
+.admin-workspace-head{display:flex;align-items:center;gap:18px;padding:10px 14px;background:#e8f0db;border:2px solid #becd9c;border-radius:19px}
+.admin-workspace-head h3{color:#315a43;font-size:24px;margin:0 0 2px}
+.admin-workspace-head p{font-size:13px;color:#695642;margin:0}
+.admin-workspace-head .pd-secondary{flex:none}
+.admin-banner-compact{padding:10px 17px!important}
+.admin-banner-compact .pd-eyebrow,.admin-banner-compact p{display:none}
+.admin-banner-compact h3{margin:0;font-size:21px}
+.admin-banner-compact .pd-total{min-width:auto}
+.admin-assignment-picker{display:grid;gap:10px;padding:15px;margin-bottom:12px;background:#eaf1dd;border:2px solid #bacfa7;border-radius:18px}
+.admin-assignment-picker h5{font-size:17px;margin:0;color:#315a43}
+.admin-area-pills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.admin-area-pills button{padding:11px;display:grid;gap:4px;text-align:left;cursor:pointer;background:#fffaf0;color:#50412d;border:2px solid #dbcaab;border-radius:13px}
+.admin-area-pills button[aria-pressed=true]{border-color:#488568;background:#daebd8;box-shadow:inset 0 0 0 1px #488568}
+.admin-area-pills button strong{font-size:14px}
+.admin-area-pills button small{font-size:11px;color:#756248;line-height:1.3}
+.admin-picker-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}
+.admin-picker-controls label{min-width:0}
+.admin-picker-controls select{max-width:100%;width:100%;min-height:44px}
+.admin-hidden-original-target{display:none!important}
+.admin-choice-caption{font-weight:800;color:#315a43;font-size:13px;background:#fffdf7;border:1px solid #d9d8b7;border-radius:10px;padding:10px}
+.admin-small-note{color:#685c4b!important;font-size:12px;line-height:1.5;margin:7px 0 0}
+.admin-picker-controls p{grid-column:1/-1}
+.admin-presence-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.admin-presence-grid article{display:grid;gap:6px;padding:12px;background:#fffaf0;border:1px solid #e2d3b2;border-radius:13px;min-width:0}
+.admin-presence-grid article strong{color:#315a43}
+.admin-presence-grid article span{font-size:13px;overflow-wrap:anywhere}
+.admin-presence-grid article small{color:#766957;overflow-wrap:anywhere}
+.admin-progress-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin-progress-filters select{width:100%}
+.admin-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.admin-metrics article{display:grid;gap:5px;padding:13px;background:#e8f0dd;border:1px solid #b8ccae;border-radius:14px}
+.admin-metrics article strong{font-size:26px;color:#315c45}
+.admin-metrics article span{font-size:12px;color:#5e594b}
+.admin-result-rows{display:grid;gap:6px;max-height:390px;overflow-y:auto}
+.admin-result-rows article{display:grid;grid-template-columns:1fr 1.4fr .9fr 1fr;align-items:center;gap:8px;padding:9px;background:#fffbf1;border:1px solid #e5d8bd;border-radius:10px;font-size:12px}
+.admin-result-rows article strong{color:#315c45}
+.admin-result-rows article small{font-size:11px;color:#695b4b}
+[data-admin-workspace=messages] label{display:grid;gap:8px;margin:12px 0}
+[data-admin-workspace=messages] textarea{font:inherit;max-width:100%;min-height:105px;resize:vertical}
+.admin-message-actions{display:flex;gap:10px;flex-wrap:wrap}
+.admin-workspace :focus-visible,.admin-deck-card:focus-visible{outline:3px solid #388094;outline-offset:2px}
+@media(max-width:1100px){.admin-area-pills{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-picker-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.admin-deck-grid{grid-template-columns:1fr}.admin-workspace-head{flex-wrap:wrap}.admin-area-pills{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-picker-controls,.admin-progress-filters{grid-template-columns:1fr}.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-presence-grid{grid-template-columns:1fr}.admin-result-rows article{grid-template-columns:1fr 1fr}.admin-deck-card{min-height:135px}.modal-kind-admin .modal-body{padding:8px}}
+
+/* Fachunterricht: drei grosse, schnell umschaltbare Betriebsarten. */
+.admin-mode-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:12px 0}
+.admin-mode-picker button{min-width:0;display:grid;justify-items:start;text-align:left;gap:6px;padding:16px;min-height:130px;border:2px solid #d8c7a3;background:#fffaf0;color:#4f3929;border-radius:17px;cursor:pointer;font:inherit}
+.admin-mode-picker button[aria-pressed=true]{border-color:#467b5b;background:#e1efdc;box-shadow:inset 0 0 0 1px #467b5b}
+.admin-mode-picker button>span{font-size:29px}
+.admin-mode-picker button strong{font-size:17px;color:#315b42}
+.admin-mode-picker button small{font-size:12px;line-height:1.4;color:#685b46}
+.class-mode-panel #classModeForm{display:grid;gap:11px}
+.class-mode-panel #classModeForm[hidden]{display:none!important}
+.class-mode-panel .admin-mode-advanced-label{max-width:440px}
+@media(max-width:700px){.admin-mode-picker{grid-template-columns:1fr}.admin-mode-picker button{min-height:86px;grid-template-columns:48px 1fr;align-items:center;gap:4px}.admin-mode-picker button>span{grid-row:span 2}}
+
+.admin-game-results-title{margin:16px 0 8px;font-size:17px;color:#315c45}
+.admin-game-result-list{display:grid;gap:7px}
+.admin-game-result-list article{display:grid;grid-template-columns:minmax(200px,2fr) minmax(75px,.7fr) minmax(140px,1fr);align-items:center;gap:8px;border:1px solid #d4d8b7;background:#f7f7e8;border-radius:11px;padding:10px;font-size:13px}
+.admin-game-result-list article strong{color:#355d42}
+.admin-game-result-list article span{text-align:right;color:#665843}
+@media(max-width:700px){.admin-game-result-list article{grid-template-columns:1fr 1fr}.admin-game-result-list article strong{grid-column:1/-1}.admin-game-result-list article span{text-align:left}}
+
+.admin-mode-tasks{border:1px solid #c8d1a5;border-radius:13px;padding:10px;margin:8px 0;background:#fcfbf1;display:grid;gap:6px}
+.admin-mode-tasks legend{color:#385d43;font-weight:850;padding:0 7px}
+.admin-mode-tasks label{display:flex;align-items:center;gap:10px;border-radius:9px;padding:8px;background:#f0f4e6;cursor:pointer}
+.admin-mode-tasks input{width:20px;height:20px;accent-color:#397b5a;flex:none}
+.admin-mode-tasks label span{display:grid;gap:3px}
+.admin-mode-tasks label strong{color:#3b563f;font-size:14px}
+.admin-mode-tasks label small{font-size:11px;color:#6b5f4b}
+
+/* 2026-11-12: the secure teacher cockpit is a full-size Safari page. */
+#adminScreen.admin-screen{
+ display:flex;flex:1;flex-direction:column;align-items:stretch;
+ width:100%;min-height:calc(100dvh - 65px);
+ padding:clamp(14px,2.5vw,32px);gap:18px;
+ background:linear-gradient(155deg,#fff2df 0%,#f7e4d8 52%,#efdae1 100%);
+ color:#392f25;
+}
+#adminScreen[hidden]{display:none!important}
+.admin-screen-top{
+ display:flex;align-items:center;gap:clamp(14px,2.2vw,32px);
+ border:2px solid #d4ad91;border-radius:22px;padding:13px clamp(14px,2.5vw,28px);
+ background:#fffbf4;box-shadow:0 7px 24px #60412416;
+}
+.admin-screen-top h1{font-size:clamp(26px,2.8vw,42px);line-height:1.1;margin:3px 0;color:#41583d}
+.admin-screen-top p{margin:3px 0;color:#655340}
+.admin-screen-kicker{font-size:13px;font-weight:900;letter-spacing:.08em;color:#a04d6a}
+.admin-screen-back{font:inherit;font-weight:850;color:#6b3147;background:#f8dce6;border:2px solid #d7a1b5;padding:12px 17px;border-radius:14px;cursor:pointer;flex-shrink:0}
+.admin-screen-back:hover{background:#f2c5d5}
+.admin-screen-body{width:100%;min-width:0;max-width:1800px;margin:0 auto;flex:1}
+.admin-screen-body .pd-shell{width:100%!important;max-width:none!important;padding:0!important}
+.admin-screen-body .pd-banner{display:none!important}
+.admin-screen-body .admin-deck{gap:20px;padding:3px 0}
+.admin-screen-body .admin-deck-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,24px)}
+.admin-screen-body .admin-deck-card{min-height:215px;padding:clamp(18px,2.3vw,31px);border-radius:24px}
+.admin-screen-body .admin-deck-card strong{font-size:clamp(20px,1.9vw,27px)}
+.admin-screen-body .admin-deck-card small{font-size:clamp(13px,1.05vw,16px)}
+.admin-screen-body .admin-deck-icon{font-size:42px}
+.admin-screen-body .admin-workspace{width:100%;max-width:none}
+.admin-screen-body .admin-workspace > .pd-panel{width:100%;max-width:none}
+.admin-screen-body .admin-assignment-picker{width:100%}
+.admin-screen-body .admin-area-pills{grid-template-columns:repeat(3,minmax(0,1fr))}
+.admin-agenda-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}
+.admin-agenda-controls button{background:#f3e6cc;color:#4f3e28;border:2px solid #cda96f;border-radius:12px;padding:10px 13px;font-weight:800;cursor:pointer}
+.admin-agenda-week-label{font-weight:900;color:#315942}
+.admin-agenda-week-away{background:#fff0d8;border:2px solid #ddaa61;border-radius:12px;padding:9px 12px;color:#80471e}
+.admin-agenda-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.admin-agenda-day{background:#fffcf5;border:2px solid #e2d0ac;border-radius:15px;padding:10px;min-width:0;min-height:120px}
+.admin-agenda-day h5{font-size:clamp(12px,.95vw,17px);margin:0 0 9px;color:#385b44}
+.admin-agenda-events{display:grid;gap:7px}
+.admin-agenda-entry{font:inherit;text-align:left;background:#e9f2e0;color:#36523a;border:1px solid #bdd4b0;border-radius:10px;padding:8px;cursor:pointer;overflow-wrap:anywhere}
+.admin-agenda-entry[data-type="lk"]{background:#def1e0;border-color:#91bb9a}
+.admin-agenda-entry[data-type="free"]{background:#fff3cb;border-color:#e4c678}
+.admin-agenda-entry[data-type="special"]{background:#f6e0df;border-color:#d7acaa}
+.admin-agenda-entry small{display:block;margin-top:3px;color:#645744}
+.admin-agenda-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;align-items:end;padding:16px;background:#fff9ed;border:2px solid #ddc69e;border-radius:17px;margin-top:13px}
+.admin-agenda-form label{display:grid;gap:5px;font-weight:800;color:#463726}
+.admin-agenda-form :is(input,select,textarea){width:100%;min-width:0;padding:10px;background:white;color:#3a3327;border:2px solid #c8b38f;border-radius:9px;font:inherit}
+.admin-agenda-form .admin-agenda-wide{grid-column:1/-1}
+.admin-agenda-form .admin-agenda-form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;grid-column:1/-1}
+.admin-agenda-form-actions button{padding:10px 16px;border-radius:10px;border:2px solid #9ab68f;background:#e5efdc;color:#294d31;font:inherit;font-weight:800;cursor:pointer}
+.admin-agenda-form-actions button[type="submit"]{background:#376746;color:white}
+.admin-agenda-form-actions button:disabled{opacity:.5;cursor:not-allowed}
+.admin-agenda-status{font-weight:750;color:#6d4b24}
+.admin-detail-attempt{margin:9px 0;padding:12px;background:#fffcf3;border:1px solid #e1cfaa;border-radius:11px}
+.admin-detail-attempt summary{cursor:pointer;font-weight:800;color:#3e5f44}
+.admin-detail-attempt dl{display:grid;grid-template-columns:max-content 1fr;gap:5px 12px}
+.admin-detail-attempt dt{font-weight:850}
+.admin-detail-attempt dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:1000px){
+ .admin-screen-body .admin-deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-agenda-days{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+ .admin-agenda-day{padding:5px}
+ .admin-agenda-day h5{font-size:11px}
+ .admin-agenda-entry{font-size:10px;padding:4px}
+}
+@media(max-width:750px){
+ .admin-screen-top{flex-wrap:wrap}
+ .admin-screen-body .admin-deck-grid{grid-template-columns:1fr}
+ .admin-screen-body .admin-deck-card{min-height:120px}
+ .admin-agenda-days{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .admin-agenda-form{grid-template-columns:1fr}
+}
+
+/* Agenda colours match the pupils' Kompass: HA blue, LK green,
+   Schulfrei yellow, special events red. */
+.admin-agenda-entry[data-type="ha"]{background:#c7e4f9!important;border-color:#77afda!important;color:#244d70!important}
+.admin-agenda-entry[data-type="lk"]{background:#d1edcc!important;border-color:#83bb80!important;color:#28572c!important}
+.admin-agenda-entry[data-type="free"]{background:#fff0a6!important;border-color:#d2b44d!important;color:#645019!important}
+.admin-agenda-entry[data-type="special"]{background:#f4ceca!important;border-color:#d68d87!important;color:#682f2b!important}
+.admin-agenda-entry[data-new-date]{background:#faf3e2!important;border-color:#c7b697!important;color:#5d4c37!important}
+.admin-agenda-entry:focus-visible{outline:3px solid #23658c!important;outline-offset:2px}

@@ -3,27 +3,48 @@
 const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
 const state = {screen:'login', role:'guest', username:'Gast', modal:null, destination:null, dateOffset:0, tasks:{}, introBusy:false, toastTimer:null};
-const DOM = {login:$('#loginScreen'),camp:$('#campScreen'),destination:$('#destinationScreen'),topbar:$('#topbar'),layer:$('#modalLayer'),modal:$('#modal'),modalBody:$('#modalBody'),modalTitle:$('#modalTitle'),modalIcon:$('#modalIcon'),modalEyebrow:$('#modalEyebrow')};
+const DOM = {login:$('#loginScreen'),camp:$('#campScreen'),destination:$('#destinationScreen'),admin:$('#adminScreen'),topbar:$('#topbar'),layer:$('#modalLayer'),modal:$('#modal'),modalBody:$('#modalBody'),modalTitle:$('#modalTitle'),modalIcon:$('#modalIcon'),modalEyebrow:$('#modalEyebrow')};
 const escapeHtml = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dt = (date,options) => new Intl.DateTimeFormat('de-CH',{timeZone:'Europe/Zurich',...options}).format(date);
 const now = () => new Date();
 const startOfDay = (date=new Date()) => {const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich',year:'numeric',month:'2-digit',day:'2-digit'}).format(date).split('-');return new Date(`${parts.join('-')}T12:00:00+01:00`)};
 const dayWithOffset = n => {const d=startOfDay();d.setUTCDate(d.getUTCDate()+n);return d};
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>el.classList.remove('show'),3600)}
-function showScreen(name){state.screen=name;DOM.login.hidden=name!=='login';DOM.camp.hidden=name!=='camp';DOM.destination.hidden=name!=='destination';DOM.topbar.hidden=name==='login';if($('#adminNav'))$('#adminNav').hidden=!['demo-admin','cloudflare-admin'].includes(state.role);if(name==='camp'){$('#userLabel').textContent=state.username;$('#greeting').textContent=state.role==='guest'?'🌴 Willkommen in der LernSafari!':'🌴 Schön, dass du da bist, '+state.username+'!';$('#mailIndicator').hidden=state.role==='guest'}window.scrollTo({top:0,behavior:'instant'});}
+function showScreen(name){state.screen=name;DOM.login.hidden=name!=='login';DOM.camp.hidden=name!=='camp';DOM.destination.hidden=name!=='destination';DOM.admin.hidden=name!=='admin';DOM.topbar.hidden=name==='login';if($('#adminNav'))$('#adminNav').hidden=!['demo-admin','cloudflare-admin'].includes(state.role);if(name==='camp'){$('#userLabel').textContent=state.username;$('#greeting').textContent=state.role==='guest'?'🌴 Willkommen in der LernSafari!':'🌴 Schön, dass du da bist, '+state.username+'!';$('#mailIndicator').hidden=state.role==='guest'}window.scrollTo({top:0,behavior:'instant'});}
 function enter(role,username){if(state.introBusy)return;state.introBusy=true;state.role=role;state.username=username;$('#loginScene').classList.add('intro-exit');setTimeout(()=>{showScreen('camp');$('#campScene').classList.add('camp-enter');$('#loginScene').classList.remove('intro-exit');state.introBusy=false;history.replaceState({screen:'camp'},'','#camp');setTimeout(()=>$('#campScene').classList.remove('camp-enter'),700)},window.matchMedia('(prefers-reduced-motion:reduce)').matches?0:520)}
-$('#loginForm').addEventListener('submit',e=>{e.preventDefault();toast('Die sichere Anmeldung wird nach der Hosting-Prüfung eingerichtet. Wähle «Demo als Kind», um das persönliche Logbuch zu testen.');});
-$('#guestBtn').addEventListener('click',()=>enter('guest','Gast'));
-$('#demoChild').addEventListener('click',()=>enter('demo','Demo-Kind'));
-$('#demoTeacher').addEventListener('click',()=>enter('demo-admin','Lehrperson (Demo)'));
+// Cloudflare authentication owns the login; do not start a local demo session.
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();toast('Die Anmeldung über Cloudflare ist gerade nicht erreichbar.');});
 function exit(){cancelObjectAnimation();closeModal(true);showScreen('login');$('#username').value='';$('#password').value='';state.role='guest';state.username='Gast';history.replaceState({screen:'login'},'','#start')}
 $('#logoutBtn').addEventListener('click',exit);
+$('#adminPageBack').addEventListener('click',goCamp);
 $('#homeBtn').addEventListener('click',goCamp);
 $('#backToCamp').addEventListener('click',goCamp);
 function goCamp(){cancelObjectAnimation();closeModal(true);showScreen('camp');state.destination=null;history.pushState({screen:'camp'},'','#camp')}
-function showModal(kind){if(state.modal)return;const config={logbook:['📖','Mein Logbuch','Dein persönlicher Lernplatz'],map:['🗺️','Karte','Wohin führt deine Reise?'],agenda:['🧭','Kompass & Agenda','Deine Woche im Überblick'],mail:['✉️','Briefkasten','Eine Nachricht für dich'],clock:['🕰️','Meine Tagesübersicht','Heute in der LernSafari'],help:['🦩','Hallo, Safari-Forscher!','Der Flamingo hilft dir'],admin:['🛠️','Verwaltung','Lokale Demo für Lehrpersonen']};if(!config[kind])return;state.modal=kind;DOM.modalIcon.textContent=config[kind][0];DOM.modalTitle.textContent=config[kind][1];DOM.modalEyebrow.textContent=config[kind][2];DOM.modal.className='modal parchment modal-kind-'+kind;DOM.layer.hidden=false;renderModal();document.body.style.overflow='hidden';setTimeout(()=>DOM.modal.focus(),20);history.pushState({screen:state.screen,modal:kind},'','#'+kind)}
+function showModal(kind){
+ if(state.modal)return;
+ if(kind==='admin'){
+  // Administration is an authenticated, full-viewport subpage, never a modal.
+  if(state.role!=='cloudflare-admin')return;
+  state.modal='admin';
+  DOM._originalModalBody=DOM.modalBody;
+  DOM.modalBody=$('#adminPageBody');
+  showScreen('admin');
+  window.scrollTo(0,0);
+  renderModal();
+  history.pushState({screen:'admin',modal:'admin'},'','#admin');
+  return;
+ }
+ const config={logbook:['📖','Mein Logbuch','Dein persönlicher Lernplatz'],map:['🗺️','Karte','Wohin führt deine Reise?'],agenda:['🧭','Kompass & Agenda','Deine Woche im Überblick'],mail:['✉️','Briefkasten','Eine Nachricht für dich'],clock:['🕰️','Meine Tagesübersicht','Heute in der LernSafari'],help:['🦩','Hallo, Safari-Forscher!','Der Flamingo hilft dir'],admin:['🛠️','Verwaltung','Lokale Demo für Lehrpersonen']};if(!config[kind])return;state.modal=kind;DOM.modalIcon.textContent=config[kind][0];DOM.modalTitle.textContent=config[kind][1];DOM.modalEyebrow.textContent=config[kind][2];DOM.modal.className='modal parchment modal-kind-'+kind;DOM.layer.hidden=false;renderModal();document.body.style.overflow='hidden';setTimeout(()=>DOM.modal.focus(),20);history.pushState({screen:state.screen,modal:kind},'','#'+kind)}
 function closeModal(immediate=false,fromPop=false){
   if(!state.modal)return;
+  if(state.modal==='admin'){
+   state.modal=null;
+   DOM.modalBody=DOM._originalModalBody||$('#modalBody');
+   DOM._originalModalBody=null;
+   showScreen('camp');
+   if(!fromPop)history.replaceState({screen:'camp'},'','#camp');
+   return;
+  }
   state.modal=null;
   document.body.style.overflow='';
   DOM.layer.hidden=true;
@@ -39,35 +60,40 @@ $('#flamingoHelp').addEventListener('click',()=>showModal('help'));
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.modal)closeModal(true)});
 const tasks=[['math','🔢 Zahl des Tages'],['music','🎵 Solmisation üben'],['german','✏️ Deutsch: Wörter entdecken']];
 function renderModal(){switch(state.modal){case 'logbook':renderLogbook();break;case 'map':renderMap();break;case 'agenda':renderAgenda();break;case 'mail':renderMail();break;case 'clock':renderClock();break;case 'help':renderHelp();break;}}
-function renderLogbook(){if(state.role==='guest'){DOM.modalBody.innerHTML=`<div class="today-card"><div style="font-size:52px">🔒</div><h3>Dieses Logbuch gehört nur dir!</h3><p>Persönliche Aufgaben und Erfolge sind nur für angemeldete Kinder sichtbar.</p><p class="muted">Du bist als Gast unterwegs. Die Lernspiele, die Karte und die öffentlichen Informationen darfst du trotzdem entdecken.</p><button class="primary" id="switchDemo">Demo als Kind ausprobieren</button></div>`;$('#switchDemo').addEventListener('click',()=>{closeModal(true);state.role='demo';state.username='Demo-Kind';$('#userLabel').textContent=state.username;$('#greeting').textContent='🌴 Schön, dass du da bist, Demo-Kind!';$('#mailIndicator').hidden=false;showModal('logbook')});return}
+function renderLogbook(){if(state.role==='guest'){DOM.modalBody.innerHTML=`<div class="today-card"><div style="font-size:52px">🔒</div><h3>Dieses Logbuch gehört nur dir!</h3><p>Persönliche Aufgaben und Erfolge sind nur für angemeldete Kinder sichtbar.</p><p class="muted">Bitte melde dich mit deinem eigenen Konto an.</p></div>`;return}
 const completed=tasks.filter(([id])=>state.tasks[id]).length;DOM.modalBody.innerHTML=`<div class="two-pages"><div class="page"><h3>📝 Meine Aufgaben</h3>${tasks.map(([id,label])=>`<label class="task"><input type="checkbox" data-task="${id}" ${state.tasks[id]?'checked':''}><span>${label}</span></label>`).join('')}<p class="muted">Aufgaben dieses Prototyps sind nur zur Demonstration vorhanden.</p></div><div class="page"><h3>⭐ Meine Erfolge</h3><p>Du hast <strong>${completed} von ${tasks.length}</strong> Demo-Aufgaben abgehakt.</p><div class="progress"><span style="width:${completed/tasks.length*100}%"></span></div><p>${completed===tasks.length?'Super! Du hast alle Demo-Aufgaben geschafft! 🎉':'Schritt für Schritt kommst du ans Ziel. 🐾'}</p><div class="notice">💚 Fehler sind erlaubt – du lernst jeden Tag dazu!</div></div></div><p class="muted">Hinweis: Diese Demo speichert keine Lernleistungen auf einem Server. Beim Neuladen werden die Häkchen zurückgesetzt.</p>`;$$('[data-task]',DOM.modalBody).forEach(c=>c.addEventListener('change',()=>{state.tasks[c.dataset.task]=c.checked;renderLogbook()}))}
 const places=[{id:'lagoon',emoji:'🌊',title:'Lern-Lagune',sub:'Schulfächer & Lernspiele',description:'Hier erwarten dich Lernspiele und Übungen für Mathematik, Deutsch, NMG, Musik und weitere Fächer.'},{id:'valley',emoji:'🌞',title:'Tages-Tal',sub:'Deine tägliche Herausforderung',description:'Eine Zahl des Tages und abwechslungsreiche kurze Aufgaben begleiten deine täglichen Lernabenteuer.'},{id:'baobab',emoji:'🌳',title:'Baobab-Baum',sub:'Hakuna Matata & Klassenwelt',description:'Entdecke deine Klassentiere, Geschichten, Projekte und besondere Aktionen wie den Adventskalender.'},{id:'oasis',emoji:'🏝️',title:'Oase',sub:'Rätsel, Spielen & Kreativität',description:'Ein Ort für freiwillige Knobelspiele, Sudokus, Schach, Malen und weitere Entdeckungen.'}];
 function renderMap(){
-  // Transparent hit zones follow the six illustrated signs; no duplicate text or image layers.
+  // All text and interactive labels are HTML, never baked into the illustration.
   const zones=[
-    ['lagoon','Lern-Lagune','lagoon'],
-    ['valley','Tages-Tal','valley'],
-    ['baobab','Baobab-Baum','baobab'],
-    ['oasis','Oase','oasis'],
-    ['camp','Camp','camp'],
-    ['camp-return','Zum Camp','camp']
+    ['valley','🌞 Tages-Tal','valley'],
+    ['lagoon','🌊 Lern-Lagune','lagoon'],
+    ['camp','⛺ Camp','camp'],
+    ['baobab','🌳 Baobab-Baum','baobab'],
+    ['oasis','🏝️ Oase','oasis']
   ];
-  DOM.modalBody.innerHTML=`<p class="map-intro">Wähle einen Ort auf der Karte!</p>
-    <div class="map-scroll" tabindex="0" aria-label="Safari-Karte; auf kleinen Bildschirmen seitlich verschiebbar">
+  DOM.modalBody.innerHTML=`<p class="map-intro">Wähle einen Ort und starte deine Expedition!</p>
+    <div class="map-scroll" aria-label="Karte der LernSafari mit fünf auswählbaren Orten">
       <div class="safari-map">
-        <img src="assets/karte.png" alt="Illustrierte LernSafari-Karte: Das Camp in der Mitte, die Lern-Lagune oben links, das Tages-Tal oben rechts, der Baobab-Baum unten links und die Oase unten rechts." draggable="false">
-        ${zones.map(([id,label,dest])=>`<button type="button" class="map-hotspot map-hotspot-${id}" data-map-destination="${dest}" aria-label="${label} besuchen" title="${label}"><span class="sr-only">${label}</span></button>`).join('')}
+        <img src="assets/karte-stickerwelt.webp" onload="if(this.currentSrc.includes('karte-stickerwelt.webp')||this.currentSrc.includes('karte.png'))this.parentNode.classList.add('map-has-character-art')" onerror="if(!this.dataset.fallback){this.dataset.fallback='original';this.src='assets/karte.png'}else{this.onerror=null;this.src='assets/karte-ohne-schilder.svg'}" alt="Safari-Landschaft mit Tages-Tal links oben, Lern-Lagune rechts oben, Camp in der Mitte, Baobab links unten und Oase rechts unten." draggable="false">
+        <img class="map-mascot map-mascot-valley" src="assets/hornvogel-sticker.svg" alt="" aria-hidden="true" draggable="false">
+        <img class="map-mascot map-mascot-lagoon" src="original/assets/tiersticker/erdmaennchen.png" alt="" aria-hidden="true" draggable="false">
+        <img class="map-mascot map-mascot-camp" src="original/assets/tiersticker/flamingo.png" alt="" aria-hidden="true" draggable="false">
+        <img class="map-mascot map-mascot-baobab" src="original/assets/tiersticker/loewe.png" alt="" aria-hidden="true" draggable="false">
+        <img class="map-mascot map-mascot-oasis" src="original/assets/tiersticker/warzenschwein.png" alt="" aria-hidden="true" draggable="false">
+        ${zones.map(([id,label,dest])=>`<button type="button" class="map-hotspot map-hotspot-${id}" data-map-destination="${dest}" aria-label="${label} besuchen"><span>${label}</span></button>`).join('')}
       </div>
     </div>
-    <div class="map-mobile-links" aria-label="Orte auf der Karte">${places.map(p=>`<button class="map-mobile-place" data-map-destination="${p.id}">${p.emoji} ${p.title}</button>`).join('')}<button class="map-mobile-place" data-map-destination="camp">⛺ Camp</button></div>
-    <p class="map-footnote">Die Karte ist für alle zugänglich – auch ohne Anmeldung.</p>`;
+    <div class="map-mobile-links" aria-label="Orte auf der Karte">${zones.map(([id,label,dest])=>`<button class="map-mobile-place" data-map-destination="${dest}">${label}</button>`).join('')}</div>`;
   $$('[data-map-destination]',DOM.modalBody).forEach(b=>b.addEventListener('click',()=>{
     const id=b.dataset.mapDestination;
     if(id==='camp'){goCamp();return}
     travelTo(id);
   }));
 }
-function travelTo(id){const place=places.find(p=>p.id===id);if(!place)return;closeModal(true);state.destination=id;showScreen('destination');$('#destinationScreen').classList.toggle('is-lagoon',id==='lagoon');$('#destinationScreen').classList.toggle('is-valley',id==='valley');$('#destinationScreen').classList.toggle('is-baobab',id==='baobab');$('#destEmoji').textContent=place.emoji;$('#destTitle').textContent=place.title;$('#destText').textContent=place.description;renderDestination(place);history.pushState({screen:'destination',id},'',`#${id}`)}
+function travelTo(id){const place=places.find(p=>p.id===id);if(!place)return;closeModal(true);state.destination=id;showScreen('destination');$('#destinationScreen').classList.toggle('is-lagoon',id==='lagoon');$('#destinationScreen').classList.toggle('is-valley',id==='valley');$('#destinationScreen').classList.toggle('is-baobab',id==='baobab');$('#destinationScreen').classList.toggle('is-oasis',id==='oasis');if(id==='valley'){
+  $('#destEmoji').innerHTML='<img class="valley-hornvogel-title" src="assets/hornvogel-froehlich.webp" onerror="this.onerror=null;this.src=\'assets/hornvogel-sticker.svg\'" alt="Fröhlicher Hornvogel, Begleiter im Tages-Tal">';
+ }else{$('#destEmoji').textContent=place.emoji;}$('#destTitle').textContent=place.title;$('#destText').textContent=place.description;renderDestination(place);history.pushState({screen:'destination',id},'',`#${id}`)}
 // Fächer der Lern-Lagune. Dies sind vorerst Zugänge, keine behaupteten fertigen Lernspiele.
 const lagoonSubjects = [
   {id:'math',name:'Mathematik',icon:'🔢',heading:'Zahlen entdecken',description:'Hier kannst du die 3er- und 6er-Reihe üben und Zahlen aus Hundertern, Zehnern und Einern bauen.',ideas:['Zahl des Tages','Reihen üben','Zahlen legen']},
@@ -154,7 +180,7 @@ function renderEnglishSection(){
  if(englishMode==='match'){renderEnglishMatching();return}
  if(englishMode==='cards'){renderEnglishCards();return}
  root.innerHTML=`<section class="lagoon-subject english-home"><button class="lagoon-return" id="backToLagoon">← Zur Lern-Lagune</button>
- <div class="subject-header"><span class="subject-symbol" aria-hidden="true">🇬🇧</span><div><div class="eyebrow">Lern-Lagune · Englisch</div><h2>Body & Actions</h2><p>Übe deine Wörter und Sätze zum Körper und zu Bewegungen – ganz ohne Schreiben!</p></div></div>
+ <div class="subject-header"><span class="subject-symbol" aria-hidden="true"><img class="safari-uk-flag" src="assets/uk-flag.svg" alt="" aria-hidden="true"></span><div><div class="eyebrow">Lern-Lagune · Englisch</div><h2>Body & Actions</h2><p>Übe deine Wörter und Sätze zum Körper und zu Bewegungen – ganz ohne Schreiben!</p></div></div>
  <div class="english-mode-grid"><button id="englishStartMatch" class="english-mode-card"><span aria-hidden="true">🧩</span><strong>Wörter zuordnen</strong><small>Finde die passenden englischen und deutschen Ausdrücke. Immer 5 Paare.</small></button>
  <button id="englishStartCards" class="english-mode-card"><span aria-hidden="true">🗂️</span><strong>Karteikarten</strong><small>Sprich die Übersetzung laut aus und drehe die Karte um.</small></button></div>
  <p class="muted">${ENGLISH_VOCI.length} Wörter und Sätze aus deinem aktuellen Voci · Als Gast spielbar · Kein Schreiben nötig</p></section>`;
@@ -170,7 +196,7 @@ function renderEnglishMatching(){
  root.innerHTML=`<section class="music-game english-game"><button class="lagoon-return" id="englishBack">← Zu Englisch</button>
  <div class="game-top"><div><div class="eyebrow">Englisch · Body & Actions</div><h2>Wörter zuordnen</h2><p>${r.solved} von ${ENGLISH_VOCI.length} Paaren gefunden</p></div><strong>🧩 ${r.matched.length}/ ${r.batch.length}</strong></div>
  <div class="english-instruction">Tippe zuerst auf ein englisches Wort und dann auf die passende deutsche Bedeutung.</div>
- <div class="english-pair-columns"><div><h3>🇬🇧 Englisch</h3>${options(r.leftOrder,'left')}</div><div><h3>🇨🇭 Deutsch</h3>${options(r.rightOrder,'right')}</div></div>
+ <div class="english-pair-columns"><div><h3><img class="safari-uk-flag" src="assets/uk-flag.svg" alt="" aria-hidden="true"> Englisch</h3>${options(r.leftOrder,'left')}</div><div><h3>🇨🇭 Deutsch</h3>${options(r.rightOrder,'right')}</div></div>
  <p class="english-match-feedback" role="status">${escapeHtml(r.feedback||'Finde zwei passende Karten.')}</p>
  ${r.matched.length===r.batch.length?`<button class="primary" id="englishNextBatch">${r.remaining.length?'Nächste 5 Paare →':'Ergebnis ansehen'}</button>`:''}</section>`;
  $('#englishBack').onclick=englishBack;
@@ -187,7 +213,7 @@ function renderEnglishMatching(){
 function renderEnglishCards(){
  const root=$('#destinationContent'),r=englishCards,id=r.order[r.index],pair=ENGLISH_VOCI[id],front=pair[r.reversed?1:0],back=pair[r.reversed?0:1];
  root.innerHTML=`<section class="music-game english-game"><button class="lagoon-return" id="englishBack">← Zu Englisch</button>
- <div class="game-top"><div><div class="eyebrow">Englisch · Body & Actions</div><h2>Karteikarten</h2><p>Karte ${r.index+1} von ${r.order.length}</p></div><button type="button" class="english-direction" id="englishDirection">${r.reversed?'🇨🇭 Deutsch → Englisch':'🇬🇧 Englisch → Deutsch'} ↔</button></div>
+ <div class="game-top"><div><div class="eyebrow">Englisch · Body & Actions</div><h2>Karteikarten</h2><p>Karte ${r.index+1} von ${r.order.length}</p></div><button type="button" class="english-direction" id="englishDirection">${r.reversed?'🇨🇭 Deutsch → Englisch':'Englisch → Deutsch'} ↔</button></div>
  <p class="english-instruction">Sprich die Übersetzung laut aus. Tippe dann auf die Karte, um sie aufzudecken.</p>
  <button class="english-flashcard ${r.flipped?'is-flipped':''}" id="englishFlip" aria-label="Karte umdrehen"><span class="english-flash-label">${r.flipped?'Lösung':'Übersetze mündlich'}</span><span class="english-flash-text">${escapeHtml(r.flipped?back:front)}</span><span class="english-flash-hint">${r.flipped?'Tippe, um das Wort wieder zu sehen':'Tippe, um die Lösung zu sehen'}</span></button>
  <div class="english-card-nav"><button id="englishPrev" class="secondary" ${r.index===0?'disabled':''}>← Vorherige</button><button id="englishNext" class="primary">${r.index===r.order.length-1?'Neu mischen ↻':'Nächste Karte →'}</button></div>
@@ -572,7 +598,7 @@ const valleyTopics=[
  {id:'math',name:'Mathematik',symbol:'🔢',color:'blue'},
  {id:'nmg',name:'NMG',symbol:'🐦',color:'green'},
  {id:'music',name:'Musik',symbol:'🎵',color:'yellow'},
- {id:'english',name:'Englisch',symbol:'🇬🇧',color:'pink'}
+ {id:'english',name:'Englisch',symbol:'📘',color:'pink'}
 ];
 const valleyWordBank=[
  {word:'springen',kind:'Verb',hint:'Man kann sagen: ich springe, du springst.'},
@@ -705,6 +731,7 @@ function renderDestination(place){
   screen.classList.toggle('is-lagoon',place.id==='lagoon');
   screen.classList.toggle('is-valley',place.id==='valley');
   screen.classList.toggle('is-baobab',place.id==='baobab');
+  screen.classList.toggle('is-oasis',place.id==='oasis');
   if(place.id==='lagoon'){
     activeLagoonSubject=null;
     renderLagoon();

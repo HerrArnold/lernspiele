@@ -1,0 +1,137 @@
+{
+  "id": "rotfuchs",
+  "title": "Der Rotfuchs",
+  "total": 46,
+  "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/der_rotfuchs.mp3",
+  "source": "https://grundschul-blog.de/material/hoertext-der-rotfuchs/",
+  "gap": "Der {{Rotfuchs}}\n\nFüchse haben ein {{dichtes}}, rotbraunes {{Fell}}. Deshalb werden sie auch {{Rotfüchse}} genannt. Ein weiteres typisches Merkmal ist der {{lange}}, buschige {{Schwanz}}.\n\nEin Mal im {{Jahr}} zwischen März und {{Mai}} bringt die Füchsin im {{Fuchsbau}} drei bis fünf Junge zur Welt. Diese werden {{Welpen}} genannt.\n\nAm Anfang sind sie noch {{blind}} und werden von der Mutter {{gesäugt}}.",
+  "tf": [
+    [
+      "Füchse leben in unseren Wäldern.",
+      "r"
+    ],
+    [
+      "Die männlichen Tiere heissen Welpen.",
+      "f"
+    ],
+    [
+      "Am Anfang sind die Welpen noch blind.",
+      "r"
+    ],
+    [
+      "Sie werden vom Vater gesäugt.",
+      "f"
+    ],
+    [
+      "Der männliche Fuchs ist viel grösser.",
+      "n"
+    ],
+    [
+      "Die Jungtiere müssen lernen, wie man Nahrung findet.",
+      "r"
+    ],
+    [
+      "Sie können von Anfang an gut sehen.",
+      "f"
+    ],
+    [
+      "Das Vatertier bringt Mäuse an den Bau.",
+      "n"
+    ]
+  ],
+  "pick": [
+    [
+      [
+        "Füchse fressen nicht so gern Mäuse.",
+        "Füchse jagen nicht so gern Mäuse.",
+        "Füchse fressen besonders gern Mäuse."
+      ],
+      2
+    ],
+    [
+      [
+        "Sie jagen auch Kaninchen und Regentürme.",
+        "Sie jagen auch Kaninchen und Insekten.",
+        "Sie jagen auch Kaninchen und Regenwürmer."
+      ],
+      2
+    ],
+    [
+      [
+        "Vogeleier mögen sie.",
+        "Vogeleier mögen sie nicht.",
+        "Vögel mögen sie nicht."
+      ],
+      0
+    ],
+    [
+      [
+        "Der Rotfuchs jagt vorwiegend schwache und kranke Tiere.",
+        "Der Rotfuchs jagt nur kranke Tiere.",
+        "Der Rotfuchs jagt alle Tiere."
+      ],
+      0
+    ],
+    [
+      [
+        "Im Winter fressen sie ausserdem Früchte und Beeren.",
+        "Im Sommer lesen sie ausserdem Früchte und Beeren.",
+        "Im Sommer fressen sie ausserdem Früchte und Beeren."
+      ],
+      2
+    ]
+  ],
+  "correct": [
+    [
+      "Diese Tiere können gut riechen, sprechen und fühlen.",
+      "Diese Tiere können gut riechen, hören und fühlen.",
+      [
+        "hören"
+      ]
+    ],
+    [
+      "Diese Sinne sind für die Füchse unwichtig.",
+      "Diese Sinne sind für die Füchse wichtig.",
+      [
+        "wichtig"
+      ]
+    ],
+    [
+      "Füchse gehen am Tag und in der Nacht auf Jagd.",
+      "Füchse gehen in der Dämmerung und in der Nacht auf Jagd.",
+      [
+        "Dämmerung"
+      ]
+    ],
+    [
+      "Füchse haben nur wenige natürliche Freunde. Zu diesen gehören Tiger, Luchs und Adler.",
+      "Füchse haben nur wenige natürliche Feinde. Zu diesen gehören Wolf, Luchs und Adler.",
+      [
+        "Feinde",
+        "Wolf"
+      ]
+    ],
+    [
+      "Auf uns Menschen kann der Fuchs eine sehr gefährliche Stimmung übertragen, die Tollwut.",
+      "Auf uns Menschen kann der Fuchs eine sehr gefährliche Krankheit übertragen, die Tollwut.",
+      [
+        "Krankheit"
+      ]
+    ],
+    [
+      "Gesunde Tiere verhalten sich anders als gewöhnlich und suchen die Nähe der Bäume.",
+      "Kranke Tiere verhalten sich anders als gewöhnlich und suchen die Nähe der Menschen.",
+      [
+        "Kranke",
+        "Menschen"
+      ]
+    ],
+    [
+      "In diesem Fall musst du sehr vorsichtig sein und solltest niemandem von deiner Beobachtung berichten.",
+      "In diesem Fall musst du sehr vorsichtig sein und solltest einem Erwachsenen von deiner Beobachtung berichten.",
+      [
+        "Erwachsenen"
+      ]
+    ]
+  ]
+}

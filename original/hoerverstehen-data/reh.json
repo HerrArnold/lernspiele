@@ -1,0 +1,182 @@
+{
+  "id": "reh",
+  "title": "Das Reh",
+  "total": 60,
+  "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Das_Reh.mp3",
+  "source": "https://grundschul-blog.de/material/hoertext-das-reh/",
+  "gap": "Das {{Reh}}\n\nRehe leben, wie viele andere {{Tiere}} auch, in unseren {{Wäldern}}. Sie sind sehr {{scheu}}. Deshalb können wir sie nur selten {{beobachten}}.\n\nMorgens und {{abends}} verlassen sie ihre {{Verstecke}}, um zu {{fressen}}. Das nennt man äsen.\n\n{{Rehe}} können nicht gut {{sehen}}, dafür aber sehr gut {{hören}} und riechen.\n\nDas männliche Tier, den {{Rehbock}}, erkennt man an seinem Gehörn auf dem {{Kopf}}. Die Ricke, das {{Weibchen}}, hat dies nicht. Die Jungtiere werden {{Kitze}} genannt.",
+  "tf": [
+    [
+      "Rehe sind sehr scheue Tiere.",
+      "r"
+    ],
+    [
+      "Sie leben in ganz Europa.",
+      "n"
+    ],
+    [
+      "Wir können sie nur am Tag beobachten.",
+      "f"
+    ],
+    [
+      "Morgens und abends verlassen sie ihre Verstecke, um zu fressen.",
+      "r"
+    ],
+    [
+      "Rehe können gut sehen, hören und riechen.",
+      "f"
+    ],
+    [
+      "Rehe paaren sich im Sommer.",
+      "n"
+    ],
+    [
+      "Das männliche Tier heisst Rehbock.",
+      "r"
+    ],
+    [
+      "Der Rehbock trägt auf dem Kopf ein Gehörn.",
+      "r"
+    ],
+    [
+      "Die Ricke ist das weibliche Tier.",
+      "r"
+    ],
+    [
+      "Das weibliche Tier hat ein Gehörn.",
+      "f"
+    ]
+  ],
+  "pick": [
+    [
+      [
+        "Die Jungtiere der Rehe werden Kautze genannt.",
+        "Die Jungtiere der Rehe werden Kitze genannt.",
+        "Die Jungtiere der Füchse werden Kitze genannt."
+      ],
+      1
+    ],
+    [
+      [
+        "Die Ricke bringt im Mai bis Juni ein bis drei Junge zur Welt.",
+        "Die Ricke bringt im Mai bis August ein bis drei Junge zur Welt.",
+        "Die Ricke bringt im März bis Juni ein bis drei Junge zur Welt."
+      ],
+      0
+    ],
+    [
+      [
+        "Sie werden von dem Vater gesäugt.",
+        "Sie werden von der Tante gesäugt.",
+        "Sie werden von der Mutter gesäugt."
+      ],
+      2
+    ],
+    [
+      [
+        "Auf ihrem Fell haben die kleinen Rehkitze weisse Flecken.",
+        "Auf ihrem Kopf haben die kleinen Rehkitze weisse Flecken.",
+        "Auf ihrem Fell haben die kleinen Rehkitze graue Flecken."
+      ],
+      0
+    ],
+    [
+      [
+        "Sie sind auf der Wiese oder im Gehölz leicht zu erkennen und werden von Feinden schnell entdeckt.",
+        "Sie sind auf der Wiese oder im Gehölz nur schwer zu erkennen und werden von Feinden nicht entdeckt.",
+        "Sie sind auf der Wiese oder im Gehölz nur schwer zu erkennen und werden von Freunden nicht entdeckt."
+      ],
+      1
+    ],
+    [
+      [
+        "Im Winter ist das Fell der Rehe rotbraun.",
+        "Im Sommer ist das Fell der Rehe dunkelbraun.",
+        "Im Sommer ist das Fell der Rehe rotbraun."
+      ],
+      2
+    ],
+    [
+      [
+        "Für den Sommer bekommen sie ein dichtes graubraunes Winterfell.",
+        "Für den Winter bekommen sie ein dichtes graubraunes Winterfell.",
+        "Für den Winter bekommen sie ein leichtes graubraunes Winterfell."
+      ],
+      1
+    ],
+    [
+      [
+        "So sind sie gegen Wind und Kälte geschützt.",
+        "So sind sie gegen Wind und Kälte getrennt.",
+        "So sind sie gegen Wind und Wärme geschützt."
+      ],
+      0
+    ]
+  ],
+  "correct": [
+    [
+      "Rehe sind Pflanzenputzer.",
+      "Rehe sind Pflanzenfresser.",
+      [
+        "Pflanzenfresser"
+      ]
+    ],
+    [
+      "Sie ernähren sich von Gräsern, Kräutern, Blättern und Knospen, aber auch von Brot.",
+      "Sie ernähren sich von Gräsern, Kräutern, Blättern und Knospen, aber auch von Früchten.",
+      [
+        "Früchten"
+      ]
+    ],
+    [
+      "Natürliche Feinde hat das Reh viele.",
+      "Natürliche Feinde hat das Reh wenige.",
+      [
+        "wenige"
+      ]
+    ],
+    [
+      "Sie werden nicht von Luchsen, Rindern und Adlern gejagt.",
+      "Sie werden von Luchsen, Wölfen und Adlern gejagt.",
+      [
+        "Wölfen"
+      ]
+    ],
+    [
+      "Die Jungtiere sind vor Füchsen und Wildschweinen sicher.",
+      "Die Jungtiere sind vor Füchsen und Wildschweinen nicht sicher.",
+      [
+        "nicht"
+      ]
+    ],
+    [
+      "Leider streben auch viele Rehe auf unseren Bäumen.",
+      "Leider sterben auch viele Rehe auf unseren Strassen.",
+      [
+        "sterben",
+        "Strassen"
+      ]
+    ],
+    [
+      "Verkehrsnoten warnen Autofahrer vor «Wildwechsel».",
+      "Verkehrszeichen warnen Autofahrer vor «Wildwechsel».",
+      [
+        "Verkehrszeichen"
+      ]
+    ],
+    [
+      "Hier müssen Autofahrer besonders schnell fahren.",
+      "Hier müssen Autofahrer besonders vorsichtig fahren.",
+      [
+        "vorsichtig"
+      ]
+    ],
+    [
+      "Sind in einem Wald zu wenige Rehe, können sie an Bäumen und Sträuchern grossen Schaden anrichten.",
+      "Sind in einem Wald zu viele Rehe, können sie an Bäumen und Sträuchern grossen Schaden anrichten.",
+      [
+        "viele"
+      ]
+    ]
+  ]
+}

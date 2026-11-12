@@ -1,0 +1,169 @@
+{
+  "id": "dachs",
+  "title": "Der Dachs",
+  "total": 55,
+  "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Der_Dachs.mp3",
+  "source": "https://grundschul-blog.de/material/hoertext-der-dachs/",
+  "gap": "Der {{Dachs}}\n\nDer Dachs ist ein sehr {{scheues}} Waldtier. Er ist viel {{kräftiger}} gebaut als der Rotfuchs. Durch ihr breites {{Hinterteil}} ist ihr Gang ein wenig watschelnd. Trotzdem können Dachse schnell {{laufen}} und auch gut {{schwimmen}}.\n\nDas Fell des Dachses ist {{grau}}, auf dem Rücken hat er einen {{dunklen}} Strich. Die {{Beine}} und der Hals sind schwarz. Sie haben einen {{kurzen}} Schwanz. Am weissen Kopf sind {{zwei}} breite schwarze Streifen. Diese reichen von der {{Nase}} bis zu den {{kleinen}} Ohren.",
+  "tf": [
+    [
+      "Der Dachs lebt auch gerne in Städten.",
+      "n"
+    ],
+    [
+      "Dachse sind viel kräftiger gebaut als der Rotfuchs.",
+      "r"
+    ],
+    [
+      "Das Fell des Dachses ist grau, auf dem Rücken hat er einen hellen Strich.",
+      "f"
+    ],
+    [
+      "Sie haben einen kurzen Schwanz.",
+      "r"
+    ],
+    [
+      "Ihre Augen leuchten in der Dunkelheit.",
+      "n"
+    ],
+    [
+      "Am weissen Kopf sind zwei breite schwarze Streifen, die von der Nase bis zu den kleinen Ohren reichen.",
+      "r"
+    ],
+    [
+      "Dachse haben lange Vorderbeine.",
+      "f"
+    ],
+    [
+      "Die langen, starken Krallen eignen sich sehr gut zum Graben.",
+      "r"
+    ]
+  ],
+  "pick": [
+    [
+      [
+        "Das Fell des Dachses ist grau.",
+        "Das Fell des Fuchses ist grau.",
+        "Das Fell des Dachses ist braun."
+      ],
+      0
+    ],
+    [
+      [
+        "Auf dem Bauch hat er einen dunklen Strich.",
+        "Auf dem Rücken hat er einen dunklen Strich.",
+        "Auf dem Rücken hat er einen hellen Strich."
+      ],
+      1
+    ],
+    [
+      [
+        "Die Ohren und der Hals sind schwarz.",
+        "Die Beine und der Bauch sind schwarz.",
+        "Die Beine und der Hals sind schwarz."
+      ],
+      2
+    ],
+    [
+      [
+        "Sie haben einen langen Schwanz.",
+        "Sie haben einen braunen Schwanz.",
+        "Sie haben einen kurzen Schwanz."
+      ],
+      2
+    ],
+    [
+      [
+        "Am weissen Kopf sind vier breite schwarze Streifen, die von der Nase bis zu den kleinen Ohren reichen.",
+        "Am weissen Kopf sind zwei breite schwarze Streifen, die von der Nase bis zu den kleinen Ohren reichen.",
+        "Am braunen Kopf sind zwei breite schwarze Streifen, die von der Nase bis zu den kleinen Ohren reichen."
+      ],
+      1
+    ],
+    [
+      [
+        "Ihre langen Vorderbeine mit den kurzen, starken Krallen eignen sich sehr gut zum Graben.",
+        "Ihre langen Vorderbeine mit den langen, starken Krallen eignen sich sehr gut zum Graben.",
+        "Ihre kurzen Vorderbeine mit den langen, starken Krallen eignen sich sehr gut zum Graben."
+      ],
+      2
+    ],
+    [
+      [
+        "Dachse sind tagaktiv, sie suchen abends und nachts nach Nahrung.",
+        "Dachse sind nachtaktiv, sie suchen abends und nachts nach Nahrung.",
+        "Dachse sind nachtaktiv, sie suchen morgens und nachts nach Nahrung."
+      ],
+      1
+    ]
+  ],
+  "correct": [
+    [
+      "Dachse fressen Früchte, Beeren und Wurzeln, aber auch Insekten, Schnecken, Mäuse und Greifvögel.",
+      "Dachse fressen Früchte, Beeren und Wurzeln, aber auch Insekten, Schnecken, Mäuse und junge Vögel.",
+      [
+        "junge",
+        "Vögel"
+      ]
+    ],
+    [
+      "Am wenigsten jedoch mögen sie Regenwürmer.",
+      "Am liebsten jedoch mögen sie Regenwürmer.",
+      [
+        "liebsten"
+      ]
+    ],
+    [
+      "Mit ihrer kurzen Schnauze und den scharfen Krallen graben sie nach ihnen in der Erde.",
+      "Mit ihrer langen Schnauze und den scharfen Krallen graben sie nach ihnen in der Erde.",
+      [
+        "langen"
+      ]
+    ],
+    [
+      "Für den Frühling futtern sich die Dachse eine dicke Hautschicht an.",
+      "Für den Winter futtern sich die Dachse eine dicke Speckschicht an.",
+      [
+        "Winter",
+        "Speckschicht"
+      ]
+    ],
+    [
+      "Dachse leben in ihrem Baum.",
+      "Dachse leben in ihrem Bau.",
+      [
+        "Bau"
+      ]
+    ],
+    [
+      "Im Bau bringt das Dachsmännchen im Februar oder März zwölf bis fünf Junge zur Welt.",
+      "Im Bau bringt das Dachsweibchen im Februar oder März zwei bis fünf Junge zur Welt.",
+      [
+        "Dachsweibchen",
+        "zwei"
+      ]
+    ],
+    [
+      "Sie sind klein und blond.",
+      "Sie sind klein und blind.",
+      [
+        "blind"
+      ]
+    ],
+    [
+      "Erst nach etwa fünf Tagen öffnen die Dachsjungen die Ohren.",
+      "Erst nach etwa fünf Wochen öffnen die Dachsjungen die Augen.",
+      [
+        "Wochen",
+        "Augen"
+      ]
+    ],
+    [
+      "Den Sommer verbringen die Dachse in ihrem Bau.",
+      "Den Winter verbringen die Dachse in ihrem Bau.",
+      [
+        "Winter"
+      ]
+    ]
+  ]
+}

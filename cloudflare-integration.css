@@ -10,3 +10,134 @@
 .cloud-progress-row strong{color:#35593d}.cloud-progress-header{background:#e4eedc;color:#385d3c;font-size:12px;font-weight:850}
 .cloud-progress-row:not(.cloud-progress-header) span{text-align:center;font-variant-numeric:tabular-nums}
 @media(max-width:640px){.cloud-progress-row{grid-template-columns:minmax(100px,1.2fr) repeat(3,minmax(65px,1fr));gap:5px;padding:8px 5px;font-size:11px}.cloud-progress-header{font-size:10px}}
+
+/* Agenda fuer Laptops: wie auf der bisherigen Webseite sieben Tage nebeneinander. */
+@media (min-width:900px) {
+  .modal-kind-agenda {
+    width:min(1600px,98vw);
+    max-height:calc(100dvh - 20px);
+  }
+  .modal-kind-agenda .modal-header {padding:9px 19px 7px}
+  .modal-kind-agenda .modal-header h2 {font-size:clamp(23px,2.6vw,33px)}
+  .modal-kind-agenda .modal-icon {font-size:28px}
+  .modal-kind-agenda .modal-body {padding:9px 14px}
+  .modal-kind-agenda .modal-footer {padding:7px 17px}
+  .modal-kind-agenda .pd-shell {gap:9px}
+  .modal-kind-agenda .pd-banner {
+    padding:9px 15px;
+    margin:0 0 10px;
+  }
+  .modal-kind-agenda .pd-banner h3 {margin:1px 0;font-size:clamp(20px,2.3vw,27px)}
+  .modal-kind-agenda .pd-banner p {font-size:13px;margin:0}
+  .modal-kind-agenda .cloud-week {
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:7px;
+  }
+  .modal-kind-agenda .cloud-day {
+    min-width:0;min-height:clamp(200px,38dvh,380px);
+    padding:9px 8px;border-radius:12px;
+    overflow-wrap:anywhere;
+  }
+  .modal-kind-agenda .cloud-day h4 {
+    margin:0 0 7px;font-size:clamp(11px,.9vw,15px);
+    white-space:normal;
+  }
+  .modal-kind-agenda .cloud-event {padding:8px 7px;margin:6px 0}
+  .modal-kind-agenda .cloud-event strong,
+  .modal-kind-agenda .cloud-event p {font-size:clamp(11px,.8vw,14px)}
+  .modal-kind-agenda .cloud-day.is-today {
+    border-color:#af4f7a;box-shadow:inset 0 0 0 1px #af4f7a;
+    background:#fff6f6;
+  }
+}
+
+
+/* Terminfarben aus der bisherigen LernSafari:
+   Hausaufgaben blau, Lernkontrollen gruen, Spezialtermine rot/rosa,
+   Ferien und schulfrei gelb. Unabhaengig von Laptop- oder Handyansicht. */
+.cloud-event.cloud-event-ha {
+  background:#a9d8fb;
+  border:1px solid #6eaed8;
+}
+.cloud-event.cloud-event-lk {
+  background:#bceab6;
+  border:1px solid #7cbd72;
+}
+.cloud-event.cloud-event-special {
+  background:#f6b8b4;
+  border:1px solid #d77a72;
+}
+.cloud-event.cloud-event-free {
+  background:#f9df73;
+  border:1px solid #d1aa36;
+}
+.cloud-event.cloud-event-ha strong,.cloud-event.cloud-event-ha p {color:#213d57}
+.cloud-event.cloud-event-lk strong,.cloud-event.cloud-event-lk p {color:#244c2b}
+.cloud-event.cloud-event-special strong,.cloud-event.cloud-event-special p {color:#642923}
+.cloud-event.cloud-event-free strong,.cloud-event.cloud-event-free p {color:#5c481a}
+
+/* Cloudflare calendar: accessible week controls and unmistakable noncurrent-week cue. */
+.modal-kind-agenda .cloud-agenda-nav{display:grid;grid-template-columns:minmax(145px,1fr) minmax(205px,2fr) minmax(145px,1fr);align-items:center;gap:11px;margin:7px 0 10px}
+.modal-kind-agenda .cloud-agenda-week-center{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;color:#3c3b2d}
+.modal-kind-agenda .cloud-agenda-week-center strong{font-size:clamp(15px,1.5vw,20px);color:#28543d;font-weight:900}
+.modal-kind-agenda .cloud-agenda-week-center small{font-size:12px;color:#645843}
+.modal-kind-agenda .cloud-agenda-week-button,
+.modal-kind-agenda .cloud-agenda-today-button{border:2px solid #9d7947;background:#fff2d7;border-radius:12px;padding:9px 13px;color:#4c3823;font:inherit;font-size:clamp(12px,1.15vw,16px);font-weight:850;cursor:pointer;box-shadow:0 3px 0 #a4835a45}
+.modal-kind-agenda .cloud-agenda-week-button:hover,
+.modal-kind-agenda .cloud-agenda-today-button:hover:not(:disabled){background:#f8dfaa;border-color:#8a622d}
+.modal-kind-agenda .cloud-agenda-week-button:focus-visible,
+.modal-kind-agenda .cloud-agenda-today-button:focus-visible{outline:3px solid #246a86;outline-offset:3px}
+.modal-kind-agenda .cloud-agenda-today-button{background:#dceee0;border-color:#6eac7b;color:#244e34}
+.modal-kind-agenda .cloud-agenda-today-button:disabled{opacity:.65;cursor:default;box-shadow:none}
+.modal-kind-agenda .cloud-agenda-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.modal-kind-agenda .cloud-agenda-other-week{padding:9px 13px;background:#fff0d7;border:2px solid #d39448;border-radius:10px;color:#744219;font-weight:850;margin:0;line-height:1.4}
+.modal-kind-agenda .cloud-agenda-current-week{padding:6px 0;color:#326344;font-weight:750;margin:0}
+.modal-kind-agenda .cloud-day-today{display:inline-block;padding:1px 5px;border-radius:5px;background:#b84b72;color:#fff;font-size:10px}
+.modal-kind-agenda .cloud-agenda-no-events{color:#655947}
+.modal-kind-agenda .cloud-agenda-loading{padding:32px;text-align:center;color:#476a4e}
+.modal-kind-agenda .cloud-agenda-error{background:#fff9ed;color:#5c3922;border:2px solid #d3b58b}
+@media(max-width:690px){
+ .modal-kind-agenda .cloud-agenda-nav{grid-template-columns:1fr 1fr;gap:6px}
+ .modal-kind-agenda .cloud-agenda-week-center{grid-column:1/-1;grid-row:1}
+ .modal-kind-agenda .cloud-agenda-week-button{padding:9px 6px;font-size:12px}
+ .modal-kind-agenda .cloud-agenda-other-week{font-size:12px}
+}
+
+/* 2026-11-12: Kompass / Agenda takes most of laptop width so all days are visible. */
+#modal.modal-kind-agenda{
+ width:min(1740px,calc(100vw - 24px))!important;
+ max-width:none!important;max-height:calc(100dvh - 16px)!important;
+}
+#modal.modal-kind-agenda .modal-body{
+ padding:clamp(7px,1.1vw,18px)!important;overflow-y:auto!important;
+ overflow-x:hidden!important;max-width:100%;
+}
+#modal.modal-kind-agenda .pd-shell{max-width:none!important;width:100%!important;min-width:0}
+#modal.modal-kind-agenda .cloud-week{
+ display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+ width:100%!important;min-width:0!important;gap:clamp(3px,.6vw,10px)!important;
+ overflow:visible!important;
+}
+#modal.modal-kind-agenda .cloud-day{
+ min-width:0!important;width:100%!important;padding:clamp(5px,.8vw,14px)!important;
+ overflow-wrap:anywhere;
+}
+#modal.modal-kind-agenda .cloud-day h4{
+ font-size:clamp(10px,1.1vw,17px)!important;line-height:1.35;
+}
+#modal.modal-kind-agenda .cloud-event{padding:clamp(4px,.6vw,10px)!important}
+#modal.modal-kind-agenda .cloud-event :is(strong,p){
+ font-size:clamp(10px,.91vw,14px)!important;overflow-wrap:anywhere;
+}
+#modal.modal-kind-agenda .cloud-agenda-nav{
+ grid-template-columns:minmax(135px,1fr) minmax(160px,2fr) minmax(135px,1fr);
+}
+@media(max-width:760px){
+ #modal.modal-kind-agenda{width:calc(100vw - 8px)!important}
+ #modal.modal-kind-agenda .cloud-week{gap:2px!important}
+ #modal.modal-kind-agenda .cloud-day{border-width:1px;padding:3px!important;border-radius:7px}
+ #modal.modal-kind-agenda .cloud-day h4{font-size:9px!important}
+ #modal.modal-kind-agenda .cloud-event{padding:3px!important;border-radius:5px}
+ #modal.modal-kind-agenda .cloud-event :is(strong,p){font-size:9px!important}
+}

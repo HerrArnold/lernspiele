@@ -137,3 +137,262 @@
 .original-frame.original-daily{height:clamp(720px,86vh,1120px);min-height:720px}
 .destination-screen:has(.original-integration) .destination-actions{margin-top:14px;padding-top:10px}
 @media(max-width:700px){.destination-screen:has(.original-integration) .destination-panel,.destination-screen:has(.original-collection) .destination-panel,.destination-screen:has(.original-lagoon) .destination-panel,.destination-screen:has(.original-baobab) .destination-panel{padding:12px;border-width:2px}.integration-play-title{width:100%}.integration-play-title h2{font-size:22px}.integration-play-emoji{width:42px;height:42px;font-size:23px}.integration-game-surface{padding:4px;border-radius:14px}.original-frame{min-height:580px;height:78vh}.original-frame.original-daily{min-height:620px;height:80vh}.integration-game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.integration-game-card{min-height:195px}.integration-game-card img{height:100px}}
+
+
+/* Laptop v2: In der Lagunen-Uebersicht ist die Illustration die Navigation.
+   Doppelte Einfuehrungs- und Infobloecke weichen, damit alle Felsen sichtbar sind.
+   Spieleauswahl und eigentliche Spiele bleiben unveraendert. */
+@media (min-width:900px) and (min-height:550px) {
+  .original-lagoon.integration-shell {gap:5px;max-width:none}
+  .original-lagoon > .integration-hero,
+  .original-lagoon > .integration-context-grid {display:none}
+  .original-lagoon > .integration-trail {margin:0 0 2px}
+  .original-lagoon .integration-scene-card {
+    padding:5px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .original-lagoon .integration-lagoon-scene {
+    width:fit-content;max-width:100%;
+    border-width:2px;
+  }
+  .original-lagoon .integration-lagoon-scene img {
+    display:block;width:auto;height:auto;max-width:100%;
+    max-height:calc(100dvh - 242px);
+  }
+  .original-lagoon > .integration-subjects {gap:5px}
+  .original-lagoon > .integration-subjects button {
+    padding:6px 12px;min-height:35px;font-size:13px;
+  }
+  .is-lagoon .destination-actions {margin-top:4px;padding-top:6px}
+  .is-lagoon .integration-trail {font-size:12px}
+}
+
+
+/* Warmes Safari-Farbkonzept statt der fast weissen Flachen der Lern-Lagune. */
+.original-lagoon.integration-area-lagoon .integration-scene-card {
+  background:#e2e9cc;
+  border-color:#a7bf88;
+}
+.original-lagoon.integration-area-lagoon .integration-lagoon-scene {
+  background:#d4e4ba;
+  border-color:#9caf76;
+}
+.original-lagoon.integration-area-lagoon .integration-subjects button {
+  background:#f3e2bc;
+  color:#573f28;
+}
+.original-lagoon.integration-area-lagoon .integration-trail .integration-pill {
+  background:#f4e5c7;
+}
+.is-lagoon .destination-panel {
+  background:#f4e5c7;
+}
+.destination-screen.is-lagoon {
+  background:linear-gradient(160deg,#dbe9bd,#a9d2b5 53%,#dec68f);
+}
+
+/* Baobab-Baum: komplette Uebersicht auf Laptophoehe ohne Scrollen.
+   Die Bildgroesse bleibt proportional; die Inhaltsbuttons sind erreichbar. */
+@media (min-width:900px) and (min-height:550px) {
+  .original-baobab.integration-shell {
+    max-width:none;
+    gap:5px;
+  }
+  .original-baobab > .integration-hero,
+  .original-baobab > .integration-context-grid,
+  .original-baobab > .integration-note {display:none}
+  .original-baobab > .integration-trail {margin:0 0 2px}
+  .original-baobab .integration-scene-card {
+    padding:5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e3e3b9;
+    border-color:#a9a875;
+  }
+  .original-baobab .integration-baobab-scene {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:fit-content;
+    max-width:100%;
+    max-height:none;
+    border-width:2px;
+    border-color:#ac895a;
+  }
+  .original-baobab .integration-baobab-scene img {
+    display:block;
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:calc(100dvh - 225px);
+    object-fit:contain;
+  }
+  .original-baobab > .integration-choice-grid {gap:6px}
+  .original-baobab > .integration-choice-grid button {
+    padding:6px 12px;
+    min-height:36px;
+    font-size:13px;
+  }
+  .is-baobab .destination-actions {margin-top:4px;padding-top:6px}
+  .is-baobab .integration-trail {font-size:12px}
+}
+
+
+/* Navigierbare Pfad-Knoepfe: klar als Schaltflaechen erkennbar. */
+.integration-trail button.integration-trail-link {
+  appearance:none;
+  font:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+  color:#65472e;
+  cursor:pointer;
+}
+.integration-trail button.integration-trail-link:hover {
+  background:#e1eed3;
+  border-color:#7b9d76;
+  color:#285637;
+}
+.integration-trail button.integration-trail-link:focus-visible {
+  outline:3px solid #367d84;
+  outline-offset:2px;
+}
+.integration-trail .integration-pill.is-current {cursor:default}
+
+
+/* Lern-Lagune: Fach -> Thema -> Spiel (November 2026). */
+.safari-topic-page{max-width:1200px;margin:auto;gap:12px;color:#553e29}
+.safari-topic-header{display:flex;gap:17px;align-items:center;padding:15px 20px;border:2px solid #b3c59c;border-radius:20px;background:linear-gradient(120deg,#e3edce,#f5e6c4)}
+.safari-topic-icon{display:grid;place-items:center;flex:none;width:64px;height:64px;font-size:35px;background:#f8f3df;border:2px solid #d4bc8c;border-radius:18px}
+.safari-topic-header h2{font-size:clamp(25px,3vw,36px);margin:2px 0 5px;color:#35593d}
+.safari-topic-header p{margin:0;color:#5a5038;font-size:15px}
+.safari-topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+.safari-topic-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:9px;text-align:left;min-height:180px;padding:22px;border:3px solid #d0b783;border-radius:22px;background:linear-gradient(150deg,#fff3d7,#e4edcb);color:#503b29;cursor:pointer;box-shadow:0 6px 14px #66452712}
+.safari-topic-card:hover,.safari-topic-card:focus-visible{border-color:#5e9869;background:#e5efcf}
+.safari-topic-card-icon{font-size:39px}
+.safari-topic-card strong{font-size:clamp(19px,2vw,25px);line-height:1.2}
+.safari-topic-card small{font-size:13px;color:#61543d}
+.safari-topic-arrow{margin-left:auto;color:#537d55;font-size:25px;font-weight:bold}
+.safari-topic-card .safari-topic-arrow{position:absolute;right:20px;bottom:16px}
+.safari-topic-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.safari-topic-game{display:flex;align-items:center;gap:14px;min-height:82px;padding:13px 17px;text-align:left;background:#fff4db;border:2px solid #dbc28e;border-radius:17px;color:#523c28;cursor:pointer}
+.safari-topic-game:not(:disabled):hover,.safari-topic-game:focus-visible{background:#e5efcf;border-color:#66916b}
+.safari-topic-game-icon{font-size:28px;flex:none}
+.safari-topic-game-text{display:grid;gap:4px;min-width:0;flex:1}
+.safari-topic-game-text strong{font-size:clamp(15px,1.3vw,19px);line-height:1.25}
+.safari-topic-game-text small{font-size:12px;color:#705b44;line-height:1.35}
+.safari-topic-unavailable{background:#eee7d4;color:#726453;border-color:#d7cbb8;cursor:not-allowed;opacity:.87}
+.safari-topic-status{font-size:11px;white-space:nowrap;border-radius:15px;padding:5px 8px;background:#e3d6bd;color:#67563c;font-weight:bold}
+@media(max-width:700px){
+  .safari-topic-header{padding:12px;gap:10px}
+  .safari-topic-icon{width:48px;height:48px;font-size:26px}
+  .safari-topic-games{grid-template-columns:1fr}
+  .safari-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .safari-topic-card{min-height:145px;padding:13px}
+  .safari-topic-card-icon{font-size:29px}
+  .safari-topic-card strong{font-size:16px}
+  .safari-topic-game{padding:12px}
+  .safari-topic-status{white-space:normal}
+}
+
+
+/* Fachfarben – klar wiedererkennbar in Themen- UND Spieleansicht.
+   Mathe blau, Deutsch rot, NMG gruen, Musik weiss, Englisch gelb. */
+.safari-topic-page.safari-subject-math {
+  --subject-bg:#dcedff;--subject-light:#eff7ff;--subject-edge:#76a9d8;
+  --subject-ink:#24577e;--subject-hover:#c8e4ff;
+}
+.safari-topic-page.safari-subject-german {
+  --subject-bg:#f8dddd;--subject-light:#fff0ed;--subject-edge:#d9908e;
+  --subject-ink:#8b3434;--subject-hover:#f4cccc;
+}
+.safari-topic-page.safari-subject-nmg {
+  --subject-bg:#dcebd5;--subject-light:#edf5e5;--subject-edge:#8aaf7e;
+  --subject-ink:#32623b;--subject-hover:#cee5c3;
+}
+.safari-topic-page.safari-subject-music {
+  --subject-bg:#ffffff;--subject-light:#fffefa;--subject-edge:#c5c4be;
+  --subject-ink:#414c58;--subject-hover:#f0f1f3;
+}
+.safari-topic-page.safari-subject-english {
+  --subject-bg:#fff0ac;--subject-light:#fff9db;--subject-edge:#d7b951;
+  --subject-ink:#71551d;--subject-hover:#ffe887;
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-header {
+  background:linear-gradient(125deg,var(--subject-bg),var(--subject-light));
+  border-color:var(--subject-edge);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-header h2,
+.safari-topic-page[class*="safari-subject-"] .integration-kicker {
+  color:var(--subject-ink);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-icon {
+  background:var(--subject-light);border-color:var(--subject-edge);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-card {
+  background:linear-gradient(145deg,var(--subject-light),var(--subject-bg));
+  border-color:var(--subject-edge);color:var(--subject-ink);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-game:not(:disabled) {
+  background:var(--subject-light);
+  border-color:var(--subject-edge);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-card:hover,
+.safari-topic-page[class*="safari-subject-"] .safari-topic-card:focus-visible,
+.safari-topic-page[class*="safari-subject-"] .safari-topic-game:not(:disabled):hover,
+.safari-topic-page[class*="safari-subject-"] .safari-topic-game:not(:disabled):focus-visible {
+  background:var(--subject-hover);
+  border-color:var(--subject-ink);
+}
+.safari-topic-page[class*="safari-subject-"] .safari-topic-arrow {
+  color:var(--subject-ink);
+}
+.safari-topic-page .safari-topic-game:not(:disabled) .safari-topic-arrow {
+  font-size:27px;
+}
+
+
+/* SVG statt Flaggen-Emoji: wird auch auf Windows-Laptops korrekt gezeigt. */
+.safari-uk-flag {
+  display:inline-block;
+  width:1.35em;
+  height:auto;
+  aspect-ratio:5/3;
+  vertical-align:-.14em;
+  object-fit:contain;
+  border-radius:2px;
+  box-shadow:0 0 0 1px rgba(32,43,58,.18);
+}
+.safari-topic-card-icon .safari-uk-flag,
+.safari-topic-icon .safari-uk-flag,
+.integration-icon .safari-uk-flag,
+.subject-symbol .safari-uk-flag {
+  width:1.4em;
+  max-width:100%;
+}
+
+
+/* Einheitliche rechteckige Facherkennungszeichen – ohne Emoji-Font-Abhaengigkeit. */
+.safari-subject-badge{display:inline-block;width:1.55em;height:auto;aspect-ratio:5/3;object-fit:contain;vertical-align:-.16em;border-radius:3px;box-shadow:0 0 0 1px rgba(47,63,53,.17)}
+.integration-subjects .safari-subject-badge{width:1.85em}
+.safari-topic-icon .safari-subject-badge,.integration-icon .safari-subject-badge,.subject-symbol .safari-subject-badge{width:1.45em;max-width:100%}
+
+
+/* Tages-Tal: the original daily exercise fills its Safari workspace.
+   Preserve the internal task scrolling, but avoid narrow side gutters. */
+@media(min-width:900px){
+  .destination-screen.is-valley{padding:10px 12px 24px}
+  .destination-screen.is-valley .destination-panel,
+  .destination-screen.is-valley:has(.original-integration) .destination-panel{
+    width:min(100%,1740px);
+    max-width:1740px;
+    padding:12px 15px 18px;
+  }
+  .original-integration.integration-area-valley{width:100%;max-width:none}
+  .original-integration.integration-area-valley .integration-game-surface,
+  .original-integration.integration-area-valley .integration-frame-wrap{width:100%;max-width:none}
+  .original-integration.integration-area-valley .original-frame.original-daily{
+    width:100%;
+    height:clamp(700px,84dvh,1200px);
+  }
+}

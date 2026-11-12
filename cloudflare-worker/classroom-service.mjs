@@ -44,6 +44,10 @@ function evaluate(mode,plan,game,gameSubjects){
  const verified=new Set(idsOf(plan?.verified));
  const unfinished=required.length===0||required.some(id=>!verified.has(id));
  if(!unfinished)return true;
+ // During a Fachlektion, the entire selected subject is accessible.
+ // The teacher-selected mandatory tasks determine when other subjects unlock.
+ if(mode.kind==='subject')return gameSubjects[game]===mode.subject;
+ // During arrival time only the selected day's activities remain available.
  return assignments.some(a=>required.includes(numberId(a.id))&&a.target==='game:'+game);
 }
 /* Required adapters:
@@ -68,7 +72,15 @@ export function createClassroomService({auth,store,catalog,now=()=>Date.now()}){
   const m=activeMode(saved,now());
   const assignments=await store.childAssignments(username);
   const allowed=requiredForChild(m,assignments,username,Object.fromEntries(games),now());
-  const verified=idsOf(await store.verifiedIds(username));
+  const teacherVerified=idsOf(await store.verifiedIds(username));
+  // Optional TRUSTED server grading adapter. This must only return assignment
+  // IDs independently graded by the Worker itself from canonical answers or
+  // teacher-reviewed submissions. Never use client-submitted points as proof.
+  const autoVerified=typeof store.trustedCompletionIds==='function'
+    ? idsOf(await store.trustedCompletionIds(username,{assignments,mode:m}))
+    : [];
+  const eligible=new Set(assignments.filter(a=>validForChild(a,username,now())).map(a=>numberId(a.id)));
+  const verified=[...new Set([...teacherVerified,...autoVerified].filter(id=>eligible.has(id)))];
   // Until the teacher explicitly enables a mode, preserve the existing
   // /learning-plan focus rules instead of accidentally overriding them with 'free'.
   if(!saved)return {...basePlan,assignments,verified};
@@ -88,7 +100,8 @@ export function createClassroomService({auth,store,catalog,now=()=>Date.now()}){
     // free to bypass old focus rules. Until migration, use the legacy child
     // plan in the browser and keep anonymous direct-game access closed.
     if(!saved)return json({allowed:false},200);
-    if(!child?.username)return json({allowed:current.kind==='free'},200);
+    // Every classroom user must be logged in, even during discovery time.
+    if(!child?.username)return json({allowed:false},200);
     const p=await childPlan(child.username,{});
     return json({allowed:evaluate(p.classroomMode,p,game,Object.fromEntries(games))});
    }

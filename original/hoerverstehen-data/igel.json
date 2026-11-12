@@ -1,0 +1,152 @@
+{
+  "id": "igel",
+  "title": "Der Igel",
+  "total": 48,
+  "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Der_Igel.mp3",
+  "source": "https://grundschul-blog.de/hoerverstehenstests/",
+  "gap": "Der {{Igel}}\n\nDie {{Stacheltiere}} leben in unseren {{Wäldern}}, aber auch in Parkanlagen und Gärten.\n\nEin Igel hat bis zu {{8000}} Stacheln. Wenn ihm Gefahr droht, {{rollt}} er sich zusammen. So können ihm {{Fuchs}} und Dachs nichts tun.\n\nDen Tag verschläft der Igel in seinem {{Nest}} unter einer {{Hecke}} oder einem Holzhaufen. Erst gegen {{Abend}} kommt er aus seinem {{Versteck}} und geht auf Nahrungssuche.",
+  "tf": [
+    [
+      "Igel sind Stacheltiere.",
+      "r"
+    ],
+    [
+      "Sie leben nur in Wäldern.",
+      "f"
+    ],
+    [
+      "Wenn ihm Gefahr droht, rollt er sich zusammen.",
+      "r"
+    ],
+    [
+      "Igelpaare bleiben immer zusammen.",
+      "n"
+    ],
+    [
+      "Fuchs und Dachs sind seine Feinde.",
+      "r"
+    ],
+    [
+      "Die Nacht verschläft der Igel in seinem Nest.",
+      "f"
+    ],
+    [
+      "Er hat sein Nest unter einer Hecke oder unter einem Holzhaufen.",
+      "r"
+    ],
+    [
+      "Das Igelmännchen hilft dem Weibchen bei der Aufzucht der Jungen.",
+      "n"
+    ]
+  ],
+  "pick": [
+    [
+      [
+        "Tagsüber kommt er aus seinem Versteck und geht auf Nahrungssuche.",
+        "Mittags kommt er aus seinem Versteck und geht auf Nahrungssuche.",
+        "Am Abend kommt er aus seinem Versteck und geht auf Nahrungssuche."
+      ],
+      2
+    ],
+    [
+      [
+        "Gemüse und Käfer fressen diese Tiere besonders gern.",
+        "Regenwürmer und Käfer fressen diese Tiere besonders gern.",
+        "Regenwürmer und Äpfel fressen diese Tiere besonders gern."
+      ],
+      1
+    ],
+    [
+      [
+        "Aber auch Schnecken, Insekten, Spinnen und Vogeleier stehen auf seiner Speisekarte.",
+        "Aber auch Schnecken, Insekten, Spinnen und Vögel stehen auf seiner Speisekarte.",
+        "Aber auch Schnecken, Gräser, Spinnen und Vogeleier stehen auf seiner Speisekarte."
+      ],
+      0
+    ],
+    [
+      [
+        "Igel können gut sehen und sehr gut riechen.",
+        "Igel können nicht gut riechen, dafür aber sehr gut sehen.",
+        "Igel können nicht gut sehen, dafür aber sehr gut riechen."
+      ],
+      2
+    ],
+    [
+      [
+        "Im August oder September bringt das Igelweibchen vier bis acht Junge zur Welt.",
+        "Im Juli oder September bringt das Igelweibchen vier bis acht Junge zur Welt.",
+        "Im August oder September bringt das Igelweibchen zwei bis fünf Junge zur Welt."
+      ],
+      0
+    ],
+    [
+      [
+        "Da Igel Säugetiere sind, werden die Kleinen von der Mutter gepflegt.",
+        "Da Igel Säugetiere sind, werden die Kleinen von der Mutter gesäugt.",
+        "Da Igel Säugetiere sind, werden die Kleinen von dem Vater gesäugt."
+      ],
+      1
+    ]
+  ],
+  "correct": [
+    [
+      "Da Igel Nagetiere sind, werden die Kleinen von der Mutter gesäugt.",
+      "Da Igel Säugetiere sind, werden die Kleinen von der Mutter gesäugt.",
+      [
+        "Säugetiere"
+      ]
+    ],
+    [
+      "Zunächst haben die Kleinen ihre Augen noch geschlossen, erst nach etwa zwei Tagen können sie riechen und hören.",
+      "Zunächst haben die Kleinen ihre Augen noch geschlossen, erst nach etwa zwei Wochen können sie sehen und hören.",
+      [
+        "Wochen",
+        "sehen"
+      ]
+    ],
+    [
+      "Im Spätsommer sind die Fuchskinder dann selbstständig und verlassen die Mutter.",
+      "Im Spätherbst sind die Igelkinder dann selbstständig und verlassen die Mutter.",
+      [
+        "Spätherbst",
+        "Igelkinder"
+      ]
+    ],
+    [
+      "Schon im Herbst beginnen Igel, sich ein Fettpolster anzufressen.",
+      "Schon im Sommer beginnen Igel, sich ein Fettpolster anzufressen.",
+      [
+        "Sommer"
+      ]
+    ],
+    [
+      "Nun gibt es ausreichend Partner.",
+      "Nun gibt es ausreichend Nahrung.",
+      [
+        "Nahrung"
+      ]
+    ],
+    [
+      "Ende Oktober oder im November sucht sich das Tier ein ungeschütztes kuscheliges Nest.",
+      "Ende Oktober oder im November sucht sich das Tier ein geschütztes kuscheliges Nest.",
+      [
+        "geschütztes"
+      ]
+    ],
+    [
+      "Müllhaufen mag er besonders gern.",
+      "Laubhaufen mag er besonders gern.",
+      [
+        "Laubhaufen"
+      ]
+    ],
+    [
+      "Hier legt er sich schlafen und wacht erst im Sommer wieder auf.",
+      "Hier legt er sich schlafen und wacht erst im Frühling wieder auf.",
+      [
+        "Frühling"
+      ]
+    ]
+  ]
+}
