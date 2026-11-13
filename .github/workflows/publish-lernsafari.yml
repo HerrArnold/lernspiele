@@ -1,4 +1,5 @@
 name: Publish current LernSafari2 to lernspiele
+# Refresh requested 2026-11-13: copy current Lernspiele2/main to lernspiele/main.
 on:
   push:
     branches: [main]
