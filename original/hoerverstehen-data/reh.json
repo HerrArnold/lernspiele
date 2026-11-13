@@ -1,10 +1,9 @@
 {
   "id": "reh",
   "title": "Das Reh",
-  "total": 60,
+  "total": 18,
   "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Das_Reh.mp3",
   "source": "https://grundschul-blog.de/material/hoertext-das-reh/",
-  "gap": "Das {{Reh}}\n\nRehe leben, wie viele andere {{Tiere}} auch, in unseren {{Wäldern}}. Sie sind sehr {{scheu}}. Deshalb können wir sie nur selten {{beobachten}}.\n\nMorgens und {{abends}} verlassen sie ihre {{Verstecke}}, um zu {{fressen}}. Das nennt man äsen.\n\n{{Rehe}} können nicht gut {{sehen}}, dafür aber sehr gut {{hören}} und riechen.\n\nDas männliche Tier, den {{Rehbock}}, erkennt man an seinem Gehörn auf dem {{Kopf}}. Die Ricke, das {{Weibchen}}, hat dies nicht. Die Jungtiere werden {{Kitze}} genannt.",
   "tf": [
     [
       "Rehe sind sehr scheue Tiere.",
@@ -178,5 +177,6 @@
         "viele"
       ]
     ]
-  ]
+  ],
+  "bonus_task": "Freiwillige Zusatzaufgabe: Sätze richtig abschreiben – ohne Pflichtpunkte"
 }

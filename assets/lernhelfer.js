@@ -23,7 +23,7 @@ async function peers(target,date){const key=target+'|'+date,prior=cache.get(key)
  }catch(_){return [];}}
 function show(el,names){if(!el.isConnected||!eligible||el.querySelector('.ls-helper-card'))return;
  const panel=document.createElement('aside');panel.className='ls-helper-card';panel.setAttribute('aria-label','Lernhelfer');
- panel.innerHTML=`<strong>Zusammen geht es leichter!</strong><span>${names.length?'Wenn du nicht weiterkommst, kannst du diese Tiere fragen:':'Hier gibt es noch keine Lernhelfer-Empfehlung. Probiere es Schritt für Schritt.'}</span>${names.length?`<div class="ls-helper-names">${names.map(n=>`<span>${escape(n)}</span>`).join('')}</div>`:''}`;
+ panel.innerHTML=`<strong>🌟 Expertinnen und Experten – zusammen geht es leichter!</strong><span>${names.length?'Diese Kinder können dir beim Üben helfen:':'Hier gibt es noch keine Lernhelfer-Empfehlung. Probiere es Schritt für Schritt.'}</span>${names.length?`<div class="ls-helper-names">${names.map(n=>`<span>${escape(n)}</span>`).join('')}</div>`:''}`;
  if(el.classList.contains('top')){el.insertAdjacentElement('afterend',panel);return;}const heading=el.querySelector('.task-head')||el.querySelector('h3');if(heading)heading.insertAdjacentElement('afterend',panel);else el.prepend(panel);
 }
 async function fill(){if(refreshing||!eligible)return;refreshing=true;
@@ -44,7 +44,7 @@ async function fill(){if(refreshing||!eligible)return;refreshing=true;
    const cards=[...document.querySelectorAll('#daily-tasks .daily-task[id^="exercise-"]'),...document.querySelectorAll('#zahl-des-tages .zdt-task[data-step]')];
    // Keine alten Helfer auf neue, wöchentlich wechselnde Tagesaufgaben übertragen.
    const date=currentDate();for(const card of cards){if(!card.isConnected||card.querySelector('.ls-helper-card'))continue;const target=targetForCard(card);const names=await peers(target,target.startsWith('daily:')?date:'');show(card,names);}
- }else{const s=location.pathname.split('/').pop()?.replace('.html','')||'';const h=document.querySelector('main .top');if(!h||document.querySelector('.ls-helper-card'))return;show(h,await peers('game:'+s,''));}}
+ }else{const s=location.pathname.split('/').pop()?.replace('.html','')||'';const h=document.querySelector('main .top, main header, .game-header, .game-top, header.top, main h1');if(!h||document.querySelector('.ls-helper-card'))return;show(h,await peers('game:'+s,''));}}
  finally{refreshing=false;}}
 function schedule(){clearTimeout(queue);queue=setTimeout(()=>{void fill();},360);}
 async function reset(){eligible=false;clean();cache.clear();await me();schedule();}

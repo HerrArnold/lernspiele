@@ -1,0 +1,281 @@
+{
+  "id": "lesen_1",
+  "title": "Der freche Affe",
+  "task1": [
+    {
+      "id": "a1",
+      "statement": "Kito ist ein kleiner Affe.",
+      "correct": true,
+      "reason": "Gleich zu Beginn wird Kito als kleiner Affe beschrieben."
+    },
+    {
+      "id": "a2",
+      "statement": "Kito findet die Banane auf einem Felsen.",
+      "correct": false,
+      "reason": "Die Banane liegt unter einem Baum."
+    },
+    {
+      "id": "a3",
+      "statement": "Kito möchte die Banane zuerst allein essen.",
+      "correct": true,
+      "reason": "Das ist sein ursprünglicher Plan."
+    },
+    {
+      "id": "a4",
+      "statement": "Gino ist ein Zebra.",
+      "correct": false,
+      "reason": "Gino ist eine Giraffe."
+    },
+    {
+      "id": "a5",
+      "statement": "Kito versteckt die Banane hinter seinem Rücken.",
+      "correct": true,
+      "reason": "Das steht ausdrücklich im Text."
+    },
+    {
+      "id": "a6",
+      "statement": "Gino kann die Banane überhaupt nicht sehen.",
+      "correct": false,
+      "reason": "Sie bemerkt die gelbe Schale."
+    },
+    {
+      "id": "a7",
+      "statement": "Gino fragt nach einem Stück Banane.",
+      "correct": true,
+      "reason": "Sie bittet um ein Stück."
+    },
+    {
+      "id": "a8",
+      "statement": "Kito wirft die Banane weg.",
+      "correct": false,
+      "reason": "Er teilt sie mit Gino."
+    }
+  ],
+  "task2": [
+    {
+      "id": "b1",
+      "question": "Was für ein Tier ist Kito?",
+      "core": "Ein kleiner Affe.",
+      "accepted_examples": [
+        "Affe",
+        "ein Affe",
+        "ein kleiner Affe",
+        "Kito ist ein Affe"
+      ],
+      "essential": [
+        "Affe"
+      ],
+      "incorrect_if": [
+        "Giraffe",
+        "Zebra"
+      ],
+      "options": [
+        "Ein junger Affe, der Bananen liebt.",
+        "Eine junge Giraffe, die Bananen sucht.",
+        "Ein junger Affe, der am liebsten Blätter frisst.",
+        "Ein Zebra, das im Baum lebt."
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "b2",
+      "question": "Wo findet Kito die Banane?",
+      "core": "Unter einem Baum.",
+      "accepted_examples": [
+        "unter einem Baum",
+        "am Boden unter dem Baum",
+        "bei einem Baum",
+        "unter dem Baum"
+      ],
+      "essential": [
+        "Baum",
+        "unter/bei"
+      ],
+      "incorrect_if": [
+        "auf einem Baum",
+        "auf einem Felsen"
+      ],
+      "options": [
+        "Auf einem Felsen oberhalb der Wiese.",
+        "Hinter dem Baum bei Gino.",
+        "Auf dem Boden unter einem Baum.",
+        "Zwischen den Ästen eines Baums."
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "b3",
+      "question": "Was möchte Kito zuerst mit der Banane machen?",
+      "core": "Er möchte sie allein essen.",
+      "accepted_examples": [
+        "alleine essen",
+        "für sich behalten und essen",
+        "nicht teilen",
+        "selber aufessen"
+      ],
+      "essential": [
+        "allein behalten oder essen"
+      ],
+      "incorrect_if": [
+        "mit Gino teilen als ursprünglicher Plan"
+      ],
+      "options": [
+        "Er möchte die Banane zuerst alleine essen.",
+        "Er möchte sie sofort Gino schenken.",
+        "Er möchte sie für später vergraben.",
+        "Er möchte sie für die anderen Affen aufheben."
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "b4",
+      "question": "Woran erkennt Gino, dass Kito eine Banane versteckt?",
+      "core": "An der gelben Schale.",
+      "accepted_examples": [
+        "sie sieht die gelbe Schale",
+        "an der Bananenschale",
+        "sie bemerkt etwas Gelbes hinter seinem Rücken"
+      ],
+      "essential": [
+        "Schale oder sichtbarer gelber Teil"
+      ],
+      "incorrect_if": [
+        "sie riecht die Banane",
+        "Kito sagt es ihr"
+      ],
+      "options": [
+        "Weil Kito ihr von der Banane erzählt.",
+        "Weil Gino die gelbe Schale sieht.",
+        "Weil die Banane laut auf den Boden fällt.",
+        "Weil sie Kito nach Bananen fragt."
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "b5",
+      "question": "Was macht Kito am Schluss?",
+      "core": "Er teilt die Banane mit Gino.",
+      "accepted_examples": [
+        "er gibt ihr ein Stück",
+        "sie essen die Banane zusammen",
+        "er teilt mit seiner Freundin",
+        "beide essen davon"
+      ],
+      "essential": [
+        "teilen mit Gino"
+      ],
+      "incorrect_if": [
+        "er isst alles allein",
+        "er wirft sie weg"
+      ],
+      "options": [
+        "Er versteckt die Banane an einem neuen Ort.",
+        "Er gibt Gino die ganze Banane und geht weg.",
+        "Er teilt die Banane mit Gino.",
+        "Er isst sie heimlich, während Gino wartet."
+      ],
+      "correct_index": 2
+    }
+  ],
+  "task3": [
+    {
+      "id": "c1",
+      "term": "heimlich",
+      "meaning": "So, dass andere es möglichst nicht merken.",
+      "accepted_examples": [
+        "unbemerkt",
+        "versteckt",
+        "ohne dass es jemand sieht",
+        "im Geheimen",
+        "damit die anderen es nicht bemerken"
+      ],
+      "essential": [
+        "nicht bemerkt werden"
+      ],
+      "incorrect_if": [
+        "laut",
+        "offen vor allen"
+      ],
+      "options": [
+        "Etwas machen, damit es niemand bemerkt.",
+        "Etwas machen, das besonders schnell geht.",
+        "Etwas tun, nachdem alle zugeschaut haben.",
+        "Etwas tun, das man laut ankündigt."
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "c2",
+      "term": "bemerkt",
+      "meaning": "Sie sieht oder erkennt etwas.",
+      "accepted_examples": [
+        "sieht",
+        "merkt",
+        "entdeckt",
+        "fällt ihr auf",
+        "sie hat es gesehen"
+      ],
+      "essential": [
+        "wahrnehmen/merken"
+      ],
+      "incorrect_if": [
+        "vergessen",
+        "verstecken"
+      ],
+      "options": [
+        "Sich etwas sehr genau wünschen.",
+        "Etwas verstecken, damit es niemand findet.",
+        "Etwas wahrnehmen oder entdecken.",
+        "Etwas vergessen, obwohl es wichtig ist."
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "c3",
+      "term": "teilen",
+      "meaning": "Jemandem etwas vom Eigenen abgeben.",
+      "accepted_examples": [
+        "ein Stück geben",
+        "mit jemandem zusammen benutzen oder essen",
+        "nicht alles für sich behalten",
+        "die Banane in Stücke geben und abgeben"
+      ],
+      "essential": [
+        "etwas abgeben oder gemeinsam nutzen"
+      ],
+      "incorrect_if": [
+        "alles für sich behalten"
+      ],
+      "options": [
+        "Etwas für später behalten.",
+        "Jemandem einen Teil von etwas abgeben.",
+        "Etwas vor den anderen verstecken.",
+        "Etwas ganz alleine aufessen."
+      ],
+      "correct_index": 1
+    }
+  ],
+  "task4": [
+    {
+      "id": "d1",
+      "text": "Dann teilt er die Banane mit Gino.",
+      "correct_position": 4
+    },
+    {
+      "id": "d2",
+      "text": "Kito entdeckt eine Banane unter einem Baum.",
+      "correct_position": 1
+    },
+    {
+      "id": "d3",
+      "text": "Gino bemerkt die gelbe Schale.",
+      "correct_position": 3
+    },
+    {
+      "id": "d4",
+      "text": "Kito versteckt die Banane hinter seinem Rücken.",
+      "correct_position": 2
+    }
+  ],
+  "audio": "../hoerverstehen-audio/affe.m4a"
+}

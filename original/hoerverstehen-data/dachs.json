@@ -1,10 +1,9 @@
 {
   "id": "dachs",
   "title": "Der Dachs",
-  "total": 55,
+  "total": 15,
   "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Der_Dachs.mp3",
   "source": "https://grundschul-blog.de/material/hoertext-der-dachs/",
-  "gap": "Der {{Dachs}}\n\nDer Dachs ist ein sehr {{scheues}} Waldtier. Er ist viel {{kräftiger}} gebaut als der Rotfuchs. Durch ihr breites {{Hinterteil}} ist ihr Gang ein wenig watschelnd. Trotzdem können Dachse schnell {{laufen}} und auch gut {{schwimmen}}.\n\nDas Fell des Dachses ist {{grau}}, auf dem Rücken hat er einen {{dunklen}} Strich. Die {{Beine}} und der Hals sind schwarz. Sie haben einen {{kurzen}} Schwanz. Am weissen Kopf sind {{zwei}} breite schwarze Streifen. Diese reichen von der {{Nase}} bis zu den {{kleinen}} Ohren.",
   "tf": [
     [
       "Der Dachs lebt auch gerne in Städten.",
@@ -165,5 +164,6 @@
         "Winter"
       ]
     ]
-  ]
+  ],
+  "bonus_task": "Freiwillige Zusatzaufgabe: Sätze richtig abschreiben – ohne Pflichtpunkte"
 }

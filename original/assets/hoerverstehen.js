@@ -66,15 +66,14 @@
       :'<h2>Deine Versuche</h2><p>Noch kein abgeschlossener Versuch.</p>';
   }
   function render(){
-    const gapCount=(data.gap.match(/\{\{/g)||[]).length;
-    root.innerHTML='<div class="hear-intro"><div><p class="hear-kicker">DEUTSCH · HÖRVERSTÄNDNIS</p><h1>'+safe(data.title)+'</h1><p>Höre genau zu und löse die vier Aufgaben. Du darfst die Aufnahme jederzeit anhalten, zurückspulen und nochmals abspielen.</p></div><span class="hear-total">'+data.total+' Punkte</span></div>'+
+    const baseTotal=data.tf.length+data.pick.length;
+    root.innerHTML='<div class="hear-intro"><div><p class="hear-kicker">DEUTSCH · HÖRVERSTÄNDNIS</p><h1>'+safe(data.title)+'</h1><p>Höre genau zu und löse die zwei Pflichtaufgaben. Danach kannst du freiwillig weitere Sätze verbessern. Du darfst die Aufnahme jederzeit anhalten, zurückspulen und nochmals abspielen.</p></div><span class="hear-total">'+baseTotal+' Punkte</span></div>'+
       '<div class="hear-player" role="region" aria-label="Hörtext abspielen"><span class="hear-audio-label">🎧 Hörtext</span><audio id="hearing-audio" controls preload="metadata" controlsList="nodownload" src="'+safe(data.audio)+'"></audio>'+
       '<button type="button" id="hear-rewind">↶ 10 s</button><button type="button" id="hear-replay">↻ Anfang</button></div>'+
       '<p class="hear-audio-error" id="hear-audio-error" hidden>Die Aufnahme konnte nicht geladen werden. <a href="'+safe(data.source)+'" target="_blank" rel="noopener noreferrer">Originalaufnahme aufrufen</a>.</p>'+
-      section('1. Ergänze den Lückentext',gapCount,renderGap(data.gap),'Schreibe die fehlenden Wörter genau richtig in die Lücken. Achte auf Gross- und Kleinschreibung.')+
-      section('2. Richtig, falsch oder nicht im Text?',data.tf.length,renderTF(),'Wähle für jeden Satz genau eine Antwort aus.')+
-      section('3. Welche Sätze sind richtig?',data.pick.length,renderChoices(),'Kreuze die richtigen Sätze an. Pro Gruppe kann eine Antwort richtig sein.')+
-      section('4. Finde die Fehler und verbessere die Sätze',data.correct.length*3,renderCorrect(),'Schreibe den ganzen richtigen Satz auf. Pro Satz gibt es 3 Punkte: Inhalt, Satzzeichen und Rechtschreibung.')+
+      section('1. Richtig, falsch oder nicht im Text?',data.tf.length,renderTF(),'Wähle für jeden Satz genau eine Antwort aus.')+
+      section('2. Welche Sätze sind richtig?',data.pick.length,renderChoices(),'Kreuze in jeder Gruppe den einen inhaltlich richtigen Satz an.')+
+      '<section class="hear-task hear-extra"><div class="hear-task-head"><h2>⭐ Zusatzaufgabe – freiwillig</h2><span>0 Pflichtpunkte</span></div><p class="hear-instruction"><strong>Nicht erwartet:</strong> Lies die Sätze genau und schreibe die Sätze ohne Fehler. Achte auf die Rechtschreibung. Diese freiwillige Aufgabe zählt nicht zum Ergebnis.</p>'+renderCorrect()+'</section>' +
       '<div class="hear-actions"><button type="button" id="hearing-submit" class="hear-submit">Fertig – Punkte auswerten</button>'+
       '<button type="button" id="hearing-reset" class="hear-secondary">Neu versuchen</button></div>'+
       '<div id="hearing-result" class="hear-result" role="status" aria-live="polite" hidden></div>'+
@@ -86,7 +85,7 @@
     audio.addEventListener('error',()=>{current('#hear-audio-error').hidden=false});
     current('#hearing-submit').addEventListener('click',submit);
     current('#hearing-reset').addEventListener('click',reset);
-    renderHistory();
+    renderHistory();void loadExperts();
   }
   // Correct spelling and upper/lower case must match the printed source.
   // German ß/Swiss ss are accepted as the same grapheme.
@@ -100,15 +99,7 @@
     return Number(keywordMatch)+Number(punctuation)+Number(spelling);
   }
   function collect(){
-    const gapSolutions=[...data.gap.matchAll(/\{\{(.*?)\}\}/g)].map(x=>x[1]);
-    const details={gap:0,tf:0,pick:0,correct:0};
-    for(let i=0;i<gapSolutions.length;i++){
-      const el=current('[data-gap="'+i+'"]');
-      const ok=[gapSolutions[i],...(data.gapAlternatives?.[i]||[])].some(word=>trim(el.value)===trim(word));
-      details.gap+=Number(ok);
-      el.classList.toggle('hear-invalid',!ok);
-      el.classList.toggle('hear-valid',ok);
-    }
+    const details={tf:0,pick:0};
     for(let i=0;i<data.tf.length;i++){
       const choice=current('[name="tf-'+i+'"]:checked');
       const ok=choice?.value===data.tf[i][1];
@@ -122,15 +113,24 @@
       details.pick+=Number(ok);
       inputs.forEach(el=>el.closest('label').classList.toggle('hear-valid',ok&&el.checked));
     }
-    for(let i=0;i<data.correct.length;i++){
-      const el=current('[data-correction="'+i+'"]');
-      const [wrong,target,keys]=data.correct[i];
-      const pts=gradeSentence(el.value,target,keys);
-      details.correct+=pts;
-      el.classList.toggle('hear-valid',pts===3);
-      el.classList.toggle('hear-invalid',pts!==3);
-    }
-    return {details,score:Object.values(details).reduce((a,b)=>a+b,0)};
+    return {details,score:details.tf+details.pick};
+  }
+  async function loadExperts(){
+    try{
+      const profile=window.parent.SafariLogin?.auth?.();
+      if(profile?.role!=='child')return;
+      const token=window.parent.localStorage.getItem('lernsafari-token-v1')||'';
+      if(!token)return;
+      const base=String(window.parent.LERNSAFARI_BACKEND_URL||'https://lernsafari-api.ergohd02.workers.dev').replace(/[/]+$/,'');
+      const response=await fetch(base+'/learning-helpers?target='+encodeURIComponent('game:hoerverstehen-'+id),{headers:{Authorization:'Bearer '+token}});
+      if(!response.ok)return;
+      const json=await response.json();
+      const names=(json.helpers||[]).filter(n=>typeof n==='string'&&n).slice(0,3);
+      if(!names.length)return;
+      const box=document.createElement('aside');box.className='hear-history hear-experts';
+      box.innerHTML='<h2>🌟 Expertinnen und Experten</h2><p>Diese Kinder haben besonders gute Ergebnisse erzielt und können dir helfen.</p><p>'+names.map(n=>'<strong class="hear-expert-name">'+safe(n)+'</strong>').join(' ')+'</p>';
+      current('#hearing-history')?.insertAdjacentElement('beforebegin',box);
+    }catch(_){}
   }
   function submit(){
     if(submitted)return;
@@ -139,11 +139,10 @@
     saveRecord(record);submitted=true;result=scored;
     const box=current('#hearing-result');
     box.hidden=false;
-    box.innerHTML='<h2>🌟 Dein Ergebnis: '+scored.score+' / '+data.total+' Punkte</h2>'+
-      '<div class="hear-score-grid"><span>Lückentext <b>'+scored.details.gap+'</b></span><span>Richtig / falsch <b>'+scored.details.tf+'</b></span>'+
-      '<span>Sätze ankreuzen <b>'+scored.details.pick+'</b></span><span>Sätze verbessern <b>'+scored.details.correct+'</b></span></div>'+
-      '<p>Dein Versuch ist gespeichert. Beim nächsten Versuch kannst du deine Punkte mit den früheren Ergebnissen vergleichen.</p>'+
-      '<p class="hear-score-note">Hinweis: Die Rechtschreibung wird streng geprüft. Anders formulierte, aber inhaltlich richtige Sätze muss eine Lehrperson gegebenenfalls nachprüfen.</p>';
+    box.innerHTML='<h2>🌟 Dein Ergebnis: '+scored.score+' / '+data.total+' Punkte ('+Math.round(scored.score/data.total*100)+' %)</h2>'+
+      '<div class="hear-score-grid"><span>Richtig / falsch <b>'+scored.details.tf+' / '+data.tf.length+'</b></span>'+
+      '<span>Sätze ankreuzen <b>'+scored.details.pick+' / '+data.pick.length+'</b></span></div>'+
+      '<p>Die freiwillige Zusatzaufgabe zählt nicht zu den Punkten. Die Pflichtergebnisse sind automatisch korrigiert.</p>';
     current('#hearing-submit').disabled=true;
     renderHistory();box.scrollIntoView({behavior:'smooth',block:'center'});
     // Send only score counts to the already-configured class backend, if a
@@ -168,9 +167,9 @@
     const response=await fetch('../hoerverstehen-data/'+id+'.json',{cache:'no-cache'});
     if(!response.ok)throw Error('Daten konnten nicht geladen werden');
     data=await response.json();
-    const total=(data.gap.match(/\{\{/g)||[]).length+data.tf.length+data.pick.length+3*data.correct.length;
-    if(total!==data.total)throw Error('Punkteverteilung stimmt nicht: '+total+'/'+data.total);
-    historyKey='lernsafari-hoerverstehen-v1-'+profileKey()+'-'+id;
+    const total=data.tf.length+data.pick.length;
+    data.total=total;
+    historyKey='lernsafari-hoerverstehen-v2-'+profileKey()+'-'+id;
     render();
   }catch(e){root.innerHTML='<div class="hear-error">Dieses Hörverständnis konnte nicht gestartet werden. Bitte versuche es erneut.<p>'+safe(e.message)+'</p></div>'}
 })();

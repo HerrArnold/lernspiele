@@ -1,10 +1,9 @@
 {
   "id": "igel",
   "title": "Der Igel",
-  "total": 48,
+  "total": 14,
   "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Der_Igel.mp3",
   "source": "https://grundschul-blog.de/hoerverstehenstests/",
-  "gap": "Der {{Igel}}\n\nDie {{Stacheltiere}} leben in unseren {{Wäldern}}, aber auch in Parkanlagen und Gärten.\n\nEin Igel hat bis zu {{8000}} Stacheln. Wenn ihm Gefahr droht, {{rollt}} er sich zusammen. So können ihm {{Fuchs}} und Dachs nichts tun.\n\nDen Tag verschläft der Igel in seinem {{Nest}} unter einer {{Hecke}} oder einem Holzhaufen. Erst gegen {{Abend}} kommt er aus seinem {{Versteck}} und geht auf Nahrungssuche.",
   "tf": [
     [
       "Igel sind Stacheltiere.",
@@ -148,5 +147,6 @@
         "Frühling"
       ]
     ]
-  ]
+  ],
+  "bonus_task": "Freiwillige Zusatzaufgabe: Sätze richtig abschreiben – ohne Pflichtpunkte"
 }

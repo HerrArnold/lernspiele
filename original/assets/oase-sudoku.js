@@ -1,0 +1,18 @@
+'use strict';(async()=>{
+const $=s=>document.querySelector(s),levels=['einfach','mittel','schwer'];let sets,level='einfach',index=0,entry=null;
+const key=()=>`lernsafari-oase-sudoku-v2-${level}-${index}`;
+const saved=()=>{try{return JSON.parse(localStorage.getItem(key())||'null')}catch{return null}};
+function persist(){try{localStorage.setItem(key(),JSON.stringify([...document.querySelectorAll('.o-cell')].map(x=>Number(x.value)||0)))}catch{}}
+function status(s){$('#status').textContent=s}
+function load(){entry=sets[level][index];$('#number').innerHTML=sets[level].map((_,i)=>`<option value="${i}">Sudoku ${i+1}</option>`).join('');$('#number').value=index;const old=saved();$('#board').innerHTML='';entry.puzzle.forEach((n,i)=>{
+ const r=Math.floor(i/9),c=i%9,el=document.createElement('input');el.type='text';el.inputMode='numeric';el.maxLength=1;el.autocomplete='off';el.className='o-cell'+(n?' given':'');el.setAttribute('aria-label',`Reihe ${r+1}, Spalte ${c+1}`);el.dataset.index=i;el.value=n||((old&&old.length===81)?old[i]||'':'');if(n)el.readOnly=true;
+ el.addEventListener('input',()=>{el.value=el.value.replace(/[^1-9]/g,'').slice(0,1);el.classList.remove('error');persist();progress()});
+ el.addEventListener('keydown',e=>{const delta={ArrowRight:1,ArrowLeft:-1,ArrowUp:-9,ArrowDown:9}[e.key];if(delta){e.preventDefault();const dest=document.querySelector(`.o-cell[data-index="${Math.max(0,Math.min(80,i+delta))}"]`);dest?.focus()}if((e.key==='Backspace'||e.key==='Delete')&&!el.readOnly){el.value='';persist();progress()}});
+ $('#board').append(el)});status('Bereit zum Knobeln.');progress()}
+function progress(){const cells=[...document.querySelectorAll('.o-cell')];$('#progress').textContent=`${cells.filter(x=>x.value).length} von 81 Feldern ausgefüllt`}
+$('#check').onclick=()=>{let errors=0,missing=0;[...document.querySelectorAll('.o-cell')].forEach((el,i)=>{const val=Number(el.value)||0;el.classList.toggle('error',!!val&&val!==entry.solution[i]);if(!val)missing++;if(val&&val!==entry.solution[i])errors++});status(errors?`${errors} Zahl(en) passen noch nicht. Schau die markierten Felder an.`:missing?`Bisher stimmt alles! Es fehlen noch ${missing} Zahlen.`:'🎉 Bravo! Dieses Sudoku ist vollständig und richtig gelöst.');persist()};
+$('#hint').onclick=()=>{const els=[...document.querySelectorAll('.o-cell')];const possibilities=els.filter((el,i)=>!entry.puzzle[i]&&Number(el.value)!==entry.solution[i]);if(!possibilities.length){status('Alle Zahlen sind schon richtig.');return}const el=possibilities[0],i=Number(el.dataset.index);el.value=entry.solution[i];el.classList.add('hint');el.classList.remove('error');persist();progress();status('Ein Feld wurde als Hinweis ausgefüllt.')};
+$('#clear').onclick=()=>{if(!confirm('Deine eingetragenen Zahlen wirklich löschen?'))return;document.querySelectorAll('.o-cell:not(.given)').forEach(x=>{x.value='';x.classList.remove('hint','error')});persist();progress();status('Du kannst von vorne beginnen.')};
+$('#next').onclick=()=>{index=(index+1)%sets[level].length;load()};$('#level').onchange=()=>{level=$('#level').value;index=0;load()};$('#number').onchange=()=>{index=Number($('#number').value);load()};
+try{if(window.OASE_SUDOKU_DATA?.sets){sets=window.OASE_SUDOKU_DATA.sets}else{const r=await fetch('../assets/sudoku-puzzles.json');if(!r.ok)throw Error('Puzzles fehlen');sets=(await r.json()).sets;}for(const k of levels)if(sets[k]?.length!==15)throw Error('Puzzle-Daten unvollständig');load()}catch(e){status('Die Sudokus konnten nicht geladen werden: '+e.message)}
+})();

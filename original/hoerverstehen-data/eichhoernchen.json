@@ -1,10 +1,9 @@
 {
   "id": "eichhoernchen",
   "title": "Das Eichhörnchen",
-  "total": 54,
+  "total": 15,
   "audio": "https://grundschul-blog.de/wp-content/uploads/filebase/unterrichten/deutsch/Grundschulblog_Deutsch_Piri_Hoertext_Das_Eichhoernchen.mp3",
   "source": "https://grundschul-blog.de/hoerverstehenstests/",
-  "gap": "Das {{Eichhörnchen}}\n\nDiese putzigen {{Tierchen}} leben nicht nur in unseren {{Wäldern}}, sondern auch in {{Parks}} und {{Gärten}}. Eichhörnchen wohnen auf {{Bäumen}}. Dort haben sie auch ihr Nest, das {{Kobel}} genannt wird.\n\nSie können sehr {{schnell}} an einem Baumstamm rauf- und {{runter}}flitzen. Auch das {{Springen}} von Ast zu Ast macht ihnen keine Mühe. Dabei hilft diesen Tieren ihr {{langer}} und buschiger {{Schwanz}}.",
   "tf": [
     [
       "Eichhörnchen leben nur im Wald.",
@@ -164,9 +163,5 @@
       ]
     ]
   ],
-  "gapAlternatives": {
-    "1": [
-      "Tiere"
-    ]
-  }
+  "bonus_task": "Freiwillige Zusatzaufgabe: Sätze richtig abschreiben – ohne Pflichtpunkte"
 }

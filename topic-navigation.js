@@ -26,6 +26,11 @@
       {name:'Briefe',icon:'✉️',games:[['Briefe entdecken','briefe-entdecken.html']]},
       {name:'Vom Hören zum Sprechen',icon:'💬',games:[['Gefühle und direkte Rede','gefuehle-direkte-rede.html']]},
       {name:'Hörverständnis',icon:'👂',games:[
+        ['Der freche Affe','hoerverstehen-kurz-affe.html'],
+        ['Der kleine Löwe','hoerverstehen-kurz-loewe.html'],
+        ['Die verschwundene Brille','hoerverstehen-kurz-brille.html'],
+        ['Das grosse Wettrennen','hoerverstehen-kurz-wettrennen.html'],
+        ['Der heimliche Kuchen','hoerverstehen-kurz-kuchen.html'],
         ['Der Dachs','hoerverstehen-dachs.html'],['Das Eichhörnchen','hoerverstehen-eichhoernchen.html'],['Der Igel','hoerverstehen-igel.html'],['Das Reh','hoerverstehen-reh.html'],['Der Rotfuchs','hoerverstehen-rotfuchs.html']
       ]}
     ],
@@ -96,18 +101,23 @@
     const topic=currentTopic();
     if(!topic){selectedTopic=null;renderSubjects();return}
     safariGame=null;
+    const cards=topic.games.map((g,i)=>{
+      const available=!!g[1];
+      const old=Object.values(ORIGINAL_GAMES).flat().find(x=>x.file===g[1]);
+      return '<button type="button" class="safari-topic-game '+(available?'':'safari-topic-unavailable')+'" '+(available?'data-topic-game="'+i+'"':'disabled aria-disabled="true"')+'>'+
+        (available?'':'<span class="safari-topic-game-icon">🛠️</span>')+
+        '<span class="safari-topic-game-text"><strong>'+esc(g[0])+'</strong><small>'+esc(available?(old?.description||'Klicke auf den Pfeil, um die Aufgabe zu starten.'):'Bald verfügbar')+'</small></span>'+
+        (available?'<span class="safari-topic-arrow">›</span>':'<span class="safari-topic-status">In Vorbereitung</span>')+
+        '</button>';
+    });
+    const grouped=selectedTopic==='Hörverständnis' && safariSubject==='Deutsch';
+    const list=grouped
+      ? '<section class="safari-hearing-section is-easy"><h3 class="safari-hearing-title">🌿 Kurze Geschichten – leichter</h3><p class="safari-hearing-description">Fünf kurze Hörgeschichten zum Üben. Starte am besten hier.</p><div class="safari-topic-games">'+cards.slice(0,5).join('')+'</div></section>'+
+        '<section class="safari-hearing-section is-hard"><h3 class="safari-hearing-title">🌲 Waldtiere – schwieriger</h3><p class="safari-hearing-description">Längere Hörtexte mit genaueren Fragen. Die freiwillige Schreibaufgabe gibt keine Pflichtpunkte.</p><div class="safari-topic-games">'+cards.slice(5).join('')+'</div></section>'
+      : '<div class="safari-topic-games">'+cards.join('')+'</div>';
     root().innerHTML='<section class="integration-shell safari-topic-page '+subjectColorClass()+'">'+trail('topic',topic)+
       '<div class="integration-top"><button type="button" class="integration-back" data-topic-nav="subject">← Zu '+esc(subjectLabel(safariSubject))+'</button></div>'+
-      header(topic.name,'Wähle ein Spiel aus.',topic.icon)+
-      '<div class="safari-topic-games">'+topic.games.map((g,i)=>{
-        const available=!!g[1];
-        const old=Object.values(ORIGINAL_GAMES).flat().find(x=>x.file===g[1]);
-        return '<button type="button" class="safari-topic-game '+(available?'':'safari-topic-unavailable')+'" '+(available?'data-topic-game="'+i+'"':'disabled aria-disabled="true"')+'>'+
-          (available?'':'<span class="safari-topic-game-icon">🛠️</span>')+
-          '<span class="safari-topic-game-text"><strong>'+esc(g[0])+'</strong><small>'+esc(available?(old?.description||'Klicke auf den Pfeil, um die Aufgabe zu starten.'):'Bald verfügbar')+'</small></span>'+
-          (available?'<span class="safari-topic-arrow">›</span>':'<span class="safari-topic-status">In Vorbereitung</span>')+
-          '</button>';
-      }).join('')+'</div></section>';
+      header(topic.name,'Wähle ein Spiel aus.',topic.icon)+list+'</section>';
   }
   function launchGame(index){
     const topic=currentTopic(),entry=topic?.games[index];
