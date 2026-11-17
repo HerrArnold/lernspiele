@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f6ec">
+<title>Tausenderbuch: Wege gehen · LernSafari</title>
+<link rel="stylesheet" href="../assets/tausenderraum-neu.css?v=1">
+<link rel="stylesheet" href="../assets/highscore.css">
+<script defer src="../assets/login-config.js"></script>
+<script defer src="../assets/game-telemetry.js"></script>
+<script defer src="../assets/tausenderraum-logik.js?v=1"></script>
+<script defer src="../assets/tausenderraum-neu.js?v=1"></script>
+</head>
+<body data-mode="walk">
+<main class="shell">
+<div class="exit"><span>🦁 LernSafari · Mathematik · Tausenderraum</span><a href="../index.html#aktuelle">✕ Spiel beenden</a></div>
+<header><h1>Tausenderbuch: Wege gehen</h1><p>Vier Pfeile verfolgen und ganze Buchseiten wechseln</p></header>
+<section id="intro" class="panel" aria-label="Spielanleitung"></section>
+<section id="game" class="panel" hidden>
+ <div class="progress" id="counter">Aufgabe 1</div>
+ <div id="task"></div>
+ <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+ <div class="controls"><button type="button" id="check" class="btn">Überprüfen</button>
+ <button type="button" id="next" class="btn alt" hidden>Nächste Aufgabe →</button></div>
+</section>
+<section id="finish" class="panel" hidden></section>
+</main>
+<script src="../assets/new-safari-bridge.js"></script>
+</body></html>

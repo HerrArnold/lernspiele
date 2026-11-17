@@ -34,8 +34,8 @@ ul,ol{padding-left:22px}li{margin:7px 0}a{color:#1d639c}.footer{margin:22px 0;fo
 .pokemon-hero-content{position:relative;z-index:1}.pokemon-safari-logo{width:min(290px,85%);max-height:130px;object-fit:contain;object-position:left center;display:block;margin-bottom:8px;filter:drop-shadow(0 4px 4px #1239)}
 .pokemon-hero-ball{width:100%;max-height:210px;object-fit:cover;border-radius:16px;box-shadow:0 8px 25px #082e335a}
 @media(max-width:640px){.pokemon-safari-hero{grid-template-columns:1fr}.pokemon-hero-ball{max-height:135px;object-position:center 45%}}
-</style></head><body><main class="shell" id="pokemonPreview" hidden>
-<header class="hero pokemon-safari-hero"><div class="pokemon-hero-content"><img class="pokemon-safari-logo" src="../assets/pokemon-pocket/pokemon-safari-logo.webp" alt="Pokémon Safari" onerror="this.hidden=true"><small>🏝️ LERNSAFARI · OASE · FLAMINGO-VORSCHAU</small><h1>⚡ Pokémon Pocket</h1><p>Entdecke die Karten, lerne die Regeln Schritt für Schritt und übe für das gemeinsame Spielen mit echten Pokémon-Karten.</p></div><img class="pokemon-hero-ball" src="../assets/pokemon-pocket/safari-ball-scene.webp" alt="Safari-Ball in der Savanne" onerror="this.hidden=true"></header>
+</style></head><body><main class="shell" id="pokemonPreview">
+<header class="hero pokemon-safari-hero"><div class="pokemon-hero-content"><img class="pokemon-safari-logo" src="../assets/pokemon-pocket/pokemon-safari-logo.webp" alt="Pokémon Safari" onerror="this.hidden=true"><small>🏝️ LERNSAFARI · OASE · POKÉMON POCKET</small><h1>⚡ Pokémon Pocket</h1><p>Entdecke die Karten, lerne die Regeln Schritt für Schritt und übe für das gemeinsame Spielen mit echten Pokémon-Karten.</p></div><img class="pokemon-hero-ball" src="../assets/pokemon-pocket/safari-ball-scene.webp" alt="Safari-Ball in der Savanne" onerror="this.hidden=true"></header>
 <nav class="tabs" aria-label="Bereiche"><button class="tab" data-view="lexikon" aria-selected="true">📖 Lexikon</button><button class="tab" data-view="uebungen" aria-selected="false">🎲 Übungsschritte</button><button class="tab" data-view="analog" aria-selected="false">🃏 Mit echten Karten spielen</button></nav>
 <section class="note"><strong>Zwei Regelwelten:</strong> Die digitalen Pocket-Regeln sind die Grundlage. Für das Spielen mit echten Karten verwenden wir zusätzlich vereinfachte <strong>Klassenregeln nach dem Reddit-Vorschlag</strong>. Diese sind nicht die offiziellen Pocket-Regeln. Original-Karten können abweichende Aufdrucke oder Effekte haben.</section>
 <section id="lexikon">
@@ -144,20 +144,4 @@ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const view=b.
 renderPractice();
 const start=new URLSearchParams(location.search).get('view');
 if(['lexikon','uebungen','analog'].includes(start))document.querySelector('[data-view="'+start+'"]').click();
-</script><script>
-(async()=>{
-  const host=document.getElementById('pokemonPreview');
-  const token=(()=>{try{return sessionStorage.getItem('lernsafari-admin-token-v2')||''}catch(_){return ''}})();
-  if(token){
-    try{
-      const url=String(window.LERNSAFARI_BACKEND_URL||'').replace(/\/+$/,'')+'/admin-session';
-      const response=await fetch(url,{headers:{'X-Safari-Admin':token},cache:'no-store'});
-      if(response.ok){host.hidden=false;return}
-    }catch(_){}
-  }
-  const denied=document.createElement('main');
-  denied.className='shell';
-  denied.innerHTML='<section class="panel"><h1>🔒 Noch nicht verfügbar</h1><p>Pokémon Pocket ist momentan nur für den angemeldeten Flamingo zur Vorschau geöffnet.</p></section>';
-  document.body.appendChild(denied);
-})();
 </script><script src="../assets/new-safari-bridge.js"></script></body></html>

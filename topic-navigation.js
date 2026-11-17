@@ -4,30 +4,35 @@
 (function(){
   const topicData={
     Mathe:[
-      {name:'Einmaleins',icon:'✖️',games:[
-        ['3er Reihe','einmaleins-dreier.html'],
-        ['4er Reihe','einmaleins-vierer.html'],
-        ['6er Reihe','einmaleins-sechser.html'],
-        ['7er Reihe – zwei Rechenwege','einmaleins-siebener.html'],
-        ['8er Reihe – drei Rechenwege','einmaleins-achter.html'],
-        ['Mix (7er und 8er)','einmaleins-mix-sieben-acht.html'],
-        ['9er Reihe','einmaleins-neuner.html'],
-        ['Mix (3er, 4er, 6er, 9er)','einmaleins-mix-neue-reihen.html'],
-        ['Teste dein Wissen (2er bis 10er)','einmaleins-test-alle.html']
+      {name:'Einmaleins – 7er und 8er',icon:'✖️',games:[
+        ['7er-Reihe: Entdecken und Üben','einmaleins-siebener.html'],
+        ['8er-Reihe: Entdecken und Üben','einmaleins-achter.html'],
+        ['Mix: 7er und 8er','einmaleins-mix-sieben-acht.html'],
+        ['Teste dein Wissen: gesamtes Einmaleins','einmaleins-test-alle.html']
       ]},
-      {name:'Einmaleins – 2er, 5er und 10er',icon:'📚',archived:true,games:[
-        ['2er Reihe','einmaleins-zweier.html'],
-        ['5er Reihe','einmaleins-fuenfer.html'],
-        ['10er Reihe','einmaleins-zehner.html'],
-        ['Mix (2er, 5er, 10er)','einmaleins-mix.html']
+      {name:'Einmaleins – bisherige Reihen',icon:'📚',archived:true,games:[
+        ['2er-Reihe','einmaleins-zweier.html'],
+        ['3er-Reihe','einmaleins-dreier.html'],
+        ['4er-Reihe','einmaleins-vierer.html'],
+        ['5er-Reihe','einmaleins-fuenfer.html'],
+        ['6er-Reihe','einmaleins-sechser.html'],
+        ['9er-Reihe','einmaleins-neuner.html'],
+        ['10er-Reihe','einmaleins-zehner.html'],
+        ['Mix: 2er, 5er, 10er','einmaleins-mix.html'],
+        ['Mix: 3er, 4er, 6er, 9er','einmaleins-mix-neue-reihen.html']
       ]},
-      {name:'Tausenderraum',icon:'🔢',games:[
-        ['Im Tausenderbuch finden','finde-die-zahl.html'],
+      {name:'Tausenderraum – neue Übungen',icon:'🔢',games:[
+        ['Tausenderbuch: Zahlen finden','finde-die-zahl.html'],
+        ['Tausenderbuch: Wege gehen','tausenderbuch-wege-gehen.html'],
+        ['Zahlenstrahl: Zahlen eintragen','zahlenstrahl-zahlen-eintragen.html'],
+        ['Nachbarzahl, Nachbarzehner, Nachbarhunderter','nachbarzahlen-tausenderraum.html'],
+        ['Teste dein Wissen: Tausenderraum','tausenderraum-teste-dein-wissen.html']
+      ]},
+      {name:'Tausenderraum – bisherige Übungen',icon:'📚',archived:true,games:[
         ['In der Stellentafel eintragen','stellentafel.html'],
         ['In Hunderter, Zehner und Einer zerlegen','hunderter-zehner-einer-zerlegen.html'],
         ['Zahlenbild legen','wie-viele-brauchst-du.html'],
-        ['Zahlenbild ablesen','welche-zahl-ist-das.html'],
-        ['Teste dein Wissen',null]
+        ['Zahlenbild ablesen','welche-zahl-ist-das.html']
       ]}
     ],
     Deutsch:[
@@ -148,15 +153,17 @@
       button?.click();
       return;
     }
-    if(entry[1].startsWith('hoerverstehen-')||entry[1].startsWith('einmaleins-')){
-      safariGame={title:entry[0],file:entry[1],description:entry[1].startsWith('hoerverstehen-')?'Hörverständnis mit Audio':'Einmaleins: entdecken, üben und überprüfen'};
-      safariGameOrigin=safariSubject;
-      showSelectedGame();
-      return;
-    }
+    // Every verified HTML game in the subject/topic catalog can be launched,
+    // including newly created games not yet present in ORIGINAL_GAMES.
+    // Restrict paths to a plain filename to prevent navigation outside /original/spiele/.
+    if(!/^[a-z0-9][a-z0-9-]*\.html$/.test(entry[1]))return;
     const existing=Object.values(ORIGINAL_GAMES).flat().find(g=>g.file===entry[1]);
-    if(!existing)return;
-    safariGame=existing;safariGameOrigin=safariSubject;
+    safariGame=existing||{
+      title:entry[0],
+      file:entry[1],
+      description:'Üben, überprüfen und aus den Aufgaben lernen'
+    };
+    safariGameOrigin=safariSubject;
     showSelectedGame();
   }
   function showSelectedGame(){
