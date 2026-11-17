@@ -1,5 +1,6 @@
 name: Publish current LernSafari2 to lernspiele
-# Refresh requested 2026-11-13: copy current Lernspiele2/main to lernspiele/main.
+# Keep the public Lernspiele/main aligned with Lernspiele2/main.
+# Preserve only the destination-specific GitHub Actions workflow.
 on:
   push:
     branches: [main]
@@ -36,11 +37,16 @@ jobs:
           test -f _lernsafari_source/original/assets/login-config.js
           test -d _lernsafari_source/spiele
           test -d _lernsafari_source/assets
-          rsync -a --exclude='.git/' --exclude='.github/' --exclude='_lernsafari_source/' _lernsafari_source/ ./
+          rsync -a --delete --exclude='.git/' --exclude='.github/' --exclude='_lernsafari_source/' _lernsafari_source/ ./
           rm -rf _lernsafari_source
           test -f index.html
           test -f cloudflare-integration.js
-          test -f unterrichtsmodus-admin.js
+          test ! -e unterrichtsmodus-admin.js
+          test ! -e unterrichtsmodus.js
+          test ! -e unterrichtsmodus.css
+          test -f original/assets/daily-november-2026.js
+          test -f original/assets/pokemon-pocket-engine.js
+          grep -q 'Jetzt abfragen: Wer ist wo?' admin-dashboard.js
           grep -q 'lernsafari-api.ergohd02.workers.dev' original/assets/login-config.js
 
       - name: Commit and publish synced main website
@@ -49,6 +55,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "Sync current Lernspiele2 main to Lernspiele"
+            git commit -m "Sync Lernspiele2 main: remove classroom modes, manual activity, latest games"
             git push origin HEAD:main
           fi
