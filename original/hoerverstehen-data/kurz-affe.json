@@ -6,49 +6,73 @@
       "id": "a1",
       "statement": "Kito ist ein kleiner Affe.",
       "correct": true,
-      "reason": "Gleich zu Beginn wird Kito als kleiner Affe beschrieben."
+      "reason": "Gleich zu Beginn wird Kito als kleiner Affe beschrieben.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a2",
       "statement": "Kito findet die Banane auf einem Felsen.",
       "correct": false,
-      "reason": "Die Banane liegt unter einem Baum."
+      "reason": "Die Banane liegt unter einem Baum.",
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "a3",
       "statement": "Kito möchte die Banane zuerst allein essen.",
       "correct": true,
-      "reason": "Das ist sein ursprünglicher Plan."
+      "reason": "Das ist sein ursprünglicher Plan.",
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "a4",
       "statement": "Gino ist ein Zebra.",
       "correct": false,
-      "reason": "Gino ist eine Giraffe."
+      "reason": "Gino ist eine Giraffe.",
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "a5",
       "statement": "Kito versteckt die Banane hinter seinem Rücken.",
       "correct": true,
-      "reason": "Das steht ausdrücklich im Text."
+      "reason": "Das steht ausdrücklich im Text.",
+      "evidence": [
+        4
+      ]
     },
     {
       "id": "a6",
       "statement": "Gino kann die Banane überhaupt nicht sehen.",
       "correct": false,
-      "reason": "Sie bemerkt die gelbe Schale."
+      "reason": "Sie bemerkt die gelbe Schale.",
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "a7",
       "statement": "Gino fragt nach einem Stück Banane.",
       "correct": true,
-      "reason": "Sie bittet um ein Stück."
+      "reason": "Sie bittet um ein Stück.",
+      "evidence": [
+        6
+      ]
     },
     {
       "id": "a8",
       "statement": "Kito wirft die Banane weg.",
       "correct": false,
-      "reason": "Er teilt sie mit Gino."
+      "reason": "Er teilt sie mit Gino.",
+      "evidence": [
+        8
+      ]
     }
   ],
   "task2": [
@@ -75,7 +99,10 @@
         "Ein junger Affe, der am liebsten Blätter frisst.",
         "Ein Zebra, das im Baum lebt."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b2",
@@ -101,7 +128,10 @@
         "Auf dem Boden unter einem Baum.",
         "Zwischen den Ästen eines Baums."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "b3",
@@ -125,7 +155,10 @@
         "Er möchte sie für später vergraben.",
         "Er möchte sie für die anderen Affen aufheben."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "b4",
@@ -149,7 +182,10 @@
         "Weil die Banane laut auf den Boden fällt.",
         "Weil sie Kito nach Bananen fragt."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "b5",
@@ -174,7 +210,10 @@
         "Er teilt die Banane mit Gino.",
         "Er isst sie heimlich, während Gino wartet."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        8
+      ]
     }
   ],
   "task3": [
@@ -202,7 +241,10 @@
         "Etwas tun, nachdem alle zugeschaut haben.",
         "Etwas tun, das man laut ankündigt."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        4
+      ]
     },
     {
       "id": "c2",
@@ -228,7 +270,10 @@
         "Etwas wahrnehmen oder entdecken.",
         "Etwas vergessen, obwohl es wichtig ist."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "c3",
@@ -252,30 +297,46 @@
         "Etwas vor den anderen verstecken.",
         "Etwas ganz alleine aufessen."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        8
+      ]
     }
   ],
   "task4": [
     {
       "id": "d1",
       "text": "Dann teilt er die Banane mit Gino.",
-      "correct_position": 4
+      "correct_position": 4,
+      "evidence": [
+        8
+      ]
     },
     {
       "id": "d2",
       "text": "Kito entdeckt eine Banane unter einem Baum.",
-      "correct_position": 1
+      "correct_position": 1,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "d3",
       "text": "Gino bemerkt die gelbe Schale.",
-      "correct_position": 3
+      "correct_position": 3,
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "d4",
       "text": "Kito versteckt die Banane hinter seinem Rücken.",
-      "correct_position": 2
+      "correct_position": 2,
+      "evidence": [
+        4
+      ]
     }
   ],
-  "audio": "../hoerverstehen-audio/affe.m4a"
+  "audio": "../hoerverstehen-audio/affe.m4a",
+  "text": "Kito ist ein kleiner Affe und liebt Bananen. Heute entdeckt er eine grosse Banane unter einem Baum. Er möchte sie ganz allein essen. Da kommt seine Freundin, die Giraffe Gino, vorbei. Kito versteckt die Banane heimlich hinter seinem Rücken. Doch Gino bemerkt die gelbe Schale. Sie fragt, ob sie ein Stück bekommen darf. Kito überlegt kurz. Dann teilt er die Banane mit Gino. Gemeinsam schmeckt sie ihnen besonders gut."
 }

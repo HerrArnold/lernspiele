@@ -6,49 +6,74 @@
       "id": "a1",
       "statement": "Leo ist ein junges Löwenkind.",
       "correct": true,
-      "reason": "Leo wird als Löwenkind eingeführt."
+      "reason": "Leo wird als Löwenkind eingeführt.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a2",
       "statement": "Leo möchte so schnell rennen wie sein Vater.",
       "correct": false,
-      "reason": "Er möchte so laut brüllen wie sein Vater."
+      "reason": "Er möchte so laut brüllen wie sein Vater.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a3",
       "statement": "Leo übt jeden Abend im Wasser.",
       "correct": false,
-      "reason": "Er übt jeden Morgen auf einem Felsen."
+      "reason": "Er übt jeden Morgen auf einem Felsen.",
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "a4",
       "statement": "Zuerst kommt nur ein leises Quieken aus Leos Maul.",
       "correct": true,
-      "reason": "Das ist der erste Laut."
+      "reason": "Das ist der erste Laut.",
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "a5",
       "statement": "Zwei Zebras hören Leo zu.",
       "correct": true,
-      "reason": "Es sind zwei Zebras."
+      "reason": "Es sind zwei Zebras.",
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "a6",
       "statement": "Die Zebras beginnen zu weinen.",
       "correct": false,
-      "reason": "Sie lachen."
+      "reason": "Sie lachen.",
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "a7",
       "statement": "Nach dem lauten Geräusch rennen die Zebras davon.",
       "correct": true,
-      "reason": "Die Zebras erschrecken und fliehen."
+      "reason": "Die Zebras erschrecken und fliehen.",
+      "evidence": [
+        6
+      ]
     },
     {
       "id": "a8",
       "statement": "Am Schluss gelingt Leo ein besonders lautes Brüllen.",
       "correct": false,
-      "reason": "Der laute Laut ist ein Niesen."
+      "reason": "Der laute Laut ist ein Niesen.",
+      "evidence": [
+        7,
+        8
+      ]
     }
   ],
   "task2": [
@@ -75,7 +100,10 @@
         "Er möchte sich vor den Zebras verstecken.",
         "Er möchte laut brüllen wie sein Vater."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b2",
@@ -99,7 +127,10 @@
         "Jeden Morgen im Schatten eines Baums.",
         "Jeden Abend zwischen den Zebras."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "b3",
@@ -123,7 +154,10 @@
         "Ein leises Quieken, obwohl er brüllen will.",
         "Ein langes Brüllen wie bei seinem Vater."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "b4",
@@ -147,7 +181,10 @@
         "Sie erschrecken und verstecken sich sofort.",
         "Sie müssen über das leise Quieken lachen."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "b5",
@@ -172,7 +209,11 @@
         "Weil der Vater der Löwen auftaucht.",
         "Weil die Zebras beim Rennen stolpern."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        6,
+        8
+      ]
     }
   ],
   "task3": [
@@ -199,7 +240,10 @@
         "Ein lautes Gespräch zwischen Tieren.",
         "Ein Geräusch, das man nur beim Rennen hört."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "c2",
@@ -224,7 +268,10 @@
         "Traurig sein, weil etwas nicht wie erhofft klappt.",
         "Müde sein, weil man lange geübt hat."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        4
+      ]
     },
     {
       "id": "c3",
@@ -250,30 +297,46 @@
         "Mit jemandem ruhig sprechen.",
         "Sehr laut rufen, um Aufmerksamkeit zu bekommen."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        6
+      ]
     }
   ],
   "task4": [
     {
       "id": "d1",
       "text": "Die Zebras rennen erschrocken davon.",
-      "correct_position": 4
+      "correct_position": 4,
+      "evidence": [
+        6
+      ]
     },
     {
       "id": "d2",
       "text": "Leo übt auf einem hohen Felsen.",
-      "correct_position": 1
+      "correct_position": 1,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "d3",
       "text": "Leo niest sehr laut.",
-      "correct_position": 3
+      "correct_position": 3,
+      "evidence": [
+        8
+      ]
     },
     {
       "id": "d4",
       "text": "Zuerst hört man nur ein leises Quieken.",
-      "correct_position": 2
+      "correct_position": 2,
+      "evidence": [
+        2
+      ]
     }
   ],
-  "audio": "../hoerverstehen-audio/loewe.m4a"
+  "audio": "../hoerverstehen-audio/loewe.m4a",
+  "text": "Das Löwenkind Leo möchte so laut brüllen wie sein Vater. Jeden Morgen übt es auf einem hohen Felsen. Doch aus seinem Maul kommt nur ein leises Quieken. Zwei Zebras hören zu und müssen lachen. Leo ist enttäuscht und versucht es noch einmal. Er holt tief Luft, öffnet sein Maul und plötzlich ertönt ein gewaltiger Laut. Die Zebras erschrecken und rennen davon. Aber Leo hat gar nicht gebrüllt. Er musste nur sehr laut niesen!"
 }

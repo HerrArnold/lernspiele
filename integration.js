@@ -115,9 +115,9 @@ renderBaobab=function(){
      <img class="baobab-extra-flamingo" src="original/assets/tiersticker/flamingo.png" alt="" aria-hidden="true" draggable="false">
      <button class="baobab-hotspot baobab-animals" type="button" data-baobab-new="animals"><span>🐾 Unsere Klassentiere</span></button>
      <button class="baobab-hotspot baobab-advent" type="button" data-baobab-new="advent"><span>🎄 Adventskalender<small>🔒 Noch nicht verfügbar</small></span></button>
-     <button class="baobab-hotspot baobab-projects" type="button" data-baobab-new="projects"><span>📸 Projekte und Erlebnisse</span></button>
+     <button class="baobab-hotspot baobab-projects" type="button" data-baobab-new="projects"><span>📸 Unsere Lieblingsprojekte</span></button>
    </div>
-   <div class="baobab-mobile-links"><button type="button" data-baobab-new="animals">🐾 Unsere Klassentiere</button><button type="button" data-baobab-new="advent">🎄 Adventskalender 🔒</button><button type="button" data-baobab-new="projects">📸 Projekte und Erlebnisse</button></div>
+   <div class="baobab-mobile-links"><button type="button" data-baobab-new="animals">🐾 Unsere Klassentiere</button><button type="button" data-baobab-new="advent">🎄 Adventskalender 🔒</button><button type="button" data-baobab-new="projects">📸 Unsere Lieblingsprojekte</button></div>
    <p class="integration-note">Ein Klick auf ein Holzschild führt dich direkt zum passenden Bereich.</p>
  </section>`;
  root.querySelectorAll('[data-baobab-new]').forEach(button=>button.addEventListener('click',()=>{

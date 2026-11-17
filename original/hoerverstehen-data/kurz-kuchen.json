@@ -6,49 +6,74 @@
       "id": "a1",
       "statement": "Mia und Noah wollen ihren Vater überraschen.",
       "correct": true,
-      "reason": "Sie backen für seinen Geburtstag."
+      "reason": "Sie backen für seinen Geburtstag.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a2",
       "statement": "Der Vater hat Geburtstag.",
       "correct": true,
-      "reason": "Das wird im ersten Satz erklärt."
+      "reason": "Das wird im ersten Satz erklärt.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a3",
       "statement": "Mia und Noah backen eine Pizza.",
       "correct": false,
-      "reason": "Sie backen einen Kuchen."
+      "reason": "Sie backen einen Kuchen.",
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "a4",
       "statement": "Noah gibt den Zucker zum Teig.",
       "correct": false,
-      "reason": "Mia gibt den Zucker dazu."
+      "reason": "Mia gibt den Zucker dazu.",
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "a5",
       "statement": "Sie stellen die Kuchenform in den Ofen.",
       "correct": true,
-      "reason": "Die Kuchenform kommt in den Ofen."
+      "reason": "Die Kuchenform kommt in den Ofen.",
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "a6",
       "statement": "Die Schokolade liegt noch auf dem Tisch.",
       "correct": true,
-      "reason": "Mia entdeckt dort die ganze Tafel."
+      "reason": "Mia entdeckt dort die ganze Tafel.",
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "a7",
       "statement": "Die beiden haben die Milch vergessen.",
       "correct": false,
-      "reason": "Sie haben die Schokolade vergessen."
+      "reason": "Sie haben die Schokolade vergessen.",
+      "evidence": [
+        6
+      ]
     },
     {
       "id": "a8",
       "statement": "Sie werfen den Kuchen weg.",
       "correct": false,
-      "reason": "Er schmeckt trotzdem und wird behalten."
+      "reason": "Er schmeckt trotzdem und wird behalten.",
+      "evidence": [
+        8,
+        9
+      ]
     }
   ],
   "task2": [
@@ -75,7 +100,10 @@
         "Noah, der noch nichts davon weiss.",
         "Mia, die den Kuchen gebacken hat."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b2",
@@ -99,7 +127,10 @@
         "Weil die Mutter einen Kuchen bestellt hat.",
         "Weil sie selber Geburtstag haben."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b3",
@@ -123,7 +154,10 @@
         "Mia, während Noah den Teig rührt.",
         "Beide erst nachdem der Kuchen fertig ist."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "b4",
@@ -148,7 +182,11 @@
         "Sie vergessen, den Zucker hinzuzufügen.",
         "Sie vergessen, die Kuchenform herauszunehmen."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        5,
+        6
+      ]
     },
     {
       "id": "b5",
@@ -173,7 +211,10 @@
         "Sie rühren sie nachträglich in den fertigen Kuchen.",
         "Sie legen die Schokolade als Geschenk neben den Kuchen."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        9
+      ]
     }
   ],
   "task3": [
@@ -199,7 +240,10 @@
         "Etwas Unerwartetes tun, mit dem jemand nicht rechnet.",
         "Jemanden lange auf eine Antwort warten lassen."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "c2",
@@ -225,7 +269,10 @@
         "Ein Gerät, in dem man den Kuchen backt.",
         "Ein Stück Kuchen, das schon abgekühlt ist."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "c3",
@@ -251,30 +298,46 @@
         "Sich an etwas genau erinnern.",
         "Nicht mehr daran denken, etwas zu tun."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        6
+      ]
     }
   ],
   "task4": [
     {
       "id": "d1",
       "text": "Mia entdeckt die Schokolade auf dem Tisch.",
-      "correct_position": 3
+      "correct_position": 3,
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "d2",
       "text": "Die beiden legen die Schokolade neben den Kuchen.",
-      "correct_position": 4
+      "correct_position": 4,
+      "evidence": [
+        9
+      ]
     },
     {
       "id": "d3",
       "text": "Mia und Noah rühren den Teig an.",
-      "correct_position": 1
+      "correct_position": 1,
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "d4",
       "text": "Sie schieben die Kuchenform in den Ofen.",
-      "correct_position": 2
+      "correct_position": 2,
+      "evidence": [
+        3
+      ]
     }
   ],
-  "audio": "../hoerverstehen-audio/kuchen.m4a"
+  "audio": "../hoerverstehen-audio/kuchen.m4a",
+  "text": "Mia und Noah möchten ihren Vater zum Geburtstag überraschen. Heimlich backen sie einen Schokoladenkuchen. Noah rührt den Teig, und Mia gibt Zucker dazu. Dann schieben sie die Kuchenform in den Ofen. Bald duftet es in der Küche. Da entdeckt Mia auf dem Tisch eine ganze Tafel Schokolade. Die beiden haben vergessen, sie in den Teig zu geben! Noah muss lachen. Zum Glück schmeckt der Kuchen auch ohne Schokolade. Sie legen die Tafel einfach als Geschenk daneben."
 }

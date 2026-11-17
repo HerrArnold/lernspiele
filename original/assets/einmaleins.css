@@ -5,3 +5,10 @@ body:has(.safari-exit-bar) .calc-line input{background:#f7f8f7 !important;color:
 body:has(.safari-exit-bar) .calc-line input::placeholder{color:#758692 !important;opacity:1}
 
 .visual-line.removed{border-color:#d7c07a;background:#5a5038}.visual-line.removed .row-label{color:#fff0c3;text-decoration:line-through;text-decoration-thickness:2px}.visual-line.removed .unit{background:#f0d68a;box-shadow:inset 0 -2px #9a7d30}
+
+
+/* Neue 7er- und 8er-Reihen: zwei frei wählbare Herleitungen. */
+.bridge-choices{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0 10px}
+.bridge-choices .bridge-choice{font-size:clamp(13px,1.8vw,17px);padding:11px 16px}
+.bridge-choices .bridge-choice.active{background:#426e52;border-color:#acd4ac;color:#fff;box-shadow:0 0 0 2px #b8e5bc59}
+.bridge-choices .bridge-choice:focus-visible{outline:3px solid #ffd18f;outline-offset:2px}

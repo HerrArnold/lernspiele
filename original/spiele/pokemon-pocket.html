@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pokémon Pocket · LernSafari Oase</title>
+<style>
+:root{--ink:#243544;--blue:#235a89;--line:#d4e0e7;--sand:#fff8e8;--green:#2c7055;--gold:#b96d16}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#e7f2fb,#fff9ed 55%,#e8f5ea);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{max-width:1080px;margin:auto;padding:clamp(12px,3vw,30px)}
+.hero{background:linear-gradient(115deg,#235a89,#327a71);color:white;border-radius:22px;padding:23px 26px;box-shadow:0 9px 25px #182f4622}.hero small{font-weight:750;letter-spacing:.06em}.hero h1{font-size:clamp(28px,4vw,43px);margin:3px 0}.hero p{max-width:730px;margin:0}
+.tabs,.filters,.actions{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}.tab,.filter,.action{font:inherit;cursor:pointer;border:2px solid #cbdbe5;border-radius:13px;padding:11px 17px;background:white;color:var(--blue);font-weight:750}.tab[aria-selected=true],.filter[aria-pressed=true],.action.primary{background:var(--blue);color:white;border-color:var(--blue)}button:focus-visible,summary:focus-visible{outline:3px solid #c27617;outline-offset:2px}
+.panel,.lex-card,.practice-card,.note,.mock{background:#fff;border:1px solid var(--line);box-shadow:0 5px 20px #193b4910;border-radius:18px;padding:20px;margin:15px 0}
+h2{font-size:clamp(23px,3vw,30px);margin:0 0 8px;color:#225478}h3{margin:3px 0 8px;color:#265b64}.muted{color:#526674}.note{border-left:5px solid #dc9d38;background:#fff8e7}.note strong{color:#765021}
+.lex-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}.lex-card{margin:0;padding:0;overflow:hidden}.lex-card details{height:100%}.lex-card summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:11px;padding:17px;background:#f3f8f8;min-height:80px}.lex-card summary::-webkit-details-marker{display:none}.lex-icon{font-size:30px}.lex-card summary strong{display:block;color:#245c71}.lex-card summary small{display:block;color:#63757a}.lex-content{padding:0 18px 18px}.analogue{border-left:4px solid #8dab7a;background:#edf7ed;padding:9px 11px;border-radius:7px}
+.advanced{border-top:3px dashed #e5b665;margin-top:24px;padding-top:20px}.advanced .lex-card summary{background:#fff5e7}
+.mock{width:min(100%,400px);margin:10px auto;background:#fff8dc;border:6px solid #dfbb5a;border-radius:20px}
+.mock-top{display:flex;justify-content:space-between;gap:10px;font-weight:850}.mock-art{height:120px;background:linear-gradient(145deg,#b4daec,#d2ecd5);display:grid;place-content:center;border-radius:10px;margin:11px 0;text-align:center;border:2px solid #aac6be}.mock-attack{border-top:1px solid #c7ad74;padding:9px 0;display:flex;justify-content:space-between;gap:8px}.mock-foot{font-size:13px;border-top:2px solid #b9a365;padding-top:10px}
+.practice-progress{background:#dfe9e8;border-radius:99px;height:12px;overflow:hidden;margin:8px 0 20px}.practice-progress>span{display:block;background:var(--green);height:100%;transition:width .2s}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:16px 0}.choice{font:inherit;text-align:left;padding:14px 16px;background:#f7fbfc;border:2px solid #c8dfe3;border-radius:13px;cursor:pointer;color:#203e4d}.choice:hover{border-color:#347e9a}.choice.selected{background:#e5f5ea;border-color:#297554}.choice.wrong{background:#fff0e9;border-color:#ae6549}.choice:disabled{cursor:default}
+.feedback{padding:14px;border-radius:12px;background:#f0f7f1;border:1px solid #b8d9bd;margin:12px 0}.feedback.wrong{background:#fff7ec;border-color:#e3bf88}
+.step{display:inline-block;background:#e0f0fa;color:#205677;border-radius:50px;padding:4px 12px;font-size:13px;font-weight:800}.challenge{border:2px solid #c5dfc9;background:#f3fbf2;padding:16px;border-radius:14px}
+ul,ol{padding-left:22px}li{margin:7px 0}a{color:#1d639c}.footer{margin:22px 0;font-size:13px;color:#52636d}
+[hidden]{display:none!important}@media(max-width:600px){.panel{padding:14px}.hero{padding:18px}.tab{flex:1}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><style>
+.pokemon-card-browser{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:13px;margin:15px 0}
+.pokemon-image-card{border:2px solid #cbd9d4;border-radius:13px;padding:8px;background:#fff;cursor:pointer;color:#24465a;font:inherit;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pokemon-image-card:hover,.pokemon-image-card:focus-visible{border-color:#287862}
+.pokemon-image-card img{width:100%;max-width:170px;aspect-ratio:480/670;object-fit:contain;border-radius:8px}
+.pokemon-image-card strong{font-size:13px;line-height:1.25}
+.card-image-fallback{background:#f3edd6;border:1px solid #dbc39c;min-height:70px;padding:10px;border-radius:9px;text-align:center}
+.practice-card-picture{max-width:220px;max-height:305px;margin:12px auto 18px;display:grid;place-items:center}
+.practice-card-picture img{max-width:100%;max-height:305px;object-fit:contain;border-radius:12px}
+
+.pokemon-safari-hero{background:linear-gradient(110deg,#1b4a65db,#2f7152d2),url("../assets/pokemon-pocket/pocket-hero.webp") center 36%/cover;display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,240px);align-items:center;gap:15px;min-height:230px;overflow:hidden}
+.pokemon-hero-content{position:relative;z-index:1}.pokemon-safari-logo{width:min(290px,85%);max-height:130px;object-fit:contain;object-position:left center;display:block;margin-bottom:8px;filter:drop-shadow(0 4px 4px #1239)}
+.pokemon-hero-ball{width:100%;max-height:210px;object-fit:cover;border-radius:16px;box-shadow:0 8px 25px #082e335a}
+@media(max-width:640px){.pokemon-safari-hero{grid-template-columns:1fr}.pokemon-hero-ball{max-height:135px;object-position:center 45%}}
+</style></head><body><main class="shell" id="pokemonPreview" hidden>
+<header class="hero pokemon-safari-hero"><div class="pokemon-hero-content"><img class="pokemon-safari-logo" src="../assets/pokemon-pocket/pokemon-safari-logo.webp" alt="Pokémon Safari" onerror="this.hidden=true"><small>🏝️ LERNSAFARI · OASE · FLAMINGO-VORSCHAU</small><h1>⚡ Pokémon Pocket</h1><p>Entdecke die Karten, lerne die Regeln Schritt für Schritt und übe für das gemeinsame Spielen mit echten Pokémon-Karten.</p></div><img class="pokemon-hero-ball" src="../assets/pokemon-pocket/safari-ball-scene.webp" alt="Safari-Ball in der Savanne" onerror="this.hidden=true"></header>
+<nav class="tabs" aria-label="Bereiche"><button class="tab" data-view="lexikon" aria-selected="true">📖 Lexikon</button><button class="tab" data-view="uebungen" aria-selected="false">🎲 Übungsschritte</button><button class="tab" data-view="analog" aria-selected="false">🃏 Mit echten Karten spielen</button></nav>
+<section class="note"><strong>Zwei Regelwelten:</strong> Die digitalen Pocket-Regeln sind die Grundlage. Für das Spielen mit echten Karten verwenden wir zusätzlich vereinfachte <strong>Klassenregeln nach dem Reddit-Vorschlag</strong>. Diese sind nicht die offiziellen Pocket-Regeln. Original-Karten können abweichende Aufdrucke oder Effekte haben.</section>
+<section id="lexikon">
+ <div class="panel"><h2>📖 Karten- und Spiellexikon</h2><p>Beginne bei den Grundlagen. Die schwierigeren Sonderregeln findest du weiter unten. Öffne die Karten einzeln.</p>
+ <div class="mock" aria-label="Erklärkarte – schematische Darstellung, keine offizielle Pokémon-Karte"><div class="mock-top"><span>🌱 BASIS · Beispiel-Pokémon</span><span>70 KP ❤️</span></div><div class="mock-art"><strong>DEMO-KARTE</strong><small>Eigene Skizze · kein echtes Kartenbild</small></div><div class="mock-attack"><span>⚡⚪ <strong>Funkenschlag</strong></span><strong>30</strong></div><div class="mock-foot">Schwäche: 🔥 +20 &nbsp; | &nbsp; Rückzug: ⚪</div></div>
+ <p class="muted">Anhand der Beispielkarte: Oben stehen Name, Entwicklungsstufe und KP. Beim Angriff stehen Energiekosten und Schaden. Unten erkennst du Schwäche und Rückzugskosten.</p></div>
+ <div class="panel"><h2>🃏 Unsere echten Safari-Karten</h2><p>Klicke auf eine Pokémon- oder Trainerkarte. Ihre Werte und besonderen Effekte sind auch im Computerspiel eingebaut.</p><div class="filters" id="cardFilters"></div><div id="cardsBrowse" class="pokemon-card-browser"></div><div id="cardDetail" class="challenge" hidden></div></div>
+ <h2>🌱 Grundlagen – damit beginnst du</h2><div id="basicLex" class="lex-grid"></div>
+ <div class="advanced"><h2>🔍 Für Fortgeschrittene</h2><p>Diese Regeln kannst du später dazulernen. Beim ersten Kennenlernen brauchst du sie noch nicht alle.</p><div id="advancedLex" class="lex-grid"></div></div>
+</section>
+<section id="uebungen" hidden><div class="panel"><h2>🎲 Übungsschritte</h2><p>Pro Aufgabe übst du einen Grundschritt. Probiere die Handlung anschliessend mit echten Karten nachzuspielen. Du brauchst noch keine ganze Partie zu können.</p><div id="progressText" role="status"></div><div class="practice-progress"><span id="progressBar"></span></div><div id="exercise"></div><div class="actions"><button class="action" id="prev">← Zurück</button><button class="action" id="repeat">Von vorne</button><button class="action primary" id="next">Nächster Schritt →</button></div></div></section>
+<section id="analog" hidden><div class="panel"><h2>🃏 Pocket mit echten Karten spielen</h2><p>Diese Anleitung setzt den von dir bereitgestellten Reddit-Beitrag als <strong>Klassenvariante</strong> um. Verwendet werden echte Sammelkarten. Das Gerät hilft nur beim Lernen der Regeln.</p>
+<p class="analogue"><strong>Wichtig:</strong> Im digitalen Simulator hat die Energiezone einen unendlichen Vorrat und bestimmt die nächsten Energietypen zufällig. Für das Spielen am Tisch verwendet ihr dagegen einen physischen Stapel mit 20 Energiekarten. Sind diese aufgebraucht, mischt ihr die bereits abgelegten Energiekarten erneut.</p><h3>Vorbereitung</h3><ol><li>Jedes Kind nimmt <strong>20 Karten</strong> für das Pokémon-/Trainerdeck. Maximal <strong>2 Karten mit demselben Namen</strong>.</li><li>In unseren sechs Safari-Decks sind <strong>Pokémon ex ausdrücklich erlaubt</strong>. Beim Besiegen bringen sie <strong>2 Punkte</strong>. VMAX, Mega- und andere nicht enthaltene Spezialkarten lassen wir weg. Das weicht bewusst vom Reddit-Beispiel ab.</li><li>Ein <strong>eigenes Energiedeck aus 20 Basis-Energiekarten</strong> vorbereiten. Maximal zwei Energietypen; keine Spezial-Energiekarten.</li><li>Beide Stapel getrennt mischen. Das Energiedeck liegt offen: Du kannst die nächste Energie erkennen. Für verdecktes Mischen: erst verdeckt mischen, dann umdrehen.</li><li>Jedes Kind zieht <strong>5 Karten</strong> aus dem Hauptdeck. Ist kein Basis-Pokémon dabei, werden die fünf Karten zurückgemischt und neu gezogen. Das wiederholt ihr, bis mindestens eines dabei ist. <strong>Das ist unsere analoge Startregel.</strong></li><li>Jedes Kind legt ein Basis-Pokémon aktiv hin. Auf der Bank warten höchstens drei weitere Basis-Pokémon.</li><li>Eine Münze entscheidet, wer beginnt. Drei Punktemarker pro Person bereitlegen.</li></ol>
+<h3>Dein Zug</h3><ol><li>Ziehe <strong>eine Karte</strong> aus deinem Hauptdeck.</li><li>Ziehe <strong>eine Energie</strong> vom offenen Energiedeck und hänge sie an eines deiner Pokémon – ausser im allerersten Zug der beginnenden Person.</li><li>Lege Basis-Pokémon auf die Bank, entwickle erlaubte Pokémon und spiele passende Trainerkarten.</li><li>Du darfst einmal zurückziehen, sofern du die Kosten bezahlen kannst; danach darfst du mit dem neuen aktiven Pokémon angreifen.</li><li>Greife mit deinem aktiven Pokémon an. <strong>Der Angriff beendet deinen Zug.</strong></li></ol>
+<h3>Punkte und Spielende</h3><p>Wer ein normales gegnerisches Pokémon kampfunfähig macht, erhält <strong>1 Punkt</strong>. Für ein besiegtes <strong>Pokémon ex gibt es 2 Punkte</strong>. Drei Punkte gewinnen. Ist kein Ersatz-Pokémon auf der Bank, gewinnt die andere Person. Für Schaden kannst du Zehner-Chips oder Würfel verwenden.</p>
+<h3>Wichtige Anpassungen aus dem Reddit-Beitrag</h3><ul><li>Eine Karte, die normalerweise Energien aus dem Deck suchen lässt, durchsucht hier das <strong>separate Energiedeck</strong>.</li><li>Keine Trainerkarten verwenden, die <strong>mehr als zwei Karten zusätzlich ziehen</strong> lassen.</li><li><strong>Rückzug und Angriff</strong> sind im selben Zug erlaubt; zuerst zurückziehen, dann angreifen.</li><li>Wenn die Energiekarten eines Kindes aufgebraucht sind, mischt ihr die bereits abgelegten Basis-Energien als neuen Energiestapel. <em>Das ist eine zusätzliche Klassenregel, nicht aus dem zitierten Beitrag.</em></li></ul>
+<div class="challenge"><strong>Auftrag für zwei Kinder:</strong> Legt einen Spielplatz mit aktiver Position, drei Bankplätzen, zwei Kartenstapeln, Ablagestapel und drei Punktemarkern aus. Spielt zuerst drei Züge ohne Angriffe. Erst danach startet eure erste Übungspartie.</div>
+</div></section>
+<footer class="footer">LernSafari · Übungsangebot für die Primarschule · Keine offizielle Pokémon-Seite. Erklärtexte in eigenen Worten. Regeln: <a href="https://www.pokewiki.de/Pok%C3%A9mon-Sammelkartenspiel-Pocket" target="_blank" rel="noopener">PokéWiki Pocket</a>, <a href="https://support.pokemon.com/hc/en-us/articles/38906248102292-Pok%C3%A9mon-TCG-Pocket-Battle-Rules-FAQ" target="_blank" rel="noopener">Pokémon Support</a>, <a href="https://www.reddit.com/r/PTCGP/comments/1hjp5i1/pokemon_pocket_rules_with_irl_pokemon_cards/" target="_blank" rel="noopener">Reddit-Vorlage für analoge Karten</a>.</footer>
+</main>
+<script src="../assets/login-config.js"></script>
+<script src="../assets/pokemon-pocket-cards.js"></script>
+<script>
+'use strict';
+const basic=[
+['🃏','Die Pokémon-Karte lesen','Oben stehen Name, Typ, KP und Entwicklungsstufe. Beim Angriff findest du Energiezeichen und Schaden. Unten stehen häufig Schwäche und Rückzugskosten.','Zeige diese fünf Stellen auf einer eigenen Karte.'],
+['❤️','Lebenspunkte (KP)','KP sagen dir, wie viel Schaden ein Pokémon aushält. Hat es 70 KP und erhält 30 Schaden, verbleiben 40 KP. Bei mindestens 70 Schaden wird es kampfunfähig.','Lege 7 Zehner-Chips hin und nimm für 30 Schaden 3 Chips weg.'],
+['🌱','Basis-Pokémon','Ein Basis-Pokémon benötigt keine vorherige Entwicklung. Nur Basis-Pokémon dürfen direkt als aktives Pokémon oder auf die Bank gelegt werden.','Suche zwei Basis-Pokémon und lege sie nebeneinander.'],
+['🦋','Entwicklung','Phase 1 kommt auf das passende Basis-Pokémon, Phase 2 auf die passende Phase 1. Ein Pokémon darf nicht im Zug entwickelt werden, in dem es ins Spiel kam. Im ersten Zug darf niemand entwickeln.','Suche eine Basis- und eine passende Phase-1-Karte.'],
+['⚡','Energie anhängen','Ein Angriff braucht oft bestimmte Energien. In Pocket kommt normalerweise eine Energie pro Zug aus einer separaten Energiezone; sie gehört nicht zum 20er-Deck. Beim analogen Spiel nimmst du dafür eine Karte vom separaten Energiedeck.','Hänge eine Energie an ein Pokémon. Sage, ob du nun einen Angriff bezahlen kannst.'],
+['⚔️','Angreifen','Nur das aktive Pokémon greift an. Links stehen die benötigten Energien, rechts der Schaden. Wenn du angreifst, endet dein Zug.','Zeige bei einer Karte auf die Energiekosten und lies die Schadenszahl vor.'],
+['🪑','Aktives Pokémon und Bank','Vorne steht genau ein aktives Pokémon. Bis zu drei Pokémon dürfen auf der Bank warten. Nur das aktive Pokémon greift normalerweise an.','Lege einen aktiven Platz und drei Bankplätze mit Karten aus.'],
+['↩️','Rückzug','Einmal pro Zug darf das aktive Pokémon mit einem Bank-Pokémon tauschen, wenn du die nötigen Energien für den Rückzug ablegst. Danach darfst du noch angreifen.','Tausche zwei Karten und lege die bezahlten Energien beiseite.'],
+['🎒','Deck und Handkarten','In Pocket besteht das Hauptdeck aus 20 Karten. Derselbe Kartenname darf höchstens zweimal vorkommen. Die Starthand besteht aus fünf Karten. Im digitalen Pocket ist ein Basis-Pokémon garantiert. In unserer Klassenvariante benutzen wir zusätzlich ein separates Deck mit 20 Energiekarten.','Zähle 20 geeignete Karten und überprüfe doppelte Namen.'],
+['🏆','Drei Punkte gewinnen','Wenn ein gewöhnliches gegnerisches Pokémon kampfunfähig wird, erhältst du einen Punkt. Besiegte Pokémon ex bringen zwei Punkte. Drei Punkte gewinnen.','Lege drei Münzen oder Steine als Punktemarker bereit.']
+];
+const advanced=[
+['🔥','Schwäche','Bei Pocket verursacht ein Pokémon mit passendem Angriffstyp normalerweise 20 Schaden zusätzlich. Beispiel: 30 + 20 = 50. Die Schwäche des verteidigenden Pokémon steht auf seiner Karte. Bei echten Karten gelten oft andere Werte; in unserer Safari-Klassenvariante verwenden wir die auf den neuen Karten angegebenen +20.','Sucht eine Schwäche auf einer Karte und rechnet 40 + 20.'],
+['🎨','Energiesymbole und farblos','Die farblosen Energiesymbole bei einem Angriff dürfen durch Energie beliebigen Typs erfüllt werden. Ein farbiges Symbol braucht den passenden Typ. Energie bleibt meistens angehängt, wenn du angreifst; nur Kartentexte können sie abwerfen lassen.','Findet einen Angriff mit einem farblosen Energiesymbol.'],
+['📜','Trainerkarten','Trainerkarten können besondere Dinge erlauben. Im Pocket-Spiel sind Itemkarten und Unterstützerkarten verschieden: Normalerweise darfst du mehrere Items, aber nur eine Unterstützerkarte pro Zug ausspielen. Lies jeden Kartentext genau.','Sucht zwei verschiedene Trainerkarten und vergleicht ihre Wirkung.'],
+['🔍','Fähigkeiten und Sondertexte','Manche Pokémon haben eine Fähigkeit, die zusätzlich zum Angriff wirkt. Lies genau, wann die Fähigkeit benutzt werden darf. Kartentext kann allgemeine Regeln verändern.','Zeige einer anderen Person die Fähigkeit auf einer Karte.'],
+['💤','Besondere Zustände','Schlaf, Paralyse, Gift und Verbrennung können ein Pokémon beeinflussen. Sie haben eigene Regeln. Für die ersten analogen Übungspartien könnt ihr solche Karten weglassen.','Suche auf einer Karte einen solchen Zustand oder Effekt.'],
+['🧬','Pokémon-ex und Spezialkarten','In Pocket bringen besiegte Pokémon ex zwei Punkte, Mega-Pokémon ex sogar drei. Unsere eigenen Safari-Decks enthalten Pokémon ex und erlauben sie ausdrücklich. Wir lassen VMAX und nicht enthaltene Spezialkarten weg.','Sortiere Spezialkarten in einen eigenen Stapel.'],
+['🪙','Münzwurf und Zufall','Einige Karten verlangen einen Münzwurf. Kopf und Zahl entscheiden dann über den Effekt. Wenn ihr echte Karten verwendet, braucht ihr eine Münze oder einen passenden Würfel.','Werft fünfmal eine Münze und zählt Kopf und Zahl.'],
+['📦','Ablagestapel und leerer Stapel','Besiegte Pokémon und abgeworfene Energien kommen auf den Ablagestapel. In Pocket verlierst du nicht allein deshalb, weil dein Hauptdeck leer ist. Für ein leeres analoges Energiedeck haben wir eine eigene Klassenregel.','Lege neben dein Deck einen Ablagestapel bereit.'],
+['🔄','Mehrere Energietypen','In der digitalen Energiezone erscheinen Energien der für das Deck gewählten Typen. In unserer analogen Variante mischst du 20 Basis-Energiekarten aus höchstens zwei Typen; die nächste Energie darf vorher sichtbar sein.','Stelle einen Energiestapel mit z. B. 10 Wasser- und 10 Elektro-Energien zusammen.'],
+['📝','Pocket und echte Karten','Auf klassischen physischen Karten können andere Regeln, Schwächen, KP und Kartentexte stehen als bei Pocket. Unsere Klassenregeln gelten nur für das vereinbarte Schulspiel. Über besonders starke Effekte sollt ihr euch vorher einigen.','Vergleiche ein physisches Pokémon mit der Pocket-Erklärung.']
+];
+const exercises=[
+{title:'Die Karte lesen',question:'Auf einer Pokémon-Karte steht «70 KP». Was bedeutet das?',answers:['Das Pokémon kann insgesamt 70 Schaden aushalten.','Du brauchst 70 Energiekarten.','Du bekommst 70 Punkte.'],correct:0,why:'KP sind die Lebenspunkte. Bei 70 oder mehr erlittenem Schaden wird es kampfunfähig.',task:'Zeige auf einer eigenen Karte die KP und den Namen.'},
+{title:'Basis-Pokémon starten',question:'Welche Karte darfst du zu Beginn als aktives Pokémon hinlegen?',answers:['Nur ein Basis-Pokémon.','Nur eine Phase-2-Entwicklung.','Eine beliebige Trainerkarte.'],correct:0,why:'Entwicklungen müssen zuerst auf passende Pokémon gelegt werden.',task:'Suche ein Basis-Pokémon und lege es auf den aktiven Platz.'},
+{title:'Energie anhängen',question:'Dein Pokémon braucht eine Feuer-Energie und eine beliebige weitere Energie. Es hat bereits eine Feuer-Energie. Was fehlt?',answers:['Noch eine Energie eines beliebigen Typs.','Genau zwei weitere Feuer-Energien.','Keine Energie mehr.'],correct:0,why:'Das farblose Symbol darf durch jeden Energietyp bezahlt werden.',task:'Lege eine zweite Energie neben deine Feuer-Energie. Lies die Energiekosten laut vor.'},
+{title:'Erster Zug',question:'Du beginnst die Partie. Was gilt in deinem allerersten Zug?',answers:['Du darfst keine Energie aus dem eigenen Energiedeck anhängen.','Du musst sofort drei Pokémon entwickeln.','Du bekommst zwei Siegpunkte.'],correct:0,why:'In Pocket darf die beginnende Person im ersten Zug keine Energie aus der Energiezone anhängen. Das gilt auch für unsere analoge Variante.',task:'Spielt den ersten Zug mit fünf Handkarten, aber ohne Energie vom Energiestapel.'},
+{title:'Entwicklung',question:'Du hast gerade ein Basis-Pokémon auf die Bank gelegt. Darfst du es sofort entwickeln?',answers:['Nein, erst in einem späteren Zug.','Ja, immer sofort.','Nur wenn es 100 KP hat.'],correct:0,why:'Ein Pokémon darf sich nicht im Zug entwickeln, in dem es ins Spiel gekommen ist.',task:'Lege Basis und Phase 1 nebeneinander. Entwickle erst nach einem gespielten Zwischenzug.'},
+{title:'Angriff ausführen',question:'Dein aktives Pokémon hat genügend Energie. Wann ist dein Zug zu Ende?',answers:['Direkt nach deinem Angriff.','Sobald du eine Bankkarte ansiehst.','Erst wenn der Gegner angreift.'],correct:0,why:'Der Angriff ist die letzte Handlung deines Zuges.',task:'Lege eine Karte als Gegner aus und spiele einen Angriff mit Schadens-Chips nach.'},
+{title:'Rückzug und Angriff',question:'Du bezahlst die Rückzugskosten. Was darfst du danach noch tun?',answers:['Mit dem neuen aktiven Pokémon angreifen, wenn es genügend Energie hat.','Noch einmal kostenlos zurückziehen.','Vier neue Pokémon auf die Bank legen.'],correct:0,why:'Rückzug und Angriff sind im selben Zug möglich; zurückziehen darfst du normalerweise einmal pro Zug.',task:'Wechsle dein aktives Pokémon gegen eines von der Bank und übe den Angriff danach.'},
+{title:'Spielziel',question:'Du hast bereits zwei Punkte. Wie viele fehlen dir zum Sieg?',answers:['Ein Punkt.','Vier Punkte.','Noch zehn Punkte.'],correct:0,why:'Bei Pokémon Pocket gewinnt die Person mit drei Punkten.',task:'Lege drei Punktemarker hin und zeige den Sieg mit drei Markern.'},
+{title:'Analoges Energiedeck',question:'Wie bereitet ihr die Energie für eure echten Karten nach unserer Klassenregel vor?',answers:['20 Basis-Energiekarten als getrenntes Energiedeck, höchstens zwei Typen.','Die Energien werden in die 20 Pokémon-/Trainerkarten gemischt.','Jede Runde werden fünf Energiekarten angehängt.'],correct:0,why:'Der Reddit-Vorschlag nutzt ein separates Energiedeck als Ersatz für die digitale Energiezone.',task:'Mischt ein eigenes Energiedeck und dreht es offen um. Welche Energie kommt als Nächstes?'},
+{title:'Starthand mit echten Karten',question:'Du ziehst fünf Karten, aber keine ist ein Basis-Pokémon. Was machst du nach unserer Klassenregel?',answers:['Alle fünf zurückmischen und erneut fünf ziehen.','Sofort einen Punkt gewinnen.','Nur die Phase-2-Karte aktiv legen.'],correct:0,why:'Digital garantiert Pocket ein Basis-Pokémon. Analog lösen wir dies durch erneutes Mischen und Ziehen.',task:'Mischt fünf Karten ohne Basis-Pokémon zurück und versucht es erneut.'},
+{title:'Schwäche berechnen',question:'Ein Angriff macht 40 Schaden. Durch die passende Pocket-Schwäche kommen +20 dazu. Wie viel Schaden entsteht?',answers:['60 Schaden.','20 Schaden.','80 Schaden.'],correct:0,why:'Bei Pocket bedeutet eine passende Schwäche normalerweise plus 20 Schaden.',task:'Lege sechs Zehner-Chips zum verteidigenden Pokémon.'},
+{title:'Bereit für die Partie',question:'Was stimmt für unsere erste analoge Übungspartie?',answers:['20 Hauptdeckkarten, 20 separate Energien, drei Bankplätze, drei Punkte zum Sieg.','60 Hauptdeckkarten, fünf Bankplätze und sechs Preise.','Ein einzelnes Deck mit 40 Karten und unbegrenzte Bankplätze.'],correct:0,why:'Das sind die vereinbarten vereinfachten Pocket-Klassenregeln.',task:'Baut zu zweit beide Spielfelder vollständig auf und startet eure erste Partie.'}
+];
+const enc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+function renderLex(host,entries){host.innerHTML=entries.map((e,i)=>'<article class="lex-card"><details><summary><span class="lex-icon">'+e[0]+'</span><span><strong>'+enc(e[1])+'</strong><small>Zum Nachlesen öffnen</small></span><span aria-hidden="true">⌄</span></summary><div class="lex-content"><p>'+enc(e[2])+'</p><p class="analogue"><strong>Mit echten Karten:</strong> '+enc(e[3])+'</p></div></details></article>').join('')}
+renderLex(document.getElementById('basicLex'),basic);
+renderLex(document.getElementById('advancedLex'),advanced);
+const PD=window.PokemonPocketData;
+const cardIdByLesson=['yanma','kecleon','elezeba','elezeba','yanmega','flaminkno','mopex-ex','professor','energietausch','safari-ball','kecleon','gortrom-ex'];
+const cardText=c=>c.kind==='pokemon'?
+  c.hp+' KP · '+(c.stage===0?'Basis':('Phase '+c.stage+' · Entwicklung aus '+c.from))+
+  ' · '+PD.symbols[c.type]+' · Schwäche '+PD.symbols[c.weak]+' +20 · Rückzug '+c.retreat+
+  ' · '+c.attacks.map(a=>a.name+' · '+a.cost.map(t=>PD.symbols[t]).join('')+' · '+a.damage+(a.effect?' (Sondereffekt)':'')).join(' | '):
+  (c.kind==='supporter'?'Unterstützer':'Item')+' · '+({draw2:'2 Karten ziehen',searchBasic4:'4 Karten ansehen, 1 Basis-Pokémon nehmen',searchEvolution4:'4 Karten ansehen, 1 Entwicklung nehmen',heal20:'20 Schaden heilen',heal25:'25 Schaden heilen',metalHeal30:'30 Schaden bei Stahl heilen',switch:'Aktives Pokémon wechseln',moveEnergy:'Eine Energie verschieben',noWeakness:'Schwäche vorübergehend aufheben',energyGrassEvolved:'Pflanzen-Energie an entwickeltes Pflanzen-Pokémon',coinElectricBench:'Münzwurf für Elektro-Energie an die Bank',bench20:'20 Schaden auf Gegner-Bank',forceSwitch:'Gegnerisches aktives Pokémon auswechseln',look2:'Zwei Deckkarten ansehen und sortieren'})[c.effect];
+const cardPicture=id=>'<img src="../assets/pokemon-pocket/'+id+'.webp" alt="Karte: '+enc(PD.byId[id].name)+'" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="card-image-fallback" hidden>🃏 '+enc(PD.byId[id].name)+'</span>';
+let cardFilter='alle';
+function renderCatalog(){
+ const cards=PD.cards.filter(c=>cardFilter==='alle'||cardFilter==='pokemon'&&c.kind==='pokemon'||cardFilter==='trainer'&&c.kind!=='pokemon');
+ document.getElementById('cardFilters').innerHTML=[['alle','Alle Karten'],['pokemon','Pokémon'],['trainer','Trainerkarten']].map(([id,name])=>'<button class="filter" aria-pressed="'+(id===cardFilter)+'" data-filter="'+id+'">'+name+'</button>').join('');
+ document.getElementById('cardsBrowse').innerHTML=cards.map(c=>'<button class="pokemon-image-card" type="button" data-card-id="'+c.id+'">'+cardPicture(c.id)+'<strong>'+enc(c.name)+'</strong></button>').join('');
+ document.querySelectorAll('[data-filter]').forEach(button=>button.onclick=()=>{cardFilter=button.dataset.filter;renderCatalog()});
+ document.querySelectorAll('[data-card-id]').forEach(button=>button.onclick=()=>{
+  const c=PD.byId[button.dataset.cardId],detail=document.getElementById('cardDetail');
+  detail.hidden=false;detail.innerHTML='<h3>'+enc(c.name)+'</h3><p>'+enc(cardText(c))+'</p>';
+  detail.scrollIntoView({block:'nearest',behavior:'smooth'});
+ });
+}
+renderCatalog();
+let index=0,answers=Array(exercises.length).fill(null);
+function renderPractice(){
+ const e=exercises[index],chosen=answers[index],complete=answers.filter(v=>v!==null).length;
+ // Vary the position of the correct answer across the training steps.
+ const rotation=(index*7+3)%e.answers.length;
+ const presented=e.answers.map((label,i)=>({label,original:i})).slice(rotation).concat(e.answers.map((label,i)=>({label,original:i})).slice(0,rotation));
+ document.getElementById('progressText').textContent='Schritt '+(index+1)+' von '+exercises.length+' · '+complete+' bearbeitet';
+ document.getElementById('progressBar').style.width=(complete/exercises.length*100)+'%';
+ document.getElementById('exercise').innerHTML='<span class="step">Schritt '+(index+1)+'</span><h3>'+enc(e.title)+'</h3><div class="practice-card-picture">'+cardPicture(cardIdByLesson[index])+'</div><p>'+enc(e.question)+'</p><div class="choices">'+presented.map(item=>'<button class="choice '+(chosen===item.original?(item.original===e.correct?'selected':'wrong'):'')+'" data-answer="'+item.original+'" '+(chosen!==null?'disabled':'')+'>'+enc(item.label)+'</button>').join('')+'</div>'+
+ (chosen!==null?'<div role="status" class="feedback '+(chosen===e.correct?'':'wrong')+'"><strong>'+(chosen===e.correct?'Richtig! 🌟':'Schau dir die Erklärung an.')+'</strong><p>'+enc(e.why)+'</p></div><div class="challenge"><strong>Jetzt mit echten Karten üben:</strong> '+enc(e.task)+'</div>':'<p class="muted">Wähle eine Antwort. Anschliessend erscheint deine Übung mit echten Karten.</p>');
+ document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if(answers[index]!==null)return;answers[index]=Number(b.dataset.answer);renderPractice()});
+ document.getElementById('prev').disabled=index===0;
+ document.getElementById('next').textContent=index===exercises.length-1?'Zum ersten Schritt ↺':'Nächster Schritt →';
+}
+document.getElementById('next').onclick=()=>{index=(index+1)%exercises.length;renderPractice()};
+document.getElementById('prev').onclick=()=>{index=Math.max(0,index-1);renderPractice()};
+document.getElementById('repeat').onclick=()=>{index=0;answers=Array(exercises.length).fill(null);renderPractice()};
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(t=>t.setAttribute('aria-selected',String(t===b)));for(const id of ['lexikon','uebungen','analog'])document.getElementById(id).hidden=id!==view;});
+renderPractice();
+const start=new URLSearchParams(location.search).get('view');
+if(['lexikon','uebungen','analog'].includes(start))document.querySelector('[data-view="'+start+'"]').click();
+</script><script>
+(async()=>{
+  const host=document.getElementById('pokemonPreview');
+  const token=(()=>{try{return sessionStorage.getItem('lernsafari-admin-token-v2')||''}catch(_){return ''}})();
+  if(token){
+    try{
+      const url=String(window.LERNSAFARI_BACKEND_URL||'').replace(/\/+$/,'')+'/admin-session';
+      const response=await fetch(url,{headers:{'X-Safari-Admin':token},cache:'no-store'});
+      if(response.ok){host.hidden=false;return}
+    }catch(_){}
+  }
+  const denied=document.createElement('main');
+  denied.className='shell';
+  denied.innerHTML='<section class="panel"><h1>🔒 Noch nicht verfügbar</h1><p>Pokémon Pocket ist momentan nur für den angemeldeten Flamingo zur Vorschau geöffnet.</p></section>';
+  document.body.appendChild(denied);
+})();
+</script><script src="../assets/new-safari-bridge.js"></script></body></html>

@@ -1,0 +1,23 @@
+<!doctype html><html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pokémon Pocket · Gegen den Computer · LernSafari</title><link rel="stylesheet" href="../assets/pokemon-pocket-simulator.css">
+<script src="../assets/login-config.js"></script><script src="../assets/pokemon-pocket-cards.js" defer></script><script src="../assets/pokemon-pocket-engine.js" defer></script><script src="../assets/pokemon-pocket-ui.js" defer></script></head>
+<body><main class="shell" id="pokemonGame" hidden>
+<header class="hero pokemon-safari-hero"><div class="pokemon-hero-content"><img class="pokemon-safari-logo" src="../assets/pokemon-pocket/pokemon-safari-logo.webp" alt="Pokémon Safari" onerror="this.hidden=true"><small>🏝️ LERNSAFARI · OASE · FLAMINGO-VORSCHAU</small><h1>⚡ Pokémon Pocket · Computergegner</h1><p>Wähle ein Deck und spiele mit den eigenen Safari-Karten. Alle Spielzüge folgen derselben Regel-Engine.</p></div><img class="pokemon-hero-ball" src="../assets/pokemon-pocket/safari-ball-scene.webp" alt="Safari-Ball fliegt durch die Savanne" onerror="this.hidden=true"></header>
+<section id="setup" class="panel"><h2>Neue Partie</h2><p>Die Sterne zeigen, wie anspruchsvoll ein Deck für Kinder ist. Der Computer wählt ein anderes Deck als du und wechselt seine Auswahl von Partie zu Partie.</p>
+<div class="settings"><label>Dein Deck<select id="yourDeck"></select></label><label>Computer-Schwierigkeit<select id="difficulty"><option value="leicht">⭐ Leicht</option><option value="mittel" selected>⭐⭐ Mittel</option><option value="schwer">⭐⭐⭐ Schwer</option></select></label></div>
+<div id="deckPreview" class="deck-preview"></div><button class="big-button" id="start">Partie starten</button>
+<p class="muted">⚡ Die Energiezone ist unendlich. Die nächste Energie wird bei jedem Bezug zufällig aus den Energietypen deines Decks gewählt. Leicht spielt zufälliger, Mittel erkennt sinnvolle Züge, Schwer priorisiert Entwicklungen, Energieaufbau und mögliche Knock-outs. «Schwer» ist anspruchsvoller, aber nicht garantiert unschlagbar.</p></section>
+<section id="game" hidden>
+<div class="scorebar" id="scorebar" aria-live="polite"></div>
+<div id="enemy" class="play-area opponent"></div><div class="field-divider">⚡ Spielfeld ⚡</div><div id="yours" class="play-area"></div>
+<section class="panel"><h2>Deine Hand</h2><div id="hand" class="hand"></div><div id="choice" hidden class="choicebox" role="status"></div></section>
+<section class="panel"><h2>Dein Zug</h2><div id="actions" class="actions"></div></section>
+<div class="panel"><h2>Spielverlauf</h2><ol id="gameLog" class="log" aria-live="polite"></ol></div>
+</section>
+<p class="footer">LernSafari-Prototyp · eigene Kartenbilder und vereinfachte Pocket-Regeln. Die Vorschau ist nur mit gültiger Flamingo-Admin-Sitzung sichtbar.</p>
+</main>
+<script>
+(async()=>{let token='';try{token=sessionStorage.getItem('lernsafari-admin-token-v2')||''}catch(_){}
+if(token){try{const response=await fetch(String(window.LERNSAFARI_BACKEND_URL||'').replace(/\/+$/,'')+'/admin-session',{headers:{'X-Safari-Admin':token},cache:'no-store'});if(response.ok){document.getElementById('pokemonGame').hidden=false;return}}catch(_){}}
+const denied=document.createElement('main');denied.className='shell';denied.innerHTML='<section class="panel"><h1>🔒 Noch nicht verfügbar</h1><p>Pokémon Pocket kann momentan nur als Flamingo getestet werden.</p></section>';document.body.appendChild(denied)})();
+</script><script src="../assets/new-safari-bridge.js"></script></body></html>

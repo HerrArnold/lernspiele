@@ -5,13 +5,21 @@
   const topicData={
     Mathe:[
       {name:'Einmaleins',icon:'✖️',games:[
-        ['Mix (2er, 5er, 10er)','einmaleins-mix.html'],
         ['3er Reihe','einmaleins-dreier.html'],
         ['4er Reihe','einmaleins-vierer.html'],
         ['6er Reihe','einmaleins-sechser.html'],
+        ['7er Reihe – zwei Rechenwege','einmaleins-siebener.html'],
+        ['8er Reihe – drei Rechenwege','einmaleins-achter.html'],
+        ['Mix (7er und 8er)','einmaleins-mix-sieben-acht.html'],
         ['9er Reihe','einmaleins-neuner.html'],
         ['Mix (3er, 4er, 6er, 9er)','einmaleins-mix-neue-reihen.html'],
-        ['Teste dein Wissen (Alle Reihen)',null]
+        ['Teste dein Wissen (2er bis 10er)','einmaleins-test-alle.html']
+      ]},
+      {name:'Einmaleins – 2er, 5er und 10er',icon:'📚',archived:true,games:[
+        ['2er Reihe','einmaleins-zweier.html'],
+        ['5er Reihe','einmaleins-fuenfer.html'],
+        ['10er Reihe','einmaleins-zehner.html'],
+        ['Mix (2er, 5er, 10er)','einmaleins-mix.html']
       ]},
       {name:'Tausenderraum',icon:'🔢',games:[
         ['Im Tausenderbuch finden','finde-die-zahl.html'],
@@ -43,7 +51,7 @@
       ]}
     ],
     Musik:[
-      {name:'Solmisation und Rhythmus',icon:'🎼',games:[
+      {name:'Solmisation und Rhythmus',icon:'🎼',archived:true,games:[
         ['Solmisationsleiter','solmisationsleiter.html'],
         ['Solmisationsspiel einfach','solmisationsspiel.html'],
         ['Solmisationsspiel schwer','solmisationsspiel-profi.html'],
@@ -65,6 +73,7 @@
   // Public read-only subject/topic catalog for teacher assignment selectors.
   window.LernSafariTopicCatalog=Object.freeze(topicData);
   let selectedTopic=null;
+  const expandedArchives=new Set();
   const esc=s=>htmlSafe(String(s));
   const currentTopics=()=>topicData[safariSubject]||[];
   const currentTopic=()=>currentTopics().find(t=>t.name===selectedTopic);
@@ -86,16 +95,25 @@
     return '<div class="safari-topic-header"><span class="safari-topic-icon">'+icon+'</span><div><span class="integration-kicker">Lern-Lagune · '+esc(subjectLabel(safariSubject))+'</span><h2>'+esc(text)+'</h2><p>'+esc(description)+'</p></div></div>';
   }
   function subjectColorClass(){return 'safari-subject-'+({Mathe:'math',Deutsch:'german',NMG:'nmg',Musik:'music',Englisch:'english'}[safariSubject]||'neutral')}
+  // Archiviert ist nur die Katalogansicht, nicht die Spiel-Datei oder der Lernfortschritt.
+  // Später reicht archived:true bei einem abgeschlossenen Thema; archived:false macht es wieder aktuell.
   function renderSubjects(){
     const topics=currentTopics();
     selectedTopic=null;safariGame=null;
+    const active=topics.map((t,i)=>({topic:t,index:i})).filter(x=>!x.topic.archived);
+    const archive=topics.map((t,i)=>({topic:t,index:i})).filter(x=>x.topic.archived);
+    const expanded=expandedArchives.has(safariSubject);
+    const topicCard=({topic:t,index:i})=>{
+      const count=t.games.filter(g=>g[1]).length;
+      return '<button type="button" class="safari-topic-card" data-topic-index="'+i+'"><span class="safari-topic-card-icon">'+t.icon+'</span><strong>'+esc(t.name)+'</strong><small>'+count+' '+(count===1?'Spiel':'Spiele')+'</small><span class="safari-topic-arrow">›</span></button>';
+    };
     root().innerHTML='<section class="integration-shell safari-topic-page '+subjectColorClass()+'">'+trail('subjects')+
       '<div class="integration-top"><button type="button" class="integration-back" data-topic-nav="lagoon">← Zur Lern-Lagune</button></div>'+
-      header('Wähle ein Thema!','Suche ein Thema aus und entdecke die Lernspiele.',SUBJECTS.find(s=>s[0]===safariSubject)?.[2]||'📖')+
-      '<div class="safari-topic-grid">'+topics.map((t,i)=>{
-        const count=t.games.filter(g=>g[1]).length;
-        return '<button type="button" class="safari-topic-card" data-topic-index="'+i+'"><span class="safari-topic-card-icon">'+t.icon+'</span><strong>'+esc(t.name)+'</strong><small>'+count+' '+(count===1?'Spiel verfügbar':'Spiele verfügbar')+'</small><span class="safari-topic-arrow">›</span></button>';
-      }).join('')+'</div></section>';
+      header('Aktuelle Themen','Wähle dein aktuelles Lernthema.',SUBJECTS.find(s=>s[0]===safariSubject)?.[2]||'📖')+
+      (active.length?'<div class="safari-topic-grid">'+active.map(topicCard).join('')+'</div>':'<p class="safari-archive-note">Gerade sind keine aktuellen Themen eingetragen.</p>')+
+      (archive.length?'<section class="safari-archive-box"><button type="button" class="safari-archive-toggle" data-archive-toggle aria-expanded="'+expanded+'"><span class="safari-archive-symbol">📚</span><span><strong>Themen-Archiv</strong><small>'+archive.length+' '+(archive.length===1?'abgeschlossenes Thema':'abgeschlossene Themen')+' · alle Spiele bleiben zugänglich</small></span><span aria-hidden="true">'+(expanded?'▴':'▾')+'</span></button>'+
+        (expanded?'<div class="safari-archive-inside"><p class="safari-archive-note">Zum Wiederholen kannst du jedes archivierte Thema öffnen und wie gewohnt spielen.</p><div class="safari-topic-grid">'+archive.map(topicCard).join('')+'</div></div>':'')+'</section>':'')+
+      '</section>';
   }
   function renderGames(){
     const topic=currentTopic();
@@ -130,8 +148,8 @@
       button?.click();
       return;
     }
-    if(entry[1].startsWith('hoerverstehen-')){
-      safariGame={title:entry[0],file:entry[1],description:'Hörverständnis mit Audio und vier Aufgaben'};
+    if(entry[1].startsWith('hoerverstehen-')||entry[1].startsWith('einmaleins-')){
+      safariGame={title:entry[0],file:entry[1],description:entry[1].startsWith('hoerverstehen-')?'Hörverständnis mit Audio':'Einmaleins: entdecken, üben und überprüfen'};
       safariGameOrigin=safariSubject;
       showSelectedGame();
       return;
@@ -187,6 +205,12 @@
       else if(target==='subject'){selectedTopic=null;safariGame=null;renderSubjects()}
       else if(target==='topic'){safariGame=null;renderGames()}
       return;
+    }
+    const archiveToggle=event.target.closest('[data-archive-toggle]');
+    if(archiveToggle){
+      if(expandedArchives.has(safariSubject))expandedArchives.delete(safariSubject);
+      else expandedArchives.add(safariSubject);
+      renderSubjects();return;
     }
     const topicButton=event.target.closest('[data-topic-index]');
     if(topicButton){selectedTopic=currentTopics()[Number(topicButton.dataset.topicIndex)]?.name||null;renderGames();return}

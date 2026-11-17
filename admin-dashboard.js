@@ -5,7 +5,6 @@
  const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
  const areas=[
   {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Tagesaufgaben, Fächer, Themen und Spiele zuweisen'},
-  {id:'mode',icon:'🧭',name:'Unterrichtsmodus',desc:'Ankunftszeit, Fachunterricht und Entdeckungszeit'},
   {id:'progress',icon:'📈',name:'Lernfortschritte',desc:'Punkte und Lernversuche nach Kind und Thema'},
   {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Wer ist online? Wer erledigt gerade einen Auftrag?'},
   {id:'agenda',icon:'📅',name:'Agenda',desc:'Wochenübersicht und Hausaufgaben, Lernkontrollen, Schulfrei bearbeiten'},
@@ -64,7 +63,7 @@
   if(assignmentPanel)sections.assignments.append(assignmentPanel);
   if(jobPanel)sections.assignments.append(jobPanel);
   if(verifyPanel)sections.assignments.append(verifyPanel);
-  if(modeNode)sections.mode.append(modeNode);
+  // Classroom-mode editor removed.
   if(progressPanel)sections.progress.append(progressPanel);
   if(activityPanel)sections.activity.append(activityPanel);
   if(lockPanel)sections.activity.append(lockPanel);
@@ -76,9 +75,9 @@
    banner.classList.toggle('admin-banner-compact',name!=='home');
    shell.scrollIntoView({block:'start',behavior:'smooth'});
    if(name==='progress')renderProgress();
-   if(name==='activity')renderLiveActivity();
+   // Live activity is fetched only after an explicit click.
    if(name==='agenda')renderAgendaEditor();
-   if(name==='activity')checkMessagesAvailability();
+   // Messaging is checked only if the teacher explicitly opens it.
   }
   deck.querySelectorAll('[data-admin-section]').forEach(b=>b.addEventListener('click',()=>open(b.dataset.adminSection)));
 
@@ -189,14 +188,7 @@
   // Always keep the legacy editor and its own authentication working.
   // New activity / messages panels are intentionally explicit about missing APIs.
   const livePanel=document.createElement('div');livePanel.className='pd-panel';
-  const meaningful=pres.filter(p=>p&&typeof p==='object');
-  livePanel.innerHTML='<h4>👀 Aktuelle Meldungen aus Cloudflare</h4><p class="admin-small-note">Diese Liste zeigt die vom Server gelieferten Anwesenheitsmeldungen. Eine genaue Live-Spielaktivität ist nur sichtbar, wenn der Worker sie mit Zeitstempel meldet.</p>'+
-    (meaningful.length?'<div class="admin-presence-grid">'+meaningful.map(p=>{
-      const user=p.username||p.name||'Tierkonto';
-      const activity=p.game||p.activity||p.target||p.page||'Keine Tätigkeit übermittelt';
-      const at=p.last_seen||p.lastSeen||p.updated_at||p.timestamp||null;
-      return '<article><strong>'+html(user)+'</strong><span>'+html(activity)+'</span><small>'+html(at?String(at):'Keine Uhrzeit übermittelt')+'</small></article>';
-    }).join('')+'</div>':'<p>Cloudflare meldet momentan keine Anwesenheitsdaten.</p>');
+  livePanel.innerHTML='<h4>👀 Aktivität auf Anfrage</h4><p class="admin-small-note">Die Übersicht wird ausschliesslich durch deinen Klick geladen. Du siehst, wo sich die Kinder zuletzt gemeldet haben.</p>';
   sections.activity.prepend(livePanel);
   // Assignment completion is separate from live presence. Do not present a
   // pupil's self-reported "done" check as teacher-verified completion.
@@ -229,7 +221,7 @@
   sections.activity.append(activityProgress);
 
   const liveRefresh=document.createElement('div');
-  liveRefresh.className='admin-live-refresh';liveRefresh.innerHTML='<button type="button" class="pd-secondary" id="adminLiveReload">🔄 Live-Aktivität aktualisieren</button><p class="admin-small-note" role="status" id="adminLiveStatus">Eine Aktivitätsanzeige wird nur nach serverseitiger Bestätigung aktiviert.</p>';
+  liveRefresh.className='admin-live-refresh';liveRefresh.innerHTML='<button type="button" class="pd-secondary" id="adminLiveReload">🔄 Jetzt abfragen: Wer ist wo?</button><p class="admin-small-note" role="status" id="adminLiveStatus">Noch keine Abfrage durchgeführt.</p>';
   livePanel.prepend(liveRefresh);
   async function renderLiveActivity(){
     const status=livePanel.querySelector('#adminLiveStatus');
@@ -247,16 +239,10 @@
       if(!grid){grid=document.createElement('div');grid.id='adminLiveVerified';livePanel.append(grid)}
       grid.innerHTML=data.students.length?'<div class="admin-presence-grid">'+data.students.map(a=>'<article><strong>'+html(a.username)+'</strong><span>'+html(a.game?'🎮 '+(gameTitles.get(a.game)||a.game):areaNames[a.area]||a.area)+'</span><small>'+html(a.last_seen||'')+'</small></article>').join('')+'</div>':
         '<p>In den letzten zwei Minuten hat kein angemeldetes Kind Aktivität gemeldet.</p>';
-      status.textContent=data.students.length+' angemeldete Kinder in den letzten zwei Minuten gemeldet. Keine Daten älter als zwei Minuten.';
+      status.textContent='Manuell abgefragt um '+new Intl.DateTimeFormat('de-CH',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Europe/Zurich'}).format(new Date())+' · '+data.students.length+' Kinder mit einer Meldung aus den letzten zwei Minuten.';
     }catch(_){status.textContent='Live-Aktivität noch nicht freigeschaltet: Cloudflare muss den geschützten Aktivitätsdienst bereitstellen.'}
   }
   livePanel.querySelector('#adminLiveReload').onclick=renderLiveActivity;
-  // Refresh only while the authenticated teacher is viewing this workspace.
-  // Stop the timer when the administration view is replaced.
-  const liveTimer=setInterval(()=>{
-    if(!livePanel.isConnected){clearInterval(liveTimer);return;}
-    if(sections.activity.isConnected&&!sections.activity.hidden)renderLiveActivity();
-  },30000);
   const messagePanel=document.createElement('div');messagePanel.className='pd-panel';
   messagePanel.innerHTML='<h4>✉️ Nachricht an die Kinder</h4><p>Mitteilungen werden nur über die geprüfte Cloudflare-Lehrpersonen-Sitzung versendet.</p><label>Empfänger<select id="adminMessageRecipient"><option value="all">Ganze Klasse</option>'+kids.map(k=>'<option value="'+html(k.username)+'">'+html(k.username)+'</option>').join('')+'</select></label><label>Betreff<input id="adminMessageSubject" maxlength="100" placeholder="z. B. Morgen mitbringen"></label><label>Nachricht<textarea id="adminMessageText" rows="5" maxlength="1500" placeholder="Deine Nachricht an die Kinder …"></textarea></label><div class="admin-message-actions"><button type="button" class="pd-action" id="adminMessageSend" disabled>Sicher versenden</button><button type="button" class="pd-secondary" id="adminMessageCopy">Text kopieren</button><button type="button" class="pd-secondary" id="adminMessageLegacy">Bestehende Verwaltung öffnen</button></div><p id="adminMessageStatus" role="status">Nachrichtenfunktion wird beim Öffnen geprüft.</p><section id="adminSentMessages" aria-label="Zuletzt versendete Nachrichten"></section>';
   // Keep the previously requested messaging tools accessible without adding a seventh landing card.
@@ -264,6 +250,7 @@
   messagingDetails.className='admin-detail-attempt';
   messagingDetails.innerHTML='<summary>✉️ Nachrichten an die Kinder (zusätzliche Verwaltung)</summary>';
   messagingDetails.append(messagePanel);
+  messagingDetails.addEventListener('toggle',()=>{if(messagingDetails.open)checkMessagesAvailability();});
   sections.activity.append(messagingDetails);
   if(sections.memories&&root.LernSafariProjects?.adminMount){
     const projectMount=document.createElement('div');projectMount.id='adminProjectsMount';sections.memories.append(projectMount);

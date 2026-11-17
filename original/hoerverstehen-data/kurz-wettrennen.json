@@ -6,49 +6,74 @@
       "id": "a1",
       "statement": "Zuri ist ein Zebra.",
       "correct": true,
-      "reason": "Zuri wird als Zebra vorgestellt."
+      "reason": "Zuri wird als Zebra vorgestellt.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a2",
       "statement": "Gino ist ein Elefant.",
       "correct": false,
-      "reason": "Gino ist eine Giraffe."
+      "reason": "Gino ist eine Giraffe.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a3",
       "statement": "Das Rennen beginnt beim Baobab-Baum.",
       "correct": true,
-      "reason": "Dort ist der Start."
+      "reason": "Dort ist der Start.",
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "a4",
       "statement": "Gino macht riesige Schritte mit seinen langen Beinen.",
       "correct": true,
-      "reason": "Das wird im Text ausdrücklich gesagt."
+      "reason": "Das wird im Text ausdrücklich gesagt.",
+      "evidence": [
+        3
+      ]
     },
     {
       "id": "a5",
       "statement": "Eine Schildkröte fliegt über die Wiese.",
       "correct": false,
-      "reason": "Sie sitzt auf dem Weg."
+      "reason": "Sie sitzt auf dem Weg.",
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "a6",
       "statement": "Zuri läuft einfach an der Schildkröte vorbei.",
       "correct": false,
-      "reason": "Zuri bleibt stehen."
+      "reason": "Zuri bleibt stehen.",
+      "evidence": [
+        4,
+        7
+      ]
     },
     {
       "id": "a7",
       "statement": "Die Freunde tragen die Schildkröte ins hohe Gras.",
       "correct": true,
-      "reason": "Sie bringen sie gemeinsam dorthin."
+      "reason": "Sie bringen sie gemeinsam dorthin.",
+      "evidence": [
+        7
+      ]
     },
     {
       "id": "a8",
       "statement": "Am Ende streiten sich beide über den Sieger.",
       "correct": false,
-      "reason": "Der Sieg ist ihnen nicht mehr wichtig."
+      "reason": "Der Sieg ist ihnen nicht mehr wichtig.",
+      "evidence": [
+        9
+      ]
     }
   ],
   "task2": [
@@ -75,7 +100,10 @@
         "Zuri, das Zebra, und eine Schildkröte.",
         "Gino, die Giraffe, und ein Löwenkind."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b2",
@@ -100,7 +128,10 @@
         "Beim grossen Baobab-Baum.",
         "Erst hinter dem hohen Gras."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "b3",
@@ -125,7 +156,11 @@
         "Weil Zuri vor den langen Schritten Angst bekommt.",
         "Weil sie eine Banane auf dem Boden entdeckt."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        4,
+        5
+      ]
     },
     {
       "id": "b4",
@@ -150,7 +185,10 @@
         "Sie bringen die Schildkröte zurück zum Start.",
         "Sie tragen die Schildkröte vorsichtig ins hohe Gras."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        7
+      ]
     },
     {
       "id": "b5",
@@ -175,7 +213,10 @@
         "Wer von ihnen das Wettrennen gewonnen hätte.",
         "Ob der Baobab-Baum gross genug ist."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        9
+      ]
     }
   ],
   "task3": [
@@ -202,7 +243,10 @@
         "Ein Spiel, bei dem alle möglichst leise sind.",
         "Eine Reise, bei der man ein Ziel sucht."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "c2",
@@ -228,7 +272,10 @@
         "So handeln, dass niemand verletzt wird.",
         "So leise laufen, dass niemand etwas hört."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        7
+      ]
     },
     {
       "id": "c3",
@@ -254,30 +301,48 @@
         "Sehr schnell, aber nicht besonders gross.",
         "Aussergewöhnlich gross."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        3
+      ]
     }
   ],
   "task4": [
     {
       "id": "d1",
       "text": "Beide tragen die Schildkröte ins hohe Gras.",
-      "correct_position": 4
+      "correct_position": 4,
+      "evidence": [
+        7
+      ]
     },
     {
       "id": "d2",
       "text": "Das Wettrennen startet beim Baobab-Baum.",
-      "correct_position": 1
+      "correct_position": 1,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "d3",
       "text": "Zuri bleibt wegen einer Schildkröte stehen.",
-      "correct_position": 3
+      "correct_position": 3,
+      "evidence": [
+        4,
+        5
+      ]
     },
     {
       "id": "d4",
       "text": "Zuri rennt über die Wiese und Gino macht riesige Schritte.",
-      "correct_position": 2
+      "correct_position": 2,
+      "evidence": [
+        2,
+        3
+      ]
     }
   ],
-  "audio": "../hoerverstehen-audio/wettrennen.m4a"
+  "audio": "../hoerverstehen-audio/wettrennen.m4a",
+  "text": "Das Zebra Zuri und die Giraffe Gino machen ein Wettrennen. Beim grossen Baobab-Baum geht es los. Zuri rennt schnell über die Wiese. Gino macht mit seinen langen Beinen riesige Schritte. Plötzlich bleibt Zuri stehen. Eine kleine Schildkröte sitzt mitten auf dem Weg und kommt nicht weiter. Gino hält ebenfalls an. Gemeinsam tragen die Freunde die Schildkröte vorsichtig ins hohe Gras. Danach sind beide froh. Wer das Rennen gewonnen hätte, ist ihnen nicht mehr wichtig."
 }

@@ -6,49 +6,74 @@
       "id": "a1",
       "statement": "Lena möchte ein Buch lesen.",
       "correct": true,
-      "reason": "Das ist der Grund für die Suche."
+      "reason": "Das ist der Grund für die Suche.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a2",
       "statement": "Lena sucht ihren neuen Hut.",
       "correct": false,
-      "reason": "Sie sucht ihre Brille."
+      "reason": "Sie sucht ihre Brille.",
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "a3",
       "statement": "Lena schaut auch im Badezimmer nach.",
       "correct": true,
-      "reason": "Sie sucht sogar dort."
+      "reason": "Sie sucht sogar dort.",
+      "evidence": [
+        2
+      ]
     },
     {
       "id": "a4",
       "statement": "Lena findet die Brille unter dem Bett.",
       "correct": false,
-      "reason": "Dort findet sie nichts."
+      "reason": "Dort findet sie nichts.",
+      "evidence": [
+        1,
+        3
+      ]
     },
     {
       "id": "a5",
       "statement": "Lena wird langsam nervös.",
       "correct": true,
-      "reason": "Das steht direkt im Text."
+      "reason": "Das steht direkt im Text.",
+      "evidence": [
+        4
+      ]
     },
     {
       "id": "a6",
       "statement": "Ihr Vater kommt ins Zimmer.",
       "correct": false,
-      "reason": "Ihre Mutter kommt."
+      "reason": "Ihre Mutter kommt.",
+      "evidence": [
+        5
+      ]
     },
     {
       "id": "a7",
       "statement": "Die Brille steckt in Lenas Haaren.",
       "correct": true,
-      "reason": "Sie steckt auf ihrem Kopf zwischen den Haaren."
+      "reason": "Sie steckt auf ihrem Kopf zwischen den Haaren.",
+      "evidence": [
+        8
+      ]
     },
     {
       "id": "a8",
       "statement": "Lena beginnt am Schluss zu weinen.",
       "correct": false,
-      "reason": "Sie muss lachen und ist erleichtert."
+      "reason": "Sie muss lachen und ist erleichtert.",
+      "evidence": [
+        9
+      ]
     }
   ],
   "task2": [
@@ -74,7 +99,10 @@
         "Sie möchte ein Buch lesen.",
         "Sie möchte im Badezimmer spielen."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b2",
@@ -99,7 +127,10 @@
         "Ihre neue Haarspange für die Schule.",
         "Den Schlüssel zu ihrem Schrank."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "b3",
@@ -126,7 +157,11 @@
         "In der Küche und im Garten.",
         "Auf dem Tisch und bei der Haustür."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        1,
+        2
+      ]
     },
     {
       "id": "b4",
@@ -151,7 +186,11 @@
         "Die Mutter sieht die Brille auf Lenas Kopf.",
         "Ein Kind findet sie unter dem Bett."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        6,
+        7
+      ]
     },
     {
       "id": "b5",
@@ -177,7 +216,10 @@
         "Hinter dem Schrank auf dem Boden.",
         "Auf Lenas Kopf zwischen ihren Haaren."
       ],
-      "correct_index": 3
+      "correct_index": 3,
+      "evidence": [
+        8
+      ]
     }
   ],
   "task3": [
@@ -205,7 +247,10 @@
         "So versteckt, dass man es absichtlich weggelegt hat.",
         "So neu, dass man es noch nie verwendet hat."
       ],
-      "correct_index": 0
+      "correct_index": 0,
+      "evidence": [
+        0
+      ]
     },
     {
       "id": "c2",
@@ -231,7 +276,10 @@
         "Sich über einen Scherz freuen.",
         "Ganz ruhig bleiben, obwohl etwas fehlt."
       ],
-      "correct_index": 1
+      "correct_index": 1,
+      "evidence": [
+        4
+      ]
     },
     {
       "id": "c3",
@@ -257,30 +305,46 @@
         "Beruhigt sein, weil die Sorge vorbei ist.",
         "Erstaunt sein, weil ein Problem erst beginnt."
       ],
-      "correct_index": 2
+      "correct_index": 2,
+      "evidence": [
+        9
+      ]
     }
   ],
   "task4": [
     {
       "id": "d1",
       "text": "Die Mutter zeigt auf Lenas Kopf.",
-      "correct_position": 3
+      "correct_position": 3,
+      "evidence": [
+        7
+      ]
     },
     {
       "id": "d2",
       "text": "Lena sucht unter dem Bett.",
-      "correct_position": 1
+      "correct_position": 1,
+      "evidence": [
+        1
+      ]
     },
     {
       "id": "d3",
       "text": "Lena entdeckt die Brille zwischen ihren Haaren.",
-      "correct_position": 4
+      "correct_position": 4,
+      "evidence": [
+        8
+      ]
     },
     {
       "id": "d4",
       "text": "Lena sucht auch im Badezimmer.",
-      "correct_position": 2
+      "correct_position": 2,
+      "evidence": [
+        2
+      ]
     }
   ],
-  "audio": "../hoerverstehen-audio/brille.m4a"
+  "audio": "../hoerverstehen-audio/brille.m4a",
+  "text": "Lena will ein Buch lesen, doch ihre neue Brille ist verschwunden. Zuerst sucht sie unter dem Bett. Danach schaut sie hinter dem Schrank und sogar im Badezimmer nach. Aber sie findet nichts. Langsam wird Lena nervös. Da kommt ihre Mutter ins Zimmer. Sie schaut Lena an und beginnt zu lachen. Dann zeigt sie auf Lenas Kopf. Die Brille steckt die ganze Zeit zwischen ihren Haaren! Lena ist erleichtert und muss nun selber lachen."
 }

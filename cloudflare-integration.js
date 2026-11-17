@@ -8,7 +8,8 @@
  const esc=v=>escapeHtml(String(v??''));
  const html=(v)=>esc(v);
  let childToken='', adminToken='', person=null, plan=null, adminData=null, pending=false;
- let focusGate=null, focusBusy=false;
+ let oldClassroomModeRetired=false, oldClassroomRetirementError='', obsoleteFocusRulesCleared=false;
+ // No automatic classroom-mode polling.
  const safeGame=(name)=>Object.entries(ORIGINAL_GAMES).flatMap(([subject,items])=>items.map(g=>({...g,subject}))).find(g=>g.file.replace(/\.html$/,'')===name);
  const dateFormat=s=>{const d=new Date(s);return Number.isFinite(d.getTime())?new Intl.DateTimeFormat('de-CH',{timeZone:'Europe/Zurich',day:'numeric',month:'short',year:'numeric'}).format(d):''};
  const localDateTime=d=>{const p=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Zurich',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d);return p.replace(' ','T')};
@@ -16,6 +17,14 @@
  const notify=(msg)=>{toast(msg);const status=document.querySelector('#cloudStatus');if(status)status.textContent=msg};
  const loggedChild=()=>state.role==='cloudflare-child'&&!!childToken;
  const loggedTeacher=()=>state.role==='cloudflare-admin'&&!!adminToken;
+ async function refreshUnreadBadge(){
+   if(!loggedChild()||!window.LernSafariExtras?.setIndicator)return;
+   try{
+     const data=await call('/messages');
+     if(loggedChild()&&data.available===true)window.LernSafariExtras.setIndicator(data.messages||[]);
+   }catch(_){const badge=document.getElementById('mailIndicator');if(badge)badge.hidden=true}
+ }
+
 
  async function call(path,{method='GET',body,admin=false,token}={}){
   if(!API()||!/^https:\/\//.test(API()))throw Error('Cloudflare-Adresse fehlt oder ist nicht HTTPS.');
@@ -43,7 +52,7 @@
    try{localStorage.setItem(CHILD_KEY,childToken)}catch(_){/* browser storage unavailable */}
    document.querySelector('#password').value='';
    enter('cloudflare-child',String(identity.username||response.username||username));
-   refreshClassFocus();
+   setTimeout(refreshUnreadBadge,950);
   }catch(e){notify('Anmeldung fehlgeschlagen: '+errorText(e));}
   finally{pending=false}
  }
@@ -64,7 +73,7 @@
  }
  async function signOut(){
   if(childToken){try{await call('/logout',{method:'POST',body:{}})}catch(_){/* invalidate locally anyway */}}
-  childToken='';person=null;adminToken='';plan=null;adminData=null;focusGate=null;
+  childToken='';person=null;adminToken='';plan=null;adminData=null;
   try{sessionStorage.removeItem(CHILD_KEY);localStorage.removeItem(CHILD_KEY);sessionStorage.removeItem(ADMIN_KEY)}catch(_){}
  }
  async function restore(){
@@ -74,7 +83,7 @@
    catch(_){adminToken='';try{sessionStorage.removeItem(ADMIN_KEY)}catch(_){}}
   }
   if(childToken){
-   try{const identity=await call('/me');if(!['child','class'].includes(identity.role))throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));refreshClassFocus();return}
+   try{const identity=await call('/me');if(!['child','class'].includes(identity.role))throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));setTimeout(refreshUnreadBadge,950);return}
    catch(_){childToken='';try{sessionStorage.removeItem(CHILD_KEY);localStorage.removeItem(CHILD_KEY)}catch(_){}}
   }
  }
@@ -90,20 +99,10 @@
 
  // The mailbox is enabled only after the existing Cloudflare Worker confirms
  // an authenticated, child-filtered GET /messages endpoint.
- async function renderCloudMail(fallback){
+ async function renderCloudMail(){
    const host=DOM.modalBody;
-   host.innerHTML='<div class="pd-panel"><h3>✉️ Mein Briefkasten</h3><p>Nachrichten werden geladen …</p></div>';
-   try{
-     const response=await call('/messages');
-     if(state.modal!=='mail'||!loggedChild())return;
-     if(response.available!==true||!Array.isArray(response.messages))throw Error('Nachrichten noch nicht eingerichtet');
-     const rows=response.messages;
-     host.innerHTML='<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">✉️ Persönlicher Briefkasten</span><h3>Meine Post</h3><p>Nachrichten der Lehrperson</p></div><div class="pd-total"><strong>'+rows.length+'</strong><span>Nachrichten</span></div></div>'+
-       '<div class="pd-items">'+(rows.length?rows.map(row=>'<article class="pd-panel cloud-mail-message"><strong>'+html(row.subject||'Nachricht')+'</strong><small>'+html(row.created_at||'')+'</small><p>'+html(row.body||'').replace(/\n/g,'<br>')+'</p></article>').join(''):
-       '<div class="pd-panel"><p>Du hast noch keine Nachrichten erhalten.</p></div>')+'</div></div>';
-   }catch(_){
-     if(state.modal==='mail'&&loggedChild())fallback();
-   }
+   if(!window.LernSafariExtras){host.innerHTML='<div class="pd-panel">Nachrichtenansicht konnte nicht geladen werden.</div>';return}
+   await window.LernSafariExtras.mailbox({host,call});
  }
  // Cloudflare contains authentic results; an attempt/highscore is not proof of a finished assignment.
  const scoreIndex=rows=>{const scores=new Map();for(const row of Array.isArray(rows)?rows:[]){if(!row||typeof row.game!=='string'||!row.game)continue;const value=Number(row.score);if(!Number.isFinite(value)||value<0)continue;scores.set(row.game,Math.max(scores.get(row.game)??0,value));}return scores;};
@@ -161,51 +160,104 @@
   notify('Für diesen Auftrag bitte die entsprechende Seite über die Karte öffnen.');
  }
  async function renderChildLogbook(){
-  const host=DOM.modalBody;
-  host.innerHTML='<div class="pd-shell"><div class="pd-panel"><h3>📖 Mein Logbuch</h3><p>Deine Aufträge werden sicher von Cloudflare geladen …</p></div></div>';
-  try{
-   const [p,highscores]=await Promise.all([call('/learning-plan'),call('/highscores').catch(()=>({highscores:[]}))]);
-   if(!loggedChild()||state.modal!=='logbook')return;
-   plan=p;updateClassFocus(p);
-   const assignments=Array.isArray(p.assignments)?p.assignments:[];
-   const done=new Set(Array.isArray(p.done)?p.done.map(Number):[]);
-   const finished=assignments.filter(a=>done.has(Number(a.id))).length;
-   const scores=Array.isArray(highscores.highscores)?highscores.highscores:[];
-   const scoresByGame=scoreIndex(scores);
-   const practiced=assignments.filter(a=>a.target?.startsWith('game:')&&scoresByGame.has(a.target.slice(5))).length;
-   host.innerHTML=`<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🔐 Geschütztes Tierkonto</span><h3>Mein Logbuch 📖</h3><p>Willkommen, ${html(state.username)}! Das sind deine Aufträge aus Cloudflare.</p></div><div class="pd-total"><strong>${finished} / ${assignments.length}</strong><span>erledigt</span></div></div><div class="pd-progress"><span style="width:${assignments.length?finished/assignments.length*100:0}%"></span></div>${p.blocks?.length?`<div class="pd-warning">🧭 Fokus-Modus: ${p.blocks.map(html).join(', ')}</div>`:''}<div class="pd-items">${assignments.length?assignments.map(a=>`<article class="pd-task ${done.has(Number(a.id))?'is-done':''}"><div class="pd-task-head"><span>📌</span><div><strong>${html(a.title)}</strong><small>${a.kind==='zusatz'?'Zusatzaufgabe':'Pflichtaufgabe'} · ${html(targetName(String(a.target||'')))}${a.end_at?' · bis '+html(dateFormat(a.end_at)):''}</small>${String(a.target||'').startsWith('game:')?`<small class="cloud-task-score">${html(scoreText(taskScore(String(a.target),scoresByGame)))}</small>`:''}</div><span class="pd-task-status">${done.has(Number(a.id))?'✓ Erledigt':'Offen'}</span></div><div class="pd-task-actions"><button class="pd-action" data-cloud-open="${html(a.id)}">Aufgabe öffnen</button><label class="pd-inline-check"><input type="checkbox" data-cloud-done="${html(a.id)}" ${done.has(Number(a.id))?'checked':''}> Erledigt</label></div></article>`).join(''):'<div class="pd-panel">Für dich sind momentan keine Aufgaben freigeschaltet.</div>'}</div><div class="pd-panel"><div class="cloud-panel-head"><h4>⭐ Meine Spiel-Erfolge</h4><button type="button" class="pd-secondary" id="cloudRefreshScores">Aktualisieren</button></div><p>${scores.length} Spiele mit gespeichertem Highscore · ${practiced} von ${assignments.filter(a=>a.target?.startsWith('game:')).length} zugewiesenen Spielen mit einem Bestwert. Das bedeutet nicht automatisch «Aufgabe erledigt».</p><div class="pd-score-list">${scores.slice(0,12).map(x=>`<span>${html(safeGame(String(x.game))?.title||x.game)}: <strong>${html(x.score)}</strong></span>`).join('')}</div></div><p class="pd-warning">Deine Aufträge und Häkchen werden über Cloudflare gespeichert. Das Ankreuzen bedeutet «Ich bin fertig» – nicht automatisch «Alles richtig».</p></div>`;
-   host.querySelector('#cloudRefreshScores')?.addEventListener('click',renderChildLogbook);
-   host.querySelectorAll('[data-cloud-open]').forEach(b=>b.onclick=()=>{const a=assignments.find(x=>Number(x.id)===Number(b.dataset.cloudOpen));if(a)openTarget(String(a.target||''))});
-   host.querySelectorAll('[data-cloud-done]').forEach(b=>b.onchange=async()=>{const id=Number(b.dataset.cloudDone),checked=b.checked;b.disabled=true;try{await call('/assignment-done',{method:'POST',body:{id,completed:checked}});if(state.modal==='logbook')renderChildLogbook();}catch(e){b.checked=!checked;b.disabled=false;notify(errorText(e))}});
-  }catch(e){if(state.modal==='logbook')host.innerHTML=`<div class="pd-panel"><h3>Logbuch konnte nicht geladen werden</h3><p>${html(errorText(e))}</p><button type="button" class="pd-action" id="retryCloudLogbook">Nochmals versuchen</button></div>`;document.querySelector('#retryCloudLogbook')?.addEventListener('click',renderChildLogbook)}
+   const host=DOM.modalBody;
+   host.innerHTML='<div class="pd-panel">📖 Dein Logbuch wird aus Cloudflare geladen …</div>';
+   try{
+     const [p,highscores,post]=await Promise.all([
+       call('/learning-plan'),
+       call('/highscores').catch(()=>({highscores:[]})),
+       call('/messages').catch(()=>({available:false,messages:[]}))
+     ]);
+     if(!loggedChild()||state.modal!=='logbook')return;
+     plan=p;
+     if(!window.LernSafariExtras)throw Error('Logbuchansicht nicht geladen');
+     window.LernSafariExtras.logbook({
+       host,plan:p,highscores,messages:post.available===true?post.messages:[],
+       onOpen:target=>openTarget(String(target||'')),
+       onDone:(id,completed)=>call('/assignment-done',{method:'POST',body:{id,completed}}),
+       onRefresh:renderChildLogbook
+     });
+   }catch(e){
+     if(state.modal!=='logbook')return;
+     host.innerHTML='<div class="pd-panel"><h3>Logbuch konnte nicht geladen werden</h3><p>'+html(errorText(e))+'</p><button type="button" class="pd-action" id="retryCloudLogbook">Nochmals versuchen</button></div>';
+     host.querySelector('#retryCloudLogbook')?.addEventListener('click',renderChildLogbook);
+   }
  }
  const BASIC_TARGETS=[...Array.from({length:4},(_,i)=>({v:'daily:'+i,label:`Heute · Tagesaufgabe ${i+1}`})),...Object.entries(STEP_LABELS).map(([id,label])=>({v:'number:'+id,label:'Zahl des Tages · '+label})),{v:'page:tiere',label:'Tierwelt'},{v:'page:aufgaben',label:'Aufgaben des Tages'},{v:'page:agenda',label:'Agenda'},{v:'page:advent',label:'Adventskalender'}];
  function targets(){return [...BASIC_TARGETS,...Object.entries(ORIGINAL_GAMES).flatMap(([subject,items])=>items.map(g=>({v:'game:'+g.file.replace(/\.html$/,''),label:subject+' · '+g.title})))].sort((a,b)=>a.label.localeCompare(b.label,'de-CH'))}
  function selectOptions(items,field='v',label='label'){return items.map(i=>`<option value="${html(i[field])}">${html(i[label])}</option>`).join('')}
+ // Legacy cloud mode must be switched off once via the existing protected API.
+ // No UI, poller, or student-triggered writes are involved in this cleanup.
+ async function retireFormerClassroomMode(){
+  if(oldClassroomModeRetired)return;
+  try{
+   const current=await call('/admin-classroom-mode',{admin:true});
+   if(current?.available!==true||!current.classroomMode)throw Error('Cloudflare-Unterrichtsmodus nicht erreichbar.');
+   if(current.classroomMode.kind!=='free'){
+    const expires_at=new Date(Date.now()+3*60*60*1000).toISOString();
+    const saved=await call('/admin-classroom-mode',{admin:true,method:'POST',body:{
+     kind:'free',subject:null,required_assignment_ids:[],require_verified:true,expires_at
+    }});
+    if(saved?.classroomMode?.kind!=='free')throw Error('Die Freigabe wurde nicht bestätigt.');
+   }
+   oldClassroomModeRetired=true;oldClassroomRetirementError='';
+  }catch(err){
+   oldClassroomRetirementError='Alte Unterrichtssperren konnten auf Cloudflare nicht automatisch aufgehoben werden. Bitte den Worker kontrollieren.';
+   console.warn('LernSafari: alte Modus-Einstellung noch nicht überprüft:',errorText(err));
+  }
+ }
  async function renderCloudAdmin(){
   if(!loggedTeacher())return;
   const host=DOM.modalBody;
   host.innerHTML='<div class="pd-panel"><h3>🛠️ Cloudflare-Verwaltung</h3><p>Verwaltungsdaten werden geladen …</p></div>';
   try{
+   if(!oldClassroomModeRetired)await retireFormerClassroomMode();
    const report=await call('/admin-learning',{admin:true});if(!loggedTeacher()||state.modal!=='admin')return;
    adminData=report;
+   // Old class_focus_rules may still block saving game attempts on the Worker.
+   // Clear only current/future restrictions, leave expired history untouched.
+   if(!obsoleteFocusRulesCleared){
+    const ids=(Array.isArray(report.rules)?report.rules:[])
+      .filter(rule=>Date.parse(rule.end_at||'')>Date.now())
+      .map(rule=>Number(rule.id))
+      .filter(id=>Number.isSafeInteger(id)&&id>0);
+    try{
+     for(const id of ids)await call('/admin-focus-rules',{admin:true,method:'DELETE',body:{id}});
+     obsoleteFocusRulesCleared=true;
+     if(ids.length)report.rules=(report.rules||[]).filter(rule=>!ids.includes(Number(rule.id)));
+    }catch(err){
+     oldClassroomRetirementError+=(oldClassroomRetirementError?' ':'')+
+      'Alte Fokus-Sperren konnten noch nicht vollständig aufgehoben werden.';
+     console.warn('LernSafari: Alte Fokus-Sperren noch vorhanden:',errorText(err));
+    }
+   }
    const kids=Array.isArray(report.students)?report.students:[];
    const jobs=Array.isArray(report.assignments)?report.assignments:[];
    const pres=Array.isArray(report.presence)?report.presence:[];
    const done=Array.isArray(report.done)?report.done:[];
    const now=new Date(),later=new Date(now.getTime()+7*86400000);
    host.innerHTML=`<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🔐 Cloudflare · Lehrperson</span><h3>Verwaltung 🛠️</h3><p>Die Aufträge werden in deiner bestehenden Cloudflare-Verwaltung gespeichert.</p></div><div class="pd-total"><strong>${kids.length}</strong><span>Tierkonten</span></div></div><section class="pd-panel"><h4>Neuen Lernauftrag zuweisen</h4><form id="cloudAssignmentForm" class="pd-form"><label>Aufgabe oder Lernspiel<select name="target" required>${selectOptions(targets())}</select></label><label>Titel<input name="title" maxlength="110" placeholder="z. B. Die 6er-Reihe üben" required></label><div class="cloud-form-grid"><label>Art<select name="kind"><option value="pflicht">Pflichtaufgabe</option><option value="zusatz">Zusatzaufgabe</option></select></label><label>Für wen?<select name="audience"><option value="all">Ganze Klasse</option><option value="child">Ein Kind</option></select></label></div><label id="cloudChildWrap" hidden>Tierkonto<select name="username">${selectOptions(kids,'username','username')}</select></label><div class="cloud-form-grid"><label>Beginn<input type="datetime-local" name="start" value="${html(localDateTime(now))}" required></label><label>Ende<input type="datetime-local" name="end" value="${html(localDateTime(later))}" required></label></div><button type="submit" class="pd-action">Auftrag in Cloudflare speichern</button><p role="status" id="cloudAdminMessage"></p></form></section><section class="pd-panel"><div class="cloud-panel-head"><h4>Geplante Aufträge (${jobs.length})</h4><button class="pd-secondary" id="cloudRefreshAdmin">Aktualisieren</button></div><div class="pd-items">${jobs.length?jobs.map(a=>{const c=done.filter(d=>Number(d.assignment_id)===Number(a.id)).length;return `<article class="pd-task"><div class="pd-task-head"><span>📌</span><div><strong>${html(a.title)}</strong><small>${html(targetName(String(a.target||'')))} · ${a.audience==='all'?'Ganze Klasse':html(a.username)}</small><small>${html(dateFormat(a.start_at))} – ${html(dateFormat(a.end_at))} · ${c} Erledigt-Häkchen</small></div></div><div class="pd-task-actions"><button class="pd-secondary" data-cloud-edit="${html(a.id)}">Bearbeiten</button><button class="pd-secondary" data-cloud-remove="${html(a.id)}">Löschen</button></div></article>`}).join(''):'Noch keine Aufträge geplant.'}</div></section><section class="pd-panel" id="cloudProgressPanel"><h4>🎯 Lernfortschritt aus Spielen</h4><button type="button" class="pd-secondary" id="cloudLoadResults">Spielergebnisse laden</button><p>Gespeicherte Lernversuche und Highscores für jedes Tierkonto. Wird nur für angemeldete Lehrpersonen abgerufen.</p></section><section class="pd-panel"><h4>Aktivität</h4><p>${pres.length} aktive Konten gemäss Cloudflare. Hier werden bewusst keine umfangreichen individuellen Daten veröffentlicht.</p><button type="button" class="pd-secondary" id="cloudOpenLegacy">Erweiterte Cloudflare-Verwaltung öffnen</button><p class="pd-warning">Die ausführliche bisherige Verwaltung enthält Lernsteuerung, Fokus-Modus, Agenda, Klassenbericht und weitere Funktionen. Sie wird unverändert weiterverwendet.</p></section></div>`;
-   if(window.LernSafariClassModeAdmin){
-    const classroomMount=document.createElement('div');
-    classroomMount.id='cloudClassroomModeContainer';
-    const firstPanel=host.querySelector('#cloudAssignmentForm')?.closest('section');
-    if(firstPanel)firstPanel.insertAdjacentElement('afterend',classroomMount);
-    window.LernSafariClassModeAdmin.render({
-     mount:classroomMount,assignments:jobs,originalGames:ORIGINAL_GAMES,
-     fetchMode:()=>call('/admin-classroom-mode',{admin:true}),
-     saveMode:body=>call('/admin-classroom-mode',{admin:true,method:'POST',body}),
-     refreshAssignments:async()=>{const data=await call('/admin-learning',{admin:true});return data.assignments||[]}
-    });
+   if(oldClassroomRetirementError){
+    const banner=host.querySelector('.pd-banner');
+    const caution=document.createElement('p');caution.className='pd-warning';caution.setAttribute('role','alert');
+    caution.textContent=oldClassroomRetirementError;banner?.append(caution);
+   }
+   // Teacher-only features use the existing authenticated admin session.
+   if(window.LernSafariExtras){
+     const messageMount=document.createElement('div');
+     messageMount.id='cloudTeacherPostMount';
+     const progress=host.querySelector('#cloudProgressPanel');
+     if(progress)progress.insertAdjacentElement('beforebegin',messageMount);
+     else host.appendChild(messageMount);
+     window.LernSafariExtras.adminPanel({host:messageMount,call,kids});
+   }
+   if(window.LernSafariProjects){
+     const projectMount=document.createElement('div');
+     projectMount.id='cloudTeacherProjectsMount';
+     const before=host.querySelector('#cloudProgressPanel');
+     if(before)before.insertAdjacentElement('beforebegin',projectMount);
+     else host.appendChild(projectMount);
+     window.LernSafariProjects.adminMount({mount:projectMount,call});
    }
    // Explicit teacher verification is available only when the upgraded Worker
    // includes a server-confirmed verified list. Legacy Worker: never fake approval.
@@ -357,115 +409,8 @@
      area.querySelector('#cloudAgendaRetry').onclick=renderCloudAgenda;
    }
  }
- // Existing Worker returns active blocks and assignments; this is a pedagogical UI gate,
- // NOT a verified mastery signal or security protection for public HTML files.
- function updateClassFocus(p){
-  if(!loggedChild()||!window.LernSafariFocusGate){focusGate=null;return;}
-  focusGate=window.LernSafariFocusGate.makeState(p,ORIGINAL_GAMES);
-  paintClassFocus();
-  enforceCurrentFocus();
- }
- async function refreshClassFocus(){
-  if(!loggedChild()||focusBusy)return;
-  focusBusy=true;
-  try{const p=await call('/learning-plan');if(loggedChild()){plan=p;updateClassFocus(p)}}
-  catch(_){if(loggedChild())notify('Fokusregeln konnten nicht aktualisiert werden.')}
-  finally{focusBusy=false}
- }
- function showFocusNotice(){
-  notify('🔒 Zuerst deine offenen Pflichtaufträge im Logbuch bearbeiten.');
- }
- function blockedInClass(target,kind){
-  if(!loggedChild()||!focusGate?.restricted)return false;
-  if(kind==='area')return !focusGate.allowDestination(target);
-  if(kind==='subject')return !focusGate.allowSubject(target);
-  if(kind==='game')return !focusGate.allowGame(target);
-  if(kind==='page')return !focusGate.allowTarget(target);
-  return false;
- }
- function paintClassFocus(){
-  if(!loggedChild())return;
-  for(const el of document.querySelectorAll('[data-map-destination],[data-lagoon-subject]')){
-   const isArea=el.hasAttribute('data-map-destination');
-   const locked=isArea?blockedInClass(el.dataset.mapDestination,'area'):blockedInClass(el.dataset.lagoonSubject,'subject');
-   el.classList.toggle('cloud-focus-locked',locked);
-   el.setAttribute('aria-disabled',locked?'true':'false');
-   if(locked)el.title='Zuerst deine offenen Pflichtaufträge bearbeiten';
-   else if(el.title==='Zuerst deine offenen Pflichtaufträge bearbeiten')el.removeAttribute('title');
-  }
-  const hint=document.querySelector('#campHint');
-  if(hint){hint.textContent=focusGate?.restricted?'🔒 Fokuszeit: Öffne dein Logbuch und bearbeite deine To-dos.':'Klicke auf einen Gegenstand und entdecke die Safari!';}
-  for(const button of document.querySelectorAll('.integration-game-card[data-original-game]')){
-   const index=Number(button.dataset.originalGame);
-   const game=(ORIGINAL_GAMES[safariSubject]||[])[index];
-   const locked=!!game&&blockedInClass(game.file.replace(/\.html$/i,''),'game');
-   button.classList.toggle('cloud-focus-locked',locked);
-   button.setAttribute('aria-disabled',locked?'true':'false');
-  }
- }
- function enforceCurrentFocus(){
-  if(!loggedChild()||!focusGate?.restricted)return;
-  // Newly assigned work must take effect even when another game is already open.
-  // Removing the iframe stops that embedded game rather than merely covering it.
-  const frame=document.querySelector('#originalGameFrame');
-  if(frame){
-   const path=frame.getAttribute('src')||'';
-   const match=path.match(/(?:^|\/)spiele\/([a-z0-9-]+)\.html(?:[?#]|$)/i);
-   const blocked=match?blockedInClass(match[1],'game'):(
-    /(?:^|\/)original\/index\.html(?:[?#]|$)/i.test(path)
-      &&(blockedInClass('baobab','area')||blockedInClass('valley','area'))
-   );
-   if(blocked){
-    frame.removeAttribute('src');frame.remove();
-    const surface=document.querySelector('.integration-game-surface');
-    if(surface){
-     surface.innerHTML='<div class="cloud-focus-interrupted" role="status"><h3>🔒 Neue Pflichtaufgaben</h3><p>Die Lehrperson hat neue To-dos freigeschaltet. Bitte bearbeite zuerst deine offenen Aufträge.</p><button type="button" class="pd-action" id="cloudFocusToLogbook">Mein Logbuch öffnen</button></div>';
-     surface.querySelector('#cloudFocusToLogbook')?.addEventListener('click',()=>showModal('logbook'));
-    }
-   }
-  }
-  if(state.screen==='destination'&&state.destination&&blockedInClass(state.destination,'area')){
-   goCamp();
-   notify('🔒 Für diesen Bereich gibt es gerade neue Pflichtaufträge. Schau in dein Logbuch.');
-  }
- }
-
- // Capture clicks before the original app's event handlers. Keep the logbook and
- // the compass/letterbox available, as they are navigational and informational.
- document.addEventListener('click',e=>{
-  if(!loggedChild()||!focusGate?.restricted)return;
-  const button=e.target.closest('[data-map-destination],[data-lagoon-subject],[data-open],[data-baobab-section],[data-baobab-new]');
-  if(!button)return;
-  let locked=false;
-  if(button.hasAttribute('data-map-destination'))locked=blockedInClass(button.dataset.mapDestination,'area');
-  else if(button.hasAttribute('data-lagoon-subject'))locked=blockedInClass(button.dataset.lagoonSubject,'subject');
-  else if(button.hasAttribute('data-baobab-new')){
-   const section=button.dataset.baobabNew;
-   locked=section==='animals'?blockedInClass('page:tiere','page'):
-     section==='advent'?blockedInClass('page:advent','page'):
-     !!focusGate?.restricted;
-  }
-  else if(button.hasAttribute('data-baobab-section'))locked=blockedInClass('page:tiere','page');
-  else if(button.dataset.open&&!['logbook','map','agenda','mail','clock','help','admin'].includes(button.dataset.open))locked=true;
-  if(locked){e.preventDefault();e.stopImmediatePropagation();showFocusNotice();}
- },true);
- // Internal navigation may happen without a click on a map hotspot (e.g. direct
- // To-do links). Protect destinations AND embedded games as a second UI layer.
- const originalTravelTo=travelTo;
- travelTo=function(id){if(blockedInClass(id,'area')){showFocusNotice();return;}return originalTravelTo(id)};
- const unguardedFrame=originalFrame;
- originalFrame=function(relative,title,opts){
-  const match=String(relative).match(/(?:^|\/)spiele\/([a-z0-9-]+)\.html(?:[?#]|$)/i);
-  if(match&&blockedInClass(match[1],'game')){showFocusNotice();return;}
-  return unguardedFrame(relative,title,opts);
- };
- const contentRoot=document.querySelector('#destinationContent'),modalRoot=DOM.modalBody;
- const observer=new MutationObserver(()=>paintClassFocus());
- if(contentRoot)observer.observe(contentRoot,{subtree:false,childList:true});
- if(modalRoot)observer.observe(modalRoot,{subtree:false,childList:true});
- window.addEventListener('focus',()=>refreshClassFocus());
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClassFocus()});
- setInterval(()=>{if(loggedChild()&&!document.hidden)refreshClassFocus()},20000);
+ // The former classroom mode and focus gates have been retired.
+ // All authenticated learning areas remain accessible; assignments still appear in the logbook.
  // Minimal, authenticated, short-lived presence reports. Never send guest data,
  // answer text, keyboard input, device identifiers or browser location.
  let activityEndpointUnavailable=false;

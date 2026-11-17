@@ -21,9 +21,20 @@ async function peers(target,date){const key=target+'|'+date,prior=cache.get(key)
  try{const r=await fetch(api()+'/learning-helpers?'+search,{headers:{Authorization:'Bearer '+token()},cache:'no-store'});if(!r.ok)return [];
   const d=await r.json();const names=(d.helpers||[]).filter(n=>!['flamingo','löwe','loewe'].includes(String(n).toLocaleLowerCase('de-CH'))).slice(0,3);cache.set(key,{names,time:Date.now()});return names;
  }catch(_){return [];}}
-function show(el,names){if(!el.isConnected||!eligible||el.querySelector('.ls-helper-card'))return;
+function show(el,target,date){if(!el.isConnected||!eligible||el.querySelector('.ls-helper-card'))return;
  const panel=document.createElement('aside');panel.className='ls-helper-card';panel.setAttribute('aria-label','Lernhelfer');
- panel.innerHTML=`<strong>🌟 Expertinnen und Experten – zusammen geht es leichter!</strong><span>${names.length?'Diese Kinder können dir beim Üben helfen:':'Hier gibt es noch keine Lernhelfer-Empfehlung. Probiere es Schritt für Schritt.'}</span>${names.length?`<div class="ls-helper-names">${names.map(n=>`<span>${escape(n)}</span>`).join('')}</div>`:''}`;
+ panel.innerHTML='<button type="button" class="ls-helper-open">🌟 Lernhelfer anzeigen</button><span class="ls-helper-result" role="status"></span>';
+ const button=panel.querySelector('.ls-helper-open'),result=panel.querySelector('.ls-helper-result');
+ button.onclick=async()=>{
+  if(!eligible)return;button.disabled=true;result.textContent='Lernhelfer werden gesucht …';
+  try{const names=await peers(target,date);
+   result.textContent=names.length?'Diese Kinder können dir beim Üben helfen:':'Für diese Aufgabe gibt es noch keine Lernhelfer-Empfehlung.';
+   if(names.length){const namesHost=document.createElement('div');namesHost.className='ls-helper-names';
+    for(const name of names){const badge=document.createElement('span');badge.textContent=name;namesHost.append(badge)}
+    result.after(namesHost)}
+   button.hidden=true;
+  }catch(_){result.textContent='Die Lernhelfer konnten nicht geladen werden.';button.disabled=false}
+ };
  if(el.classList.contains('top')){el.insertAdjacentElement('afterend',panel);return;}const heading=el.querySelector('.task-head')||el.querySelector('h3');if(heading)heading.insertAdjacentElement('afterend',panel);else el.prepend(panel);
 }
 async function fill(){if(refreshing||!eligible)return;refreshing=true;
@@ -34,17 +45,17 @@ async function fill(){if(refreshing||!eligible)return;refreshing=true;
        const label=quiz.querySelector('.quiz-progress')?.textContent||'';
        const name=label.split('·')[0].trim();const animal=(window.SAFARI_ANIMALS||[]).find(a=>a.name===name);
        const target=animal?'game:tierwelt-'+animal.id:label.startsWith('Tiernamen schreiben')?'game:tier-namen':'';
-       if(target)show(quiz,await peers(target,''));
+       if(target)show(quiz,target,'');
      }
      const memory=document.querySelector('#memory-game.memory-active');
-     if(memory&&!memory.querySelector('.ls-helper-card'))show(memory,await peers('game:tier-memory',''));
+     if(memory&&!memory.querySelector('.ls-helper-card'))show(memory,'game:tier-memory','');
      return;
    }
    if(!['#aufgaben',''].includes(location.hash)&&!location.hash.startsWith('#aufgaben'))return;
    const cards=[...document.querySelectorAll('#daily-tasks .daily-task[id^="exercise-"]'),...document.querySelectorAll('#zahl-des-tages .zdt-task[data-step]')];
    // Keine alten Helfer auf neue, wöchentlich wechselnde Tagesaufgaben übertragen.
-   const date=currentDate();for(const card of cards){if(!card.isConnected||card.querySelector('.ls-helper-card'))continue;const target=targetForCard(card);const names=await peers(target,target.startsWith('daily:')?date:'');show(card,names);}
- }else{const s=location.pathname.split('/').pop()?.replace('.html','')||'';const h=document.querySelector('main .top, main header, .game-header, .game-top, header.top, main h1');if(!h||document.querySelector('.ls-helper-card'))return;show(h,await peers('game:'+s,''));}}
+   const date=currentDate();for(const card of cards){if(!card.isConnected||card.querySelector('.ls-helper-card'))continue;const target=targetForCard(card);show(card,target,target.startsWith('daily:')?date:'');}
+ }else{const s=location.pathname.split('/').pop()?.replace('.html','')||'';const h=document.querySelector('main .top, main header, .game-header, .game-top, header.top, main h1');if(!h||document.querySelector('.ls-helper-card'))return;show(h,'game:'+s,'');}}
  finally{refreshing=false;}}
 function schedule(){clearTimeout(queue);queue=setTimeout(()=>{void fill();},360);}
 async function reset(){eligible=false;clean();cache.clear();await me();schedule();}

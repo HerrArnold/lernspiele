@@ -151,7 +151,7 @@
       const api=window.parent.SafariLogin;
       if(api?.auth?.()?.role==='child'){
         api.request('/game-attempt','POST',{
-          game:'hoerverstehen-'+id,task:data.title,correct:scored.score===data.total,
+          game:'hoerverstehen-'+id,task:data.title+' Abschluss',correct:scored.score===data.total,
           correctCount:scored.score,total:data.total,
           answer:'Punkte',expected:String(data.total),details:'Hörverständnis '+data.title
         }).catch(()=>{});

@@ -94,6 +94,7 @@ function newSession(dayIdx){const d=days[dayIdx];return d.exercises.map(ex=>{
  if(ex.type==='sudoku')return {type:ex.type,cells:ex.givens.join('').split('').map(ch=>ch==='0'?'':ch),success:false};
  if(ex.type==='order')return {type:ex.type,permutation:shuffle(ex.items.map((_,i)=>i)),selected:[],success:false};
  if(ex.type==='choices')return {type:ex.type,answers:Array(ex.questions.length).fill(''),success:false};
+ if(ex.type==='imageChoice')return {type:ex.type,answer:null,success:false};
  if(ex.type==='match')return {type:ex.type,options:shuffle(ex.pairs.map(p=>p[1])),answers:Array(ex.pairs.length).fill(''),success:false};
  if(ex.type==='categorize')return {type:ex.type,answers:Array(ex.items.length).fill(''),success:false};
  if(ex.type==='fill')return {type:ex.type,answers:Array(ex.fields.length).fill(''),success:false};
@@ -106,19 +107,29 @@ async function restoreSavedProgress(){
  const day=siteState.dayIndex,date=days[day].date;
  try{const saved=await api.dayState(date);if(siteState.dayIndex!==day||!api.auth())return;
    for(const item of saved.progress||[]){const i=Number(item.task_index);if(Number.isInteger(i)&&i>=0&&i<4&&Number(item.completed)===1)session(day)[i].success=true}
-   for(let i=0;i<4;i++)renderTask(day,i);updateProgress();
+   for(let i=0;i<4;i++)renderTask(day,i);updateProgress();updateDailyTaskGate();
  }catch(e){console.warn('Fortschritt nicht geladen:',e.message)}
 }
 function answerErrors(ex,s){let all=[];
  const add=(field,a,b)=>{if(String(a)!==String(b))all.push({feld:String(field),antwort:String(a??'–'),richtig:String(b??'–')})};
  if(ex.type==='paint'){const symbols=ex.art.join('');symbols.split('').forEach((v,i)=>add('Feld '+(i+1),s.colors[i],ex.mapping[v]))}
  else if(ex.type==='sudoku'){ex.solution.join('').split('').forEach((v,i)=>add('Sudoku '+(i+1),s.cells[i],v))}
+ else if(ex.type==='imageChoice')add('Ausgewähltes Tier',ex.options[s.answer]?.alt??'–',ex.options[ex.correct].alt);
  else if(ex.type==='choices')ex.questions.forEach((q,i)=>add(q[0],q[1][Number(s.answers[i])]??'–',q[1][Number(q[2])]))
  else if(ex.type==='match')ex.pairs.forEach((pair,i)=>add(pair[0],s.answers[i],pair[1]))
  else if(ex.type==='categorize')ex.items.forEach((pair,i)=>add(pair[0],s.answers[i],pair[1]))
- else if(ex.type==='fill')ex.fields.forEach((pair,i)=>{if(norm(s.answers[i])!==norm(pair[1]))add(pair[0],s.answers[i],pair[1])})
+ else if(ex.type==='fill')ex.fields.forEach((pair,i)=>{if(!acceptedFill(ex,i,s.answers[i]))add(pair[0],s.answers[i],pair[1])})
  else if(ex.type==='order')ex.items.forEach((v,i)=>add('Position '+(i+1),ex.items[s.selected[i]]||'–',v));
  return all.slice(0,25)
+}
+// Laute statt Rechtschreibung entscheiden bei Schnecken-Höraufgaben.
+function acceptedFill(ex,i,answer){
+ const basic=norm(answer).replace(/[.,!?;:]+$/g,'');
+ const standard=norm(ex.fields[i][1]).replace(/[.,!?;:]+$/g,'');
+ if(basic===standard)return true;
+ if(!ex.phoneticAnswers)return false;
+ const compact=v=>norm(v).replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z]/g,'');
+ return ex.phoneticAnswers[i]?.some(v=>compact(v)===compact(basic))||false;
 }
 function saveActivity(ex,s,i,total,wrong){
  const api=window.SafariLogin;if(!api?.auth()||api.auth().role!=='child'||siteState.dayIndex===null)return;
@@ -130,6 +141,7 @@ function exerciseMarkup(ex,s,idx){
  switch(ex.type){
  case 'paint':return `<div class="paint-legend">${ex.palette.map(c=>`<button type="button" class="paint-swatch ${s.active===c.value?'selected':''}" data-swatch="${c.value}" aria-pressed="${s.active===c.value}" title="${c.name}"><span style="background:${c.color}"></span>${c.value} · ${c.name}</button>`).join('')}</div><div class="paint-grid" style="--columns:${ex.art[0].length}">${ex.art.join('').split('').map((v,i)=>{const number=ex.mapping[v];const expressions=ex.expressions[number];const label=expressions[(i*3+Math.floor(i/ex.art[0].length))%expressions.length];const selected=ex.palette.find(c=>c.value===s.colors[i]);return `<button type="button" class="paint-cell ${s.colors[i]!==null?'painted':''}" data-pcell="${i}" style="${selected?`--paint:${selected.color}`:''}" aria-label="Feld ${i+1}: ${htmlEscape(label)}">${htmlEscape(label)}</button>`}).join('')}</div><p class="task-tip">Wähle eine Farbe und tippe auf die Rechnungsfelder.</p>`;
  case 'sudoku':return `<div class="sudoku-grid" role="group" aria-label="Sudoku mit vier mal vier Feldern">${ex.givens.join('').split('').map((n,i)=>n!=='0'?`<div class="sudoku-given" aria-label="Vorgegebene Zahl ${n}">${n}</div>`:`<select aria-label="Sudoku Zeile ${Math.floor(i/4)+1}, Spalte ${i%4+1}" data-sudoku="${i}"><option value="">?</option>${[1,2,3,4].map(x=>`<option value="${x}" ${s.cells[i]===String(x)?'selected':''}>${x}</option>`).join('')}</select>`).join('')}</div>`;
+ case 'imageChoice':return '<div class="daily-animal-grid" role="group" aria-label="Tierbild auswählen">'+ex.options.map((o,i)=>'<button type="button" class="daily-animal-option'+(s.answer===i?' picked':'')+'" aria-label="'+htmlEscape(o.alt)+'" aria-pressed="'+(s.answer===i)+'" data-animal="'+i+'"><span class="daily-animal-picture" role="img" aria-label="'+htmlEscape(o.alt)+'" style="background-position:'+(i*25)+'% center"></span><span class="daily-animal-check" aria-hidden="true">'+(s.answer===i?'✓':'')+'</span></button>').join('')+'</div>';
  case 'choices':return `${ex.passage?`<div class="reading-box">${htmlEscape(ex.passage)}</div>`:''}<div class="question-list">${ex.questions.map((q,i)=>`<div class="question-row"><span class="question-label">${i+1}. ${htmlEscape(q[0])}</span><div class="choice-options">${q[1].map((a,k)=>`<button type="button" data-choice="${i}" data-answer="${k}" aria-pressed="${s.answers[i]===String(k)}" class="choice-button ${s.answers[i]===String(k)?'picked':''}">${htmlEscape(a)}</button>`).join('')}</div></div>`).join('')}</div>`;
  case 'order':return `<div class="order-bank">${s.permutation.filter(i=>!s.selected.includes(i)).map(i=>`<button type="button" class="word-tile" data-pick="${i}">${htmlEscape(ex.items[i])}</button>`).join('')}</div><div class="order-line"><span class="order-title">Deine Reihenfolge:</span>${s.selected.length?s.selected.map((i,k)=>`<button class="order-picked" type="button" data-unpick="${i}"><b>${k+1}.</b> ${htmlEscape(ex.items[i])} <span aria-hidden="true">×</span></button>`).join(''):'<span class="order-placeholder">Klicke oben auf das erste Feld …</span>'}</div>`;
  case 'match':return `<div class="match-list">${ex.pairs.map(([a],i)=>`<label class="match-row"><span>${htmlEscape(a)}</span><select data-match="${i}" aria-label="Passend zu ${htmlEscape(a)}"><option value="">Bitte wählen</option>${s.options.map(v=>`<option value="${htmlEscape(v)}" ${s.answers[i]===v?'selected':''}>${htmlEscape(v)}</option>`).join('')}</select></label>`).join('')}</div>`;
@@ -138,6 +150,24 @@ function exerciseMarkup(ex,s,idx){
  }
  return '';
 }
+let dailySpeech=null;
+function stopDailySpeech(){if('speechSynthesis' in window){try{window.speechSynthesis.cancel()}catch(_){}}dailySpeech=null;const status=$('daily-audio-status');if(status)status.textContent='';}
+function setupDailyAudio(d){
+ const mount=$('today-audio');if(!mount)return;
+ stopDailySpeech();mount.replaceChildren();
+ if(!d?.audioUrl){mount.hidden=true;return;}
+ mount.hidden=false;
+ const wrapper=document.createElement('div');wrapper.className='daily-audio-header';
+ wrapper.innerHTML='<span aria-hidden="true">🔊</span><div><strong>Hörtext abspielen</strong><small>Du kannst den Hörtext mehrmals anhören.</small></div>';
+ const player=document.createElement('audio');
+ player.controls=true;player.preload='metadata';player.className='daily-original-audio';
+ player.src=d.audioUrl;
+ player.setAttribute('aria-label','Hörverständnis: Originalaufnahme abspielen');
+ const status=document.createElement('p');status.id='daily-audio-status';status.setAttribute('role','status');
+ player.addEventListener('error',()=>{status.textContent='Die Aufnahme konnte nicht geladen werden. Bitte die Lehrperson informieren.'});
+ mount.append(wrapper,player,status);
+}
+
 function renderTask(dayIdx,i){const ex=days[dayIdx].exercises[i],s=session(dayIdx)[i],mount=$(`task-${i}`);mount.innerHTML=exerciseMarkup(ex,s,i);mount.classList.toggle('task-done',s.success);$(`status-${i}`).textContent=s.success?'✓ Geschafft!':'';$(`status-${i}`).className='task-status '+(s.success?'success':'');}
 function renderToday(force=false){let iso=daySwiss();let newIdx=dayIndex(iso);if(siteState.previewIndex!==null)newIdx=siteState.previewIndex;
  if(!force&&siteState.dayIndex===newIdx&&siteState.renderedDate===iso)return;
@@ -145,6 +175,7 @@ function renderToday(force=false){let iso=daySwiss();let newIdx=dayIndex(iso);if
  window.SafariNumberDay?.render(newIdx===null?iso:(siteState.previewIndex!==null?days[newIdx].date:iso));
  const isPreview=siteState.previewIndex!==null;
  if(newIdx===null){
+  setupDailyAudio(null);
   $('today-label').textContent=prettyDate(iso);$('today-theme').textContent='Neue Aufgaben folgen';
   $('today-intro').textContent='Die 20 Reserve-Serien sind aufgebraucht. Neue Aufgaben werden vorbereitet.';
   $('day-pill').textContent='Reserve aufgebraucht';$('preview-notice').hidden=true;
@@ -155,12 +186,22 @@ function renderToday(force=false){let iso=daySwiss();let newIdx=dayIndex(iso);if
  $('today-label').textContent=isPreview?`Vorschau · ${prettyDate(d.date)}`:prettyDate(newIdx===0?'2026-11-06':(days[newIdx].date));
  $('today-theme').textContent=d.theme;
  $('today-intro').textContent=d.intro;
+ setupDailyAudio(d);
  $('day-pill').textContent=(d.reserve?'Reserve · ': 'Geplant · ')+d.tag;
  $('preview-notice').hidden=!isPreview;
- $('daily-tasks').innerHTML=d.exercises.map((ex,i)=>`<section class="daily-task" id="exercise-${i}"><div class="task-head"><span class="task-count">Aufgabe ${i+1}</span><h3>${htmlEscape(ex.title)}</h3><div class="task-status" id="status-${i}" aria-live="polite"></div></div><p class="task-description">${htmlEscape(ex.desc)}</p><div class="task-body" id="task-${i}"></div><div class="task-actions"><button type="button" class="check-button" data-check="${i}">Überprüfen</button><button type="button" class="clear-button" data-reset="${i}">Neu versuchen</button><span class="check-feedback" id="feedback-${i}" aria-live="polite"></span></div></section>`).join('');
- d.exercises.forEach((_,i)=>renderTask(newIdx,i));updateProgress();restoreSavedProgress();window.SafariFocus?.apply();
+ $('daily-tasks').innerHTML=d.exercises.map((ex,i)=>`<details class="daily-task daily-disclosure" id="exercise-${i}" ${i===0?'open':''}><summary class="task-head daily-step-summary"><span class="task-count">Aufgabe ${i+1}</span><h3>${htmlEscape(ex.title)}</h3><span class="task-status" id="status-${i}" aria-live="polite"></span><span class="daily-chevron" aria-hidden="true">⌄</span></summary><div class="daily-step-content"><p class="task-description">${htmlEscape(ex.desc)}</p><div class="task-body" id="task-${i}"></div><div class="task-actions"><button type="button" class="check-button" data-check="${i}">Überprüfen</button><button type="button" class="clear-button" data-reset="${i}">Neu versuchen</button><span class="check-feedback" id="feedback-${i}" aria-live="polite"></span></div></div></details>`).join('');
+ d.exercises.forEach((_,i)=>renderTask(newIdx,i));updateProgress();updateDailyTaskGate();restoreSavedProgress();window.SafariFocus?.apply();
 }
 function updateProgress(){if(siteState.dayIndex===null)return;const arr=session(siteState.dayIndex);const n=arr.filter(x=>x.success).length;$('daily-progress').textContent=`${n} von 4 Aufgaben geschafft`;$('daily-progress-bar').style.width=`${n*25}%`}
+function updateDailyTaskGate(){
+ if(siteState.dayIndex===null)return;
+ const d=days[siteState.dayIndex];
+ if(!d?.hideTopicUntilFirstCorrect)return;
+ const unlocked=!!session(siteState.dayIndex)[0]?.success;
+ for(let i=1;i<4;i++){const task=$('exercise-'+i);if(task)task.hidden=!unlocked}
+ const theme=$('today-theme');if(theme)theme.textContent=unlocked?'Hördetektive: Die Schnecke':'Hördetektive: Wer ist das?';
+ const intro=$('today-intro');if(intro)intro.textContent=unlocked?'Jetzt kennst du das Tier. Löse die weiteren Hör-Aufgaben.':d.intro;
+}
 function reRender(i){renderTask(siteState.dayIndex,i);updateProgress();}
 function handleTasks(e){const button=e.target.closest('button');if(!button)return;
  const card=button.closest('.daily-task');if(!card)return;
@@ -170,6 +211,7 @@ function handleTasks(e){const button=e.target.closest('button');if(!button)retur
  if(button.hasAttribute('data-reset')){session(siteState.dayIndex)[i]=newSession(siteState.dayIndex)[i];renderTask(siteState.dayIndex,i);$(`feedback-${i}`).textContent='';updateProgress();return}
  if(button.hasAttribute('data-swatch')){s.success=false;s.active=Number(button.dataset.swatch);reRender(i);return}
  if(button.hasAttribute('data-pcell')){s.success=false;s.colors[Number(button.dataset.pcell)]=s.active;reRender(i);return}
+ if(button.hasAttribute('data-animal')){s.success=false;s.answer=Number(button.dataset.animal);reRender(i);return}
  if(button.hasAttribute('data-choice')){s.success=false;s.answers[Number(button.dataset.choice)]=button.dataset.answer;reRender(i);return}
  if(button.hasAttribute('data-pick')){s.success=false;s.selected.push(Number(button.dataset.pick));reRender(i);return}
  if(button.hasAttribute('data-unpick')){s.success=false;s.selected=s.selected.filter(x=>x!==Number(button.dataset.unpick));reRender(i);return}
@@ -180,14 +222,15 @@ function handleChanges(e){const inp=e.target;const card=inp.closest('.daily-task
 function checkTask(ex,s,i){let missing=false,wrong=0,total=0;
  if(ex.type==='paint'){total=s.colors.length;wrong=s.colors.filter((v,j)=>v!==ex.mapping[ex.art.join('')[j]]).length;missing=s.colors.some(x=>x===null)}
  else if(ex.type==='sudoku'){total=16;const answer=ex.solution.join('');wrong=s.cells.filter((v,j)=>v!==answer[j]).length;missing=s.cells.some(v=>!v)}
+ else if(ex.type==='imageChoice'){total=1;missing=s.answer===null;wrong=missing?1:Number(s.answer!==ex.correct)}
  else if(ex.type==='choices'){total=ex.questions.length;wrong=s.answers.filter((v,j)=>v!==String(ex.questions[j][2])).length;missing=s.answers.some(v=>v==='')}
  else if(ex.type==='match'){total=ex.pairs.length;wrong=s.answers.filter((v,j)=>v!==ex.pairs[j][1]).length;missing=s.answers.some(v=>!v)}
  else if(ex.type==='categorize'){total=ex.items.length;wrong=s.answers.filter((v,j)=>v!==ex.items[j][1]).length;missing=s.answers.some(v=>!v)}
- else if(ex.type==='fill'){total=ex.fields.length;wrong=s.answers.filter((v,j)=>norm(v)!==norm(ex.fields[j][1])).length;missing=s.answers.some(v=>!norm(v))}
+ else if(ex.type==='fill'){total=ex.fields.length;wrong=s.answers.filter((v,j)=>!acceptedFill(ex,j,v)).length;missing=s.answers.some(v=>!norm(v))}
  else if(ex.type==='order'){total=ex.items.length;missing=s.selected.length!==total;wrong=s.selected.filter((v,j)=>v!==j).length+Math.max(0,total-s.selected.length)}
  s.success=!missing&&wrong===0;
  const feedback=$(`feedback-${i}`);feedback.classList.toggle('is-good',s.success);feedback.textContent=s.success?'Richtig! Super gemacht! ✓':missing?'Noch nicht vollständig. Schau alle Felder an.':`Fast geschafft! Prüfe nochmals ${wrong} von ${total} Antworten.`;
- renderTask(siteState.dayIndex,i);updateProgress();saveActivity(ex,s,i,total,wrong);
+ renderTask(siteState.dayIndex,i);updateProgress();updateDailyTaskGate();saveActivity(ex,s,i,total,wrong);
 }
 function initNavigation(){window.addEventListener('hashchange',route);document.addEventListener('scroll',()=>{$('main-header').classList.toggle('compact',window.scrollY>65)},{passive:true});$('nav-current').addEventListener('click',()=>{$('dropdown').classList.toggle('open')});document.addEventListener('click',e=>{if(!e.target.closest('.nav-dropdown'))$('dropdown').classList.remove('open')});document.querySelectorAll('[data-subject]').forEach(a=>a.addEventListener('click',()=>{$('dropdown').classList.remove('open');if(location.hash==='#aktuelle--'+a.dataset.subject){route()}}));route()}
 function initSecret(){const meerkat=$('meerkat-secret'),popup=$('secret-box'),pass=$('secret-input'),panel=$('week-panel');meerkat.addEventListener('click',()=>{popup.hidden=!popup.hidden;if(!popup.hidden){pass.value='';pass.focus()}});pass.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();if(pass.value.trim()==='6208'){popup.hidden=true;pass.value='';panel.hidden=false;renderWeekPanel()}else{pass.value='';pass.classList.add('invalid');setTimeout(()=>pass.classList.remove('invalid'),550)}});document.addEventListener('click',e=>{if(!e.target.closest('.secret-wrap'))popup.hidden=true});$('close-week').addEventListener('click',()=>panel.hidden=true);$('return-today').addEventListener('click',()=>{siteState.previewIndex=null;renderToday(true)});}

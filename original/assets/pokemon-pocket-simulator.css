@@ -1,0 +1,54 @@
+:root{--ink:#243544;--blue:#245f84;--green:#397858;--line:#d5e1df;--cream:#fff8ea}
+*{box-sizing:border-box}body{margin:0;font:16px/1.46 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(170deg,#e7effb,#fff7e4 60%,#eaf4e9)}
+.shell{max-width:1320px;margin:auto;padding:clamp(12px,2vw,25px)}
+.hero{padding:22px;border-radius:20px;background:linear-gradient(120deg,#26648d,#387c71);color:white}.hero h1{font-size:clamp(25px,3vw,37px);margin:5px 0}.hero p{margin:0}
+.panel,.play-area{padding:18px;background:#fffdf7;border:1px solid var(--line);border-radius:18px;margin:16px 0;box-shadow:0 5px 17px #283f3a12}.panel h2{color:#245b73;margin:0 0 13px;font-size:23px}
+.settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}.settings label{display:grid;gap:6px;font-weight:700}
+select{font:inherit;border:2px solid #c4d4d6;border-radius:12px;padding:11px;background:#fff}
+.big-button,.action,.option,.card-action{font:inherit;background:#fff;border:2px solid #b8d4d8;color:#234e64;cursor:pointer;border-radius:12px;padding:10px 13px;font-weight:750}
+.big-button{background:#256a58;color:white;border-color:#256a58;padding:13px 20px}
+button:disabled{opacity:.48;cursor:not-allowed}
+button:hover:not(:disabled){border-color:#267e75;filter:brightness(.97)}button:focus-visible{outline:3px solid #da9221;outline-offset:2px}
+.deck-preview{padding:13px;background:#f2f8f5;border:1px solid #cfdfd2;border-radius:13px;margin:14px 0}.deck-preview h3{margin:0 0 7px}.muted,.footer{color:#596b70}
+.scorebar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;background:#e9f4f0;border:2px solid #b5d6cc;border-radius:16px;padding:12px 16px;font-weight:800}
+.play-area h2{font-size:19px;margin:0 0 10px}.board{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}.active-zone{flex:0 1 210px}.bench-zone{flex:1;min-width:210px}
+.cards,.hand{display:flex;flex-wrap:wrap;gap:11px}.cards .mini-card{max-width:200px}
+.mini-card{background:#fff;border:2px solid #cbd5d1;border-radius:15px;padding:8px;min-width:124px;max-width:180px;flex:1 1 140px;box-shadow:0 3px 8px #2d4c4a13;position:relative;overflow:hidden}
+.mini-card .art{border-radius:9px;background:linear-gradient(135deg,#e2eed9,#e3eff9);aspect-ratio:5/6;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.mini-card .art img{width:100%;height:100%;object-fit:contain}
+.fallback{font-weight:800;text-align:center;font-size:28px;padding:8px;word-break:break-word}.fallback small{display:block;font-size:13px;margin-top:5px}
+.mini-card[data-type=grass]{border-color:#91b961}.mini-card[data-type=electric]{border-color:#e9ce4c}.mini-card[data-type=dark]{border-color:#7f8eaa}.mini-card[data-type=psychic]{border-color:#c69ac8}.mini-card[data-type=metal]{border-color:#91adaf}
+.card-name{font-size:14px;font-weight:850;min-height:36px}.card-info{font-size:12px;color:#4e6364;min-height:18px}.card-action{display:block;width:100%;font-size:13px;padding:8px 5px;margin:5px 0}
+.hand .mini-card{flex:0 1 160px}
+.field-divider{text-align:center;font-size:15px;font-weight:900;color:#6c5f4c;margin:10px 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.action{background:#eef7f2}.action.primary{background:#245b72;color:white}
+.choicebox{padding:16px;background:#e9f5f6;border:2px solid #a5cdd2;border-radius:14px;margin:15px 0}
+.choicebox h3{margin:0 0 9px}.option{margin:5px;background:white}
+.log{max-height:220px;overflow:auto;padding-left:21px}.log li{padding:3px 0;font-size:14px}
+.status{font-weight:700}.winner{font-size:23px;color:#246a43}.warning{color:#935d1e;font-weight:700}.separator{border-top:1px solid #dae4df;margin:10px 0}
+.card-back{aspect-ratio:5/7;background:radial-gradient(circle,#f7c939 7%,#3d75c8 8%,#16488d 65%,#0d315d);border:5px solid #e7e1ce;border-radius:14px;box-shadow:0 5px 14px #184a7033}
+@media(max-width:650px){.shell{padding:8px}.panel,.play-area{padding:11px}.mini-card{flex:0 1 135px;min-width:115px}.hand .mini-card{flex:0 1 133px}.active-zone{flex:0 1 185px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.inspect-btn{font:inherit;font-size:11px;border:0;background:none;text-decoration:underline;color:#28698a;cursor:pointer;display:block;width:100%;padding:5px}
+.pokemon-zoom{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px}
+.pokemon-zoom-backdrop{position:absolute;inset:0;background:#15252bd9}
+.pokemon-zoom-content{position:relative;background:#fffdf7;border-radius:17px;padding:15px;max-height:94vh;width:min(540px,100%);overflow:auto;text-align:center;box-shadow:0 14px 45px #0006}
+.pokemon-zoom-content .art{max-width:400px;margin:auto}.pokemon-zoom-content .art img{width:100%;max-height:72vh;object-fit:contain}
+.pokemon-zoom-content h2{font-size:20px;margin:7px 0}
+
+.energy-badge{display:inline-flex;width:23px;height:23px;border-radius:50%;align-items:center;justify-content:center;vertical-align:middle;font-size:18px;line-height:1;margin:0 2px}
+.pokemon-energy-sprites-ready .energy-badge:not(.energy-colorless):not(.energy-none){font-size:0;background-image:url('pokemon-pocket/energy-icons.webp');background-repeat:no-repeat;background-size:400% 200%;border:1px solid #ffffff90}
+.energy-grass{background-position:0 0}.energy-fire{background-position:33.333% 0}.energy-water{background-position:66.667% 0}.energy-electric{background-position:100% 0}
+.energy-psychic{background-position:0 100%}.energy-fighting{background-position:33.333% 100%}.energy-dark{background-position:66.667% 100%}.energy-metal{background-position:100% 100%}
+.card-energy{line-height:1.9}
+.opponent-hand{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.mini-back{width:48px;height:67px;flex:none}
+.card-back{background-image:url('pokemon-pocket/card-back.webp'),radial-gradient(circle,#f7c939 7%,#3d75c8 8%,#16488d 65%,#0d315d);background-repeat:no-repeat;background-position:center;background-size:cover}
+
+/* Safari-Pocket title imagery from the teacher's supplied illustrations. */
+.pokemon-safari-hero{background:linear-gradient(110deg,#184867df,#28694fb8),url('pokemon-pocket/pocket-hero.webp') center 35%/cover;display:grid;grid-template-columns:minmax(0,1fr) minmax(125px,260px);gap:17px;align-items:center;min-height:220px;overflow:hidden}
+.pokemon-hero-content{position:relative;z-index:1}
+.pokemon-safari-logo{display:block;width:min(300px,85%);max-height:130px;object-fit:contain;object-position:left center;margin-bottom:8px;filter:drop-shadow(0 5px 5px #0007)}
+.pokemon-hero-ball{width:100%;max-height:225px;object-fit:cover;border-radius:15px;box-shadow:0 8px 26px #172b4169}
+@media(max-width:660px){.pokemon-safari-hero{grid-template-columns:1fr}.pokemon-hero-ball{max-height:125px}}

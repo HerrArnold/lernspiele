@@ -47,3 +47,49 @@
  .baobab-new-map~.baobab-mobile-links button{font-size:12px}
 }
 @media(max-width:540px){.baobab-new-map .baobab-hotspot{font-size:9px}.baobab-polaroids{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;padding:12px 4px}.baobab-polaroid{padding:7px 7px 18px}.baobab-polaroid figcaption strong{font-size:13px}}
+
+
+/* Lieblingsprojekte: chronologischer, horizontal scrollbarerer Zeitstrahl. */
+.baobab-timeline-head{display:flex;gap:16px;justify-content:space-between;align-items:center;color:#735735;font-weight:850;max-width:1160px;margin:8px auto}
+.baobab-timeline-controls{display:flex;gap:9px}
+.baobab-timeline-controls button{border:2px solid #b79968;color:#614b2c;background:#fff2ce;font-size:25px;width:48px;height:44px;border-radius:12px;cursor:pointer}
+.baobab-timeline{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;gap:22px;padding:25px 24px 40px;border-radius:18px;border:2px solid #e3ceab;background:linear-gradient(#fff9e8 45%,#e9efdd 45%,#e9efdd 55%,#fff9e8 55%);scrollbar-width:auto}
+.baobab-timeline-item{flex:0 0 clamp(190px,25vw,285px);position:relative;display:grid;justify-items:center;align-content:start;scroll-snap-align:start;min-width:0}
+.baobab-timeline-item::before{content:'';display:block;position:absolute;top:21px;width:9px;height:9px;border-radius:50%;background:#946939;border:3px solid #f1d49a;z-index:1}
+.baobab-timeline-item time{background:#fff5d9;border:1px solid #d9bb82;border-radius:13px;padding:6px 10px;margin:40px 0 12px;font-weight:850;font-size:13px;color:#6a5031}
+.baobab-timeline-item .baobab-polaroid{max-width:none}
+.baobab-scroll-hint{text-align:center;color:#705b41;font-size:13px}
+@media(max-width:650px){.baobab-timeline{padding:15px 12px 24px;gap:13px}.baobab-timeline-item{flex-basis:210px}}
+
+
+/* Polaroid-Fotogalerien: jedes Titelbild ist per Tastatur und Maus anklickbar. */
+.baobab-polaroid-open{font:inherit;color:#554432;border:1px solid #e4dfd2;cursor:pointer;display:grid;gap:0;justify-items:stretch;text-align:center;padding:12px 12px 25px}
+.baobab-polaroid-open:hover,.baobab-polaroid-open:focus-visible{transform:rotate(0) translateY(-5px);outline:3px solid #377e5a;outline-offset:3px}
+.baobab-polaroid-open>img{width:100%}
+.baobab-polaroid-caption{display:grid;gap:5px;padding-top:9px}
+.baobab-polaroid-caption strong{font-size:17px}
+.baobab-polaroid-caption>span{font-size:13px;line-height:1.4}
+.baobab-photo-badge{display:block;background:#dcebd5;border:1px solid #99c18e;border-radius:10px;margin:8px 0 0;padding:7px 6px;color:#27593c;font-size:13px;font-weight:850}
+.baobab-photo-badge.is-one{background:#f8f1df;color:#6b5e46;border-color:#dfd0b3}
+.baobab-lightbox{position:fixed;inset:0;z-index:99999;background:rgba(19,29,22,.88);display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.baobab-lightbox-panel{position:relative;width:min(1040px,100%);max-height:96dvh;overflow:auto;background:#fffaf0;border:3px solid #e0ca99;border-radius:19px;padding:clamp(12px,2.4vw,25px);box-shadow:0 12px 50px #0008;text-align:center}
+.baobab-lightbox-panel h3{font-size:clamp(22px,3vw,33px);color:#355d41;margin:0 40px 7px}
+.baobab-lightbox-panel p{line-height:1.45;color:#675a44}
+.baobab-lightbox-close{position:absolute;right:12px;top:12px;cursor:pointer;min-width:43px;min-height:43px;border:2px solid #bead93;background:white;border-radius:50%;font-size:20px}
+.baobab-lightbox-picture{display:grid;grid-template-columns:45px minmax(0,1fr) 45px;gap:7px;align-items:center}
+.baobab-lightbox-picture img{width:100%;max-height:58dvh;object-fit:contain;background:#f1f0e9;border:1px solid #e9e4d8;border-radius:12px}
+.baobab-lightbox-picture button{min-width:43px;min-height:56px;font-size:33px;cursor:pointer;border:1px solid #a4bba1;border-radius:12px;background:#e5efdc;color:#28543a}
+.baobab-lightbox-picture button:disabled{opacity:.35;cursor:default}
+.baobab-lightbox-footer{display:grid;justify-items:center;gap:10px;margin-top:13px;color:#3f6246;font-weight:800}
+.baobab-photo-thumbs{display:flex;max-width:100%;overflow-x:auto;gap:8px;padding:4px}
+.baobab-photo-thumbs button{border:3px solid transparent;background:#fff;border-radius:9px;padding:3px;cursor:pointer}
+.baobab-photo-thumbs button.is-current{border-color:#438263}
+.baobab-photo-thumbs img{width:65px;height:48px;object-fit:cover;border-radius:4px}
+.baobab-photo-loading{font-size:13px;min-height:17px}
+.admin-project-entry{grid-template-columns:minmax(110px,1fr) auto auto auto!important}
+.admin-extra-photo-form{grid-column:1/-1;display:grid;gap:9px;margin:7px 0;padding:12px;border-radius:12px;background:#f1f6e9;border:1px solid #c6dab7}
+.admin-extra-photo-form[hidden]{display:none!important}
+.admin-extra-photo-form label{display:grid;gap:5px}
+.admin-extra-photo-form label.admin-project-permission{display:flex!important}
+.admin-extra-photo-form input[type=file]{max-width:100%}
+@media(max-width:800px){.admin-project-entry{grid-template-columns:1fr 1fr!important}.admin-extra-photo-form{grid-column:1/-1}.baobab-lightbox{padding:7px}.baobab-lightbox-picture{grid-template-columns:35px minmax(0,1fr) 35px}.baobab-lightbox-picture button{min-width:32px}.baobab-lightbox-picture img{max-height:54dvh}}

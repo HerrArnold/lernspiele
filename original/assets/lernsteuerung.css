@@ -110,3 +110,10 @@
 .ls-exit-record-head>span{color:#615340}
 .ls-notice{color:#493323;background:#fff4e6}
 #view-todo .ls-error{color:#9b3829}
+
+/* Lernhelfer auf Abruf: keine Hintergrund-SQL-Abfragen für ungesehene Empfehlungen. */
+.ls-helper-open{border:2px solid #598c76;background:#fff;color:#285b49;border-radius:11px;padding:9px 13px;font:inherit;font-weight:750;cursor:pointer;min-height:40px}
+.ls-helper-open:hover{background:#e0f3e7}
+.ls-helper-open:focus-visible{outline:3px solid #d59c31;outline-offset:2px}
+.ls-helper-open:disabled{opacity:.6;cursor:wait}
+.ls-helper-result{flex:1;min-width:160px}

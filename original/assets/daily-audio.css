@@ -1,0 +1,23 @@
+/* Hörverständnis im Tages-Tal: Hörtext und Bedienelemente ohne Textspoiler. */
+.daily-audio-tools{background:#eef6ee;border:2px solid #adcbb5;border-radius:16px;padding:15px 18px;margin:15px 0 20px;color:#285744}
+.daily-audio-header{display:flex;gap:12px;align-items:center}
+.daily-audio-header>span{font-size:27px}
+.daily-audio-header strong,.daily-audio-header small{display:block}
+.daily-audio-header strong{font-size:18px}
+.daily-audio-header small{font-size:14px;margin-top:3px}
+.daily-audio-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.daily-audio-actions button{min-height:42px}
+#daily-audio-status{font-size:14px;margin:8px 0 0;min-height:1.2em}
+
+/* Originalverlagsaufnahme und fünf echte Tierillustrationen aus dem Arbeitsblatt. */
+.daily-original-audio{display:block;width:100%;max-width:540px;margin-top:12px;min-height:48px}
+.daily-animal-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch;margin:10px 0 14px}
+.daily-animal-option{position:relative;display:flex;justify-content:center;align-items:center;background:#fff;border:2px solid #cfb990;border-radius:14px;min-height:128px;padding:8px;cursor:pointer;overflow:hidden}
+.daily-animal-option:hover{border-color:#3b8161;background:#f0f8f0}
+.daily-animal-option:focus-visible{outline:3px solid #2d765a;outline-offset:2px}
+.daily-animal-option.picked{background:#e9f6e7;border:4px solid #267449}
+.daily-animal-picture{display:block;width:100%;max-width:150px;aspect-ratio:110/94;background-image:url('schnecke-tiere-streifen.svg');background-repeat:no-repeat;background-size:500% 100%;background-color:#fff}
+.daily-animal-check{position:absolute;right:4px;top:4px;min-width:22px;height:22px;text-align:center;border-radius:50%;background:#267449;color:white;font-weight:bold}
+.daily-animal-check:empty{display:none}
+.daily-task[hidden]{display:none!important}
+@media(max-width:680px){.daily-animal-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.daily-animal-option{min-height:106px;padding:5px}}

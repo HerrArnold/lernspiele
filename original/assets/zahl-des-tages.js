@@ -10,6 +10,88 @@ const tens=['','','zwanzig','dreissig','vierzig','fünfzig','sechzig','siebzig',
 function smallWord(n){if(n<10)return digitsWord[n];if(n<20)return teens[n-10];const t=Math.floor(n/10),u=n%10;return u?(u===1?'ein':digitsWord[u])+'und'+tens[t]:tens[t]}
 function word(n){if(n===1000)return 'tausend';const h=Math.floor(n/100),r=n%100;return (h?(h===1?'ein':digitsWord[h])+'hundert':'')+(r?smallWord(r):'')}
 function norm(s){return String(s||'').toLowerCase().replace(/ß/g,'ss').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/[\s\-.,!]/g,'')}
+
+/* Lernhilfe fuer Zahlwoerter: Wir benennen nur die Wortteile, die noch
+ * nicht stimmen. Die Bewertung bleibt streng: Es muss korrekt geschrieben
+ * werden, bevor ein Gruen-Haekchen vergeben wird. */
+function wordParts(n){
+ if(n===1000)return ['tausend'];
+ const parts=[],h=Math.floor(n/100),remainder=n%100;
+ if(h){parts.push(h===1?'ein':digitsWord[h],'hundert')}
+ if(!remainder)return parts;
+ if(remainder<10){parts.push(digitsWord[remainder]);return parts}
+ if(remainder<20){
+  if(remainder<=12){parts.push(teens[remainder-10]);return parts}
+  const stems={13:'drei',14:'vier',15:'fünf',16:'sech',17:'sieb',18:'acht',19:'neun'};
+  parts.push(stems[remainder],'zehn');return parts;
+ }
+ const t=Math.floor(remainder/10),u=remainder%10;
+ if(u)parts.push(u===1?'ein':digitsWord[u],'und');
+ const stems={2:['zwanzig'],3:['drei','ssig'],4:['vier','zig'],5:['fünf','zig'],6:['sech','zig'],7:['sieb','zig'],8:['acht','zig'],9:['neun','zig']};
+ parts.push(...stems[t]);return parts;
+}
+function letterDistance(a,b){
+ const prev=Array.from({length:b.length+1},(_,i)=>i);
+ for(let i=1;i<=a.length;i++){
+  const row=[i];
+  for(let j=1;j<=b.length;j++)row[j]=Math.min(row[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+  for(let j=0;j<row.length;j++)prev[j]=row[j];
+ }
+ return prev[b.length];
+}
+function wordPartMistakes(answer,parts){
+ const typed=norm(answer),expected=parts.map(norm);
+ // Segment the pupils' spelling into the nearest meaningful word parts.
+ // This also finds missing letters (e.g. "zen" for "zehn") accurately.
+ const cache=new Map(),m=typed.length,N=expected.length;
+ const dp=Array.from({length:N+1},()=>Array(m+1).fill(Infinity));
+ const from=Array.from({length:N+1},()=>Array(m+1).fill(-1));
+ dp[0][0]=0;
+ for(let k=1;k<=N;k++){
+  for(let j=0;j<=m;j++){
+   for(let i=0;i<=j;i++){
+    if(!Number.isFinite(dp[k-1][i]))continue;
+    const key=expected[k-1]+'|'+typed.slice(i,j);
+    let cost=cache.get(key);
+    if(cost===undefined){cost=letterDistance(expected[k-1],typed.slice(i,j));cache.set(key,cost)}
+    const score=dp[k-1][i]+cost;
+    if(score<dp[k][j]){dp[k][j]=score;from[k][j]=i}
+   }
+  }
+ }
+ let end=m;const errors=[];
+ for(let k=N;k>=1;k--){
+  const start=from[k][end];
+  if(start<0)break;
+  if(typed.slice(start,end)!==expected[k-1])errors.unshift(parts[k-1]);
+  end=start;
+ }
+ return errors;
+}
+function wordSpellingHint(answer,n){
+ if(!norm(answer))return 'Schreibe zuerst die ganze Zahl als Wort. Danach bekommst du einen Tipp.';
+ const wrong=wordPartMistakes(answer,wordParts(n));
+ if(!wrong.length)return 'Prüfe, ob alle Buchstaben und die Reihenfolge stimmen.';
+ const seen=[...new Set(wrong)],tips={
+  vier:'Denke bei «vier» an v und ie.',
+  zehn:'Denke bei «zehn» an das h.',
+  hundert:'Bei «hundert» steht in der Mitte ein d.',
+  zwei:'Bei «zwei» hörst du ein ei.',
+  drei:'Bei «drei» hörst du ein ei.',
+  ein:'Denke an «ein» mit ei.',
+  fünf:'Bei «fünf» schreibst du ü.',
+  sech:'Bei «sechzig» und «sechzehn» fällt das s am Ende von «sechs» weg.',
+  sieb:'Bei «siebzig» und «siebzehn» fällt das en von «sieben» weg.',
+  zig:'Die Zehnerendung schreibt man «zig».',
+  ssig:'Bei «dreissig» schreibst du ss.',
+  acht:'Achte auf das ch in «acht».'
+ };
+ const named=seen.slice(0,2).map(x=>'«'+x+'»').join(' und ');
+ const extra=seen.length>2?' Prüfe danach auch die weiteren Teile.':'';
+ const helpful=seen.map(x=>tips[x]).find(Boolean);
+ return 'Schau dir '+(seen.length===1?'diesen Wortteil':'diese Wortteile')+' nochmals an: '+named+'.'+extra+(helpful?' Tipp: '+helpful:'');
+}
+
 // Samstag und Sonntag verwenden immer die Zahl des letzten Freitags.
 // Die Zahl wird anhand des Datums berechnet und bleibt damit bei allen Kindern gleich.
 function learningDate(iso){
@@ -50,7 +132,7 @@ function solvedExample(){
  <p class="zdt-example-caption">324 liegt zwischen 300 und 400, ein bisschen näher bei 300.</p></div>
  </div></aside>`;
 }
-function section(id,title,description,content){return `<section class="zdt-task" data-step="${id}"><h3>${title}</h3><p>${description}</p>${content}<button type="button" class="zdt-check" data-check-step="${id}">Prüfen</button><span class="zdt-feedback" data-feedback="${id}" aria-live="polite"></span></section>`}
+function section(id,title,description,content){return `<details class="zdt-task zdt-disclosure" data-step="${id}" ${id==='word'?'open':''}><summary class="zdt-step-summary"><span>${title}</span><span class="zdt-chevron" aria-hidden="true">⌄</span></summary><div class="zdt-step-content"><p>${description}</p>${content}<button type="button" class="zdt-check" data-check-step="${id}">Prüfen</button><span class="zdt-feedback" data-feedback="${id}" aria-live="polite"></span></div></details>`}
 function apiBase(){return String(window.LERNSAFARI_BACKEND_URL||'https://lernsafari-api.ergohd02.workers.dev').replace(/\/+$/,'');}
 async function render(date){
  const host=$('zahl-des-tages');if(!host)return;
@@ -94,7 +176,7 @@ function checkStep(id){const [t,h,z,e]=digits(number);let ok=false;let actual=''
  case 'decomp':actual=state.decomp.join(' + ');const expected=[t*1000,h*100,z*10,e];correct=expected.join(' + ');ok=expected.every((v,i)=>state.decomp[i].trim()!==''&&Number(state.decomp[i])===v);break;
  case 'art':actual=['h','t','e'].map(k=>state.art[k].filter(Boolean).length).join('/');correct=[Math.floor(number/100),z,e].join('/');ok=actual===correct;break;
  case 'line':actual=state.line===null?'Kein Punkt':String(state.line);correct=String(number);ok=state.line!==null&&Math.floor(Math.min(state.line,999)/100)===Math.floor(Math.min(number,999)/100)&&Math.abs(state.line-number)<=20;break;}
- state.checked[id]={ok};save();updateProgress();markFeedback(id,ok,ok?'✓ Richtig!':(id==='line'?'Noch nicht ganz: Wähle den richtigen Hunderterabschnitt und bleibe höchstens 20 Zahlen entfernt.':'Noch nicht ganz. Versuche es nochmals.'));
+ state.checked[id]={ok};save();updateProgress();markFeedback(id,ok,ok?'✓ Richtig!':(id==='word'?wordSpellingHint(state.word,number):(id==='line'?'Noch nicht ganz: Wähle den richtigen Hunderterabschnitt und bleibe höchstens 20 Zahlen entfernt.':'Noch nicht ganz. Versuche es nochmals.')));
  const api=window.SafariLogin;if(api?.auth()?.role==='child'){api.request('/game-attempt','POST',{game:'zahl-des-tages',task:`${activeDate} – ${id}`,correct:ok,correctCount:ok?1:0,total:1,answer:String(actual).slice(0,300),expected:String(correct).slice(0,300),details:`Zahl ${number}; Schritt ${id}`}).catch(err=>console.warn('Zahl des Tages nicht gespeichert:',err.message))}
 }
 function wire(){const host=$('zahl-des-tages');host.querySelectorAll('[data-check-step]').forEach(b=>b.onclick=()=>checkStep(b.dataset.checkStep));$('zdt-word').addEventListener('input',e=>{state.word=e.target.value;invalidate('word')});host.querySelectorAll('[name=zdt-parity]').forEach(r=>r.onchange=()=>{state.parity=r.value;invalidate('parity')});host.querySelectorAll('[data-pchange]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.pchange),n=Number(b.dataset.step);state.place[i]=Math.max(0,Math.min(i===0?1:9,state.place[i]+n));renderDots();invalidate('place')});host.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>{state.place[Number(b.dataset.clear)]=0;renderDots();invalidate('place')});host.querySelectorAll('[data-decomp]').forEach(el=>el.oninput=()=>{state.decomp[Number(el.dataset.decomp)]=el.value;invalidate('decomp')});

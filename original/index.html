@@ -8,13 +8,13 @@
 <title>Lernsafari – Klasse 3b</title>
 <link rel="stylesheet" href="assets/safari.css?v=14">
 <script defer src="assets/analytics-config.js"></script>
-<script defer src="assets/daily-data.js"></script>
+<script defer src="assets/daily-data.js"></script><script defer src="assets/daily-november-2026.js?v=20261115-schnecke-bilder2"></script>
 <script defer src="assets/login-config.js?v=2"></script>
 <script defer src="assets/login.js?v=7"></script>
-<script defer src="assets/safari.js?v=14"></script><link rel="stylesheet" href="assets/zahl-des-tages.css?v=12"><script defer src="assets/zahl-des-tages.js?v=13"></script>
-<link rel="stylesheet" href="assets/tierwelt.css?v=12"><script defer src="assets/tierwelt-data.js?v=11"></script><script defer src="assets/tierwelt.js?v=11"></script><script defer src="assets/agenda.js?v=12"></script><link rel="stylesheet" href="assets/lernsteuerung.css?v=2"><script defer src="assets/lernsteuerung.js?v=1"></script><script defer src="assets/lernhelfer.js?v=1"></script><script defer src="assets/exit-ticket.js?v=1"></script><link rel="stylesheet" href="assets/new-safari-skin.css">
+<script defer src="assets/safari.js?v=20261115-schnecke-bilder2"></script><link rel="stylesheet" href="assets/zahl-des-tages.css?v=12"><script defer src="assets/zahl-des-tages.js?v=20261116-worttipps"></script>
+<link rel="stylesheet" href="assets/tierwelt.css?v=12"><script defer src="assets/tierwelt-data.js?v=11"></script><script defer src="assets/tierwelt.js?v=11"></script><script defer src="assets/agenda.js?v=12"></script><link rel="stylesheet" href="assets/lernsteuerung.css?v=20261116-db-sparen"><script defer src="assets/lernsteuerung.js?v=20261116-ohne-sperre"></script><script defer src="assets/lernhelfer.js?v=20261116-d1-sparen"></script><script defer src="assets/exit-ticket.js?v=1"></script><link rel="stylesheet" href="assets/new-safari-skin.css">
 <link rel="stylesheet" href="assets/tierwelt-palette.css?v=1">
-<link rel="stylesheet" href="assets/tages-tal-palette.css?v=1"></head>
+<link rel="stylesheet" href="assets/tages-tal-palette.css?v=1"><link rel="stylesheet" href="assets/tages-tal-akkordeon.css?v=2"><link rel="stylesheet" href="assets/daily-audio.css?v=20261115-schnecke-bilder2"></head>
 <body>
 <header class="site-header" id="main-header">
  <div class="header-inner">
@@ -48,9 +48,12 @@
 <main class="shell">
  <section class="view" id="view-aufgaben">
   <div class="today-flow">
+   <details class="valley-accordion valley-accordion-number" open>
+    <summary><span class="valley-accordion-icon">🔢</span><span><strong>Die Tageszahl</strong><small>Die Zahl entdecken und sechs Aufgaben lösen</small></span><span class="valley-accordion-arrow" aria-hidden="true">⌄</span></summary>
+    <div class="valley-accordion-body">
    <section class="today-intro-duo" aria-label="Einführung Zahl des Tages">
     
-    <div id="zdt-example" class="today-example"></div>
+    <details class="zdt-example-accordion"><summary><span>💡 Gelöstes Beispiel anschauen</span><span class="zdt-chevron" aria-hidden="true">⌄</span></summary><div id="zdt-example" class="today-example"></div></details>
    </section>
    <section class="today-joke" aria-label="Warzenschwein-Witz">
     <button type="button" class="number-plan-secret" id="number-plan-open" aria-label="Warzenschwein" title="Warzenschwein"><img src="assets/warzenschwein-hungrig.webp" alt="Ein hungriges Warzenschwein leckt sich die Lippen"></button>
@@ -58,6 +61,11 @@
    </section>
    <section id="zahl-des-tages" class="zdt-shell" aria-label="Zahl des Tages"></section>
 
+    </div>
+   </details>
+   <details class="valley-accordion valley-accordion-other">
+    <summary><span class="valley-accordion-icon">✏️</span><span><strong>Aufgaben des Tages</strong><small>Vier abwechslungsreiche Aufgaben bearbeiten</small></span><span class="valley-accordion-arrow" aria-hidden="true">⌄</span></summary>
+    <div class="valley-accordion-body">
    <section class="today-meerkat-intro" aria-label="Die anderen Tagesaufgaben">
     <div class="secret-wrap today-meerkat-figure">
      <button type="button" class="secret-image" id="meerkat-secret" aria-label="Erdmännchen"><img class="meerkat-figure" src="assets/erdmaennchen-denkend.png" alt="Nachdenkliches Erdmännchen"></button>
@@ -70,12 +78,15 @@
      <div class="today-meta"><span class="today-label" id="today-label"></span><span class="day-pill" id="day-pill"></span></div>
      <h2 id="today-theme"></h2>
      <p id="today-intro"></p>
+     <div id="today-audio" class="daily-audio-tools" hidden></div>
      <p class="daily-progress-explain">Hier zählen nur die <b>vier anderen Tagesaufgaben</b>. Die sechs Aufgaben bei der «Zahl des Tages» werden separat gezählt.</p><div class="progress-label"><span>Andere Tagesaufgaben (4)</span><span id="daily-progress">0 von 4 Aufgaben geschafft</span></div>
      <div class="progress-track"><span class="progress-fill" id="daily-progress-bar"></span></div>
     </section>
     <div class="preview-note" id="preview-notice" hidden><span>Wochenvorschau</span><button id="return-today" type="button">Zur heutigen Aufgabe</button></div>
     <div id="daily-tasks"></div>
    </div>
+    </div>
+   </details>
   </div>
  </section>
  <section class="view" id="view-todo" hidden><div id="lernsteuerung-todo" class="ls-todo-root"></div><div id="ls-exit-kids"></div></section>

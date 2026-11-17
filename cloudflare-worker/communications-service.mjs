@@ -19,7 +19,7 @@ export function createCommunicationsService({auth,store,catalog={},now=()=>Date.
  };
  async function handle(request){
    const u=new URL(request.url),p=u.pathname,method=request.method;
-   if(!['/admin-messages','/messages','/activity-heartbeat','/admin-live-activity'].includes(p))return null;
+   if(!['/admin-messages','/messages','/messages/read','/activity-heartbeat','/admin-live-activity'].includes(p))return null;
    try{
      if(p==='/activity-heartbeat'&&method==='POST'){
        const name=await child(request);
@@ -49,21 +49,31 @@ export function createCommunicationsService({auth,store,catalog={},now=()=>Date.
          const subject=typeof body?.subject==='string'?body.subject.trim():'';
          const message=typeof body?.body==='string'?body.body.trim():'';
          const audience=body?.audience,recipient=audience==='child'?body?.recipient:null;
-         if(!['all','child'].includes(audience)||!subject||subject.length>100||!message||
+         const kind=body?.kind===undefined?'message':body.kind;
+         if(!['all','child'].includes(audience)||!['message','update','success'].includes(kind)||!subject||subject.length>100||!message||
             message.length>1500||(audience==='child'&&(!validUsername(recipient)||!await store.studentExists(recipient))))
            return json({error:'Empfänger oder Nachricht ungültig'},400);
          if(audience==='all'&&body?.recipient) return json({error:'Empfänger nicht erlaubt'},400);
-         const id=await store.createMessage({audience,recipient,subject,body:message,
+         const id=await store.createMessage({audience,recipient,kind,subject,body:message,
             author:teacher,at:new Date(now()).toISOString()});
          return json({ok:true,id},201);
        }
+     }
+     if(p==='/messages/read'&&method==='POST'){
+       const name=await child(request);
+       if(!name)return json({error:'Anmeldung erforderlich'},401);
+       const input=await request.json().catch(()=>null);
+       if(!Number.isSafeInteger(input?.id)||input.id<1)return json({error:'Ungültige Nachricht'},400);
+       if(typeof store.markRead!=='function')return json({error:'Lesebestätigung noch nicht eingerichtet'},503);
+       const okay=await store.markRead(name,input.id,new Date(now()).toISOString());
+       return json({ok:okay},okay?200:404);
      }
      if(p==='/messages'&&method==='GET'){
        const name=await child(request);
        if(!name)return json({error:'Anmeldung erforderlich'},401);
        const messages=await store.messagesFor(name);
        return json({available:true,messages:messages.map(m=>({id:m.id,subject:m.subject,
-          body:m.body,created_at:m.created_at}))});
+          body:m.body,kind:m.kind||'message',created_at:m.created_at,read_at:m.read_at||null}))});
      }
      return json({error:'Methode nicht erlaubt'},405);
    }catch(_){
