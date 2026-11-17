@@ -770,7 +770,49 @@ function renderMail(){
   const badge=document.getElementById('mailIndicator');if(badge)badge.hidden=true;
 }
 let clockTimer=null;function renderClock(){clearInterval(clockTimer);DOM.modalBody.innerHTML=`<div class="today-card"><div class="eyebrow">Zeit in der Schweiz</div><div class="today-time" id="liveTime">--:--</div><h3 id="todayDate">Heute</h3><p>Ein guter Tag für eine neue Entdeckung! 🌞</p></div><div class="tip">🧭 Für die vollständige Agenda klicke auf den Kompass im Camp.</div>`;const update=()=>{if(!$('#liveTime')){clearInterval(clockTimer);return}$('#liveTime').textContent=dt(now(),{hour:'2-digit',minute:'2-digit'});$('#todayDate').textContent=dt(now(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})};update();clockTimer=setInterval(update,15000)}
-function renderHelp(){DOM.modalBody.innerHTML=`<div class="notice">🦩 Hakuna Matata! Ich zeige dir unser Camp.</div><div class="agenda-list" style="margin-top:16px"><div class="agenda-entry"><strong>📖 Logbuch</strong><p>Deine Aufgaben und Erfolge, wenn du angemeldet bist.</p></div><div class="agenda-entry"><strong>🗺️ Karte</strong><p>Entdecke die Lern-Lagune, das Tages-Tal, den Baobab-Baum und die Oase.</p></div><div class="agenda-entry"><strong>🧭 Kompass</strong><p>Hier siehst du deine Woche von Montag bis Sonntag. Heute ist besonders markiert.</p></div><div class="agenda-entry"><strong>✉️ Briefkasten</strong><p>Hier bekommst du Post.</p></div><div class="agenda-entry"><strong>🕰️ Uhr</strong><p>Sie zeigt dir die Zeit und den heutigen Tag.</p></div></div>`}
+const safariLearningPortals=Object.freeze([
+ {name:'ANTON',emoji:'🧩',description:'Übe Mathe, Deutsch und viele andere Schulfächer.',url:'https://anton.app/'},
+ {name:'Antolin',emoji:'📚',description:'Lies Bücher und beantworte Fragen dazu.',url:'https://antolin.westermann.de/'},
+ {name:'Kahoot!',emoji:'🎮',description:'Gib den Spiel-PIN deiner Lehrperson ein und spiele mit.',url:'https://kahoot.it/'},
+ {name:'Klett · meinKlett',emoji:'📘',description:'Öffne deine digitalen Schulbücher und Übungen.',url:'https://www.meinklett.ch/'}
+]);
+function renderHelp(){
+ DOM.modalBody.innerHTML='<div class="notice">🦩 Hakuna Matata! Was möchtest du anschauen?</div>'+
+  '<div class="flamingo-choice-grid">'+
+  '<button type="button" class="flamingo-choice" data-flamingo-view="guide" aria-expanded="false"><span aria-hidden="true">🗺️</span><strong>LernSafari entdecken</strong><small>Erklärungen zu allen Bereichen</small></button>'+
+  '<button type="button" class="flamingo-choice" data-flamingo-view="portals" aria-expanded="false"><span aria-hidden="true">🌐</span><strong>Lernportale</strong><small>ANTON, Antolin, Kahoot! und Klett</small></button>'+
+  '</div><div id="flamingoDetail" aria-live="polite"></div>';
+ $$('[data-flamingo-view]',DOM.modalBody).forEach(button=>button.addEventListener('click',()=>{
+  const view=button.dataset.flamingoView;
+  $$('[data-flamingo-view]',DOM.modalBody).forEach(choice=>{
+   const active=choice===button;
+   choice.classList.toggle('active',active);
+   choice.setAttribute('aria-expanded',String(active));
+  });
+  const detail=$('#flamingoDetail',DOM.modalBody);
+  if(view==='guide'){
+   detail.innerHTML='<h3>🗺️ So funktioniert die LernSafari</h3>'+
+    '<div class="agenda-list flamingo-explainer">'+
+    '<div class="agenda-entry"><strong>⛺ Camp</strong><p>Hier beginnt deine Safari. Wähle über die Gegenstände einen Bereich.</p></div>'+
+    '<div class="agenda-entry"><strong>📖 Mein Logbuch</strong><p>Hier findest du deine Aufgaben und Erfolge, wenn du angemeldet bist.</p></div>'+
+    '<div class="agenda-entry"><strong>🗺️ Karte</strong><p>Entdecke die Lern-Lagune, das Tages-Tal, den Baobab-Baum und die Oase.</p></div>'+
+    '<div class="agenda-entry"><strong>🧭 Kompass</strong><p>Hier siehst du deine Woche und wichtige Termine. Heute ist besonders markiert.</p></div>'+
+    '<div class="agenda-entry"><strong>✉️ Briefkasten</strong><p>Hier bekommst du persönliche Post und Erfolgsbriefe.</p></div>'+
+    '<div class="agenda-entry"><strong>🕰️ Uhr</strong><p>Sie zeigt dir die Zeit und den heutigen Tag.</p></div>'+
+    '<div class="agenda-entry"><strong>🌞 Tages-Tal</strong><p>Hier warten die Zahl des Tages und die Aufgaben des Tages.</p></div>'+
+    '<div class="agenda-entry"><strong>🌊 Lern-Lagune</strong><p>Hier übst du Mathematik, Deutsch, NMG und andere Schulfächer.</p></div>'+
+    '<div class="agenda-entry"><strong>🌳 Baobab-Baum</strong><p>Hier entdeckst du die Klassenwelt, Tiere, Erinnerungen und besondere Aktionen.</p></div>'+
+    '<div class="agenda-entry"><strong>🏝️ Oase</strong><p>Hier kannst du knobeln, spielen und kreativ sein.</p></div>'+
+    '</div>';
+  }else{
+   detail.innerHTML='<h3>🌐 Lernportale</h3><p class="flamingo-portals-intro">Hier kommst du zu weiteren Lernseiten. Die Seiten öffnen sich in einem neuen Tab.</p>'+
+    '<div class="flamingo-portals-grid">'+safariLearningPortals.map(portal=>
+     '<a class="flamingo-portal" href="'+escapeHtml(portal.url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+escapeHtml(portal.name)+' in neuem Tab öffnen">'+
+     '<span class="flamingo-portal-icon" aria-hidden="true">'+portal.emoji+'</span><span class="flamingo-portal-info"><strong>'+escapeHtml(portal.name)+'</strong><small>'+escapeHtml(portal.description)+'</small></span><span class="flamingo-portal-open" aria-hidden="true">↗</span></a>').join('')+'</div>';
+  }
+ }));
+}
+
 window.addEventListener('popstate',()=>{cancelObjectAnimation();if(state.modal)closeModal(true,true);const id=location.hash.slice(1);if(places.some(p=>p.id===id)){const p=places.find(p=>p.id===id);state.destination=id;showScreen('destination');$('#destinationScreen').classList.toggle('is-lagoon',id==='lagoon');$('#destinationScreen').classList.toggle('is-valley',id==='valley');$('#destinationScreen').classList.toggle('is-baobab',id==='baobab');$('#destEmoji').textContent=p.emoji;$('#destTitle').textContent=p.title;$('#destText').textContent=p.description;renderDestination(p)}else if(state.screen!=='login')showScreen('camp')});
 // The prototype intentionally starts at the login scene, even if an old URL fragment exists.
 history.replaceState({screen:'login'},'','#start');

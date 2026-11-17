@@ -384,3 +384,27 @@
  .modal-kind-map .map-hotspot-baobab{min-width:21%}
  .modal-kind-map .map-mobile-links{display:flex;justify-content:center}
 }
+
+/* Flamingo-Hilfe: klarer Einstieg in zwei kindgerechte Bereiche. */
+.flamingo-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0 18px}
+.flamingo-choice{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;min-height:122px;border:2px solid #d5b67c;border-radius:16px;background:#fff9ec;color:#4b3829;padding:16px;box-shadow:0 4px 12px #63452215;cursor:pointer;font:inherit}
+.flamingo-choice>span{font-size:29px}
+.flamingo-choice strong{font-size:18px}
+.flamingo-choice small{font-size:13px;line-height:1.45;color:#705c47}
+.flamingo-choice:hover,.flamingo-choice.active{background:#f0f5e8;border-color:#3d805c}
+.flamingo-choice.active{box-shadow:0 0 0 2px #3d805c33}
+.flamingo-choice:focus-visible,.flamingo-portal:focus-visible{outline:3px solid #c76d21;outline-offset:3px}
+#flamingoDetail h3{color:#385944;margin:7px 0 12px}
+.flamingo-explainer{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.flamingo-explainer .agenda-entry{margin:0;min-width:0}
+.flamingo-explainer .agenda-entry p{margin:6px 0 0;line-height:1.5}
+.flamingo-portals-intro{color:#705c47;line-height:1.5;margin:0 0 13px}
+.flamingo-portals-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.flamingo-portal{display:flex;align-items:center;gap:11px;min-width:0;min-height:90px;text-decoration:none;color:#38533d;background:#fffdf6;border:2px solid #ddc38e;border-radius:14px;padding:13px 12px;transition:border-color .15s,background .15s,transform .15s}
+.flamingo-portal:hover{border-color:#487d58;background:#eff5e6;transform:translateY(-2px)}
+.flamingo-portal-icon{font-size:29px;flex:0 0 auto}
+.flamingo-portal-info{display:flex;min-width:0;flex:1;flex-direction:column;gap:5px}
+.flamingo-portal-info strong{font-size:18px}
+.flamingo-portal-info small{font-size:13px;line-height:1.4;color:#6d6b58}
+.flamingo-portal-open{font-size:23px;color:#59815e;flex:0 0 auto}
+@media(max-width:600px){.flamingo-choice-grid,.flamingo-explainer,.flamingo-portals-grid{grid-template-columns:1fr}.flamingo-choice{min-height:102px}.flamingo-portal{min-height:84px}}
