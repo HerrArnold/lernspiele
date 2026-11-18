@@ -4,18 +4,19 @@
 (function(root){
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
  const date=s=>{try{return new Intl.DateTimeFormat('de-CH',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Europe/Zurich'}).format(new Date(s+'T12:00:00Z'))}catch(_){return String(s)}};
+ const displayTitle=title=>String(title??'').trim()==='Schulreise'?'Herbstwanderung':String(title??'');
  const endpoint=()=>String(root.LERNSAFARI_BACKEND_URL||'https://lernsafari-api.ergohd02.workers.dev').replace(/\/+$/,'');
  const photoSafe=s=>typeof s==='string'&&s.length<220001&&/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(s);
  function polaroids(rows){
   const items=rows.filter(p=>photoSafe(p.image)).slice().sort((x,y)=>
     String(x.event_date||x.date||'').localeCompare(String(y.event_date||y.date||''))||Number(x.id)-Number(y.id));
   return '<div class="baobab-timeline-head"><span>Früher</span><div class="baobab-timeline-controls"><button type="button" data-project-scroll="-1" aria-label="Ältere Projekte">‹</button><button type="button" data-project-scroll="1" aria-label="Neuere Projekte">›</button></div><span>Heute</span></div>'+
-   '<div class="baobab-timeline" role="region" aria-label="Unsere Lieblingsprojekte, zeitlich von alt nach neu" tabindex="0">'+
+   '<div class="baobab-timeline" role="region" aria-label="Erlebnisse, zeitlich von alt nach neu" tabindex="0">'+
    items.map((p,i)=>'<article class="baobab-timeline-item"><time datetime="'+esc(p.date||p.event_date)+'">'+esc(date(p.date||p.event_date))+'</time>'+
-    '<button type="button" class="baobab-polaroid baobab-polaroid-open" data-open-project="'+Number(p.id)+'" style="--polaroid-tilt:'+((i%5)-2)*.8+'deg" aria-label="'+esc(p.title)+' – Bilder anschauen">'+
-    '<img src="'+esc(p.image)+'" alt="'+esc(p.title)+'" loading="lazy">'+
+    '<button type="button" class="baobab-polaroid baobab-polaroid-open" data-open-project="'+Number(p.id)+'" style="--polaroid-tilt:'+((i%5)-2)*.8+'deg" aria-label="'+esc(displayTitle(p.title))+' – Bilder anschauen">'+
+    '<img src="'+esc(p.image)+'" alt="'+esc(displayTitle(p.title))+'" loading="lazy">'+
     (Number(p.photo_count)>1?'<span class="baobab-photo-badge">📷 '+Number(p.photo_count)+' Fotos · Ansehen</span>':'<span class="baobab-photo-badge is-one">🔍 Vergrössern</span>')+
-    '<span class="baobab-polaroid-caption"><strong>'+esc(p.title)+'</strong>'+(p.caption?'<span>'+esc(p.caption)+'</span>':'')+'</span></button></article>').join('')+'</div>'+
+    '<span class="baobab-polaroid-caption"><strong>'+esc(displayTitle(p.title))+'</strong>'+(p.caption?'<span>'+esc(p.caption)+'</span>':'')+'</span></button></article>').join('')+'</div>'+
    '<p class="baobab-scroll-hint">← Scrolle von links nach rechts durch unsere gemeinsamen Erlebnisse →</p>';
  }
  function openGallery(host,project){
@@ -23,11 +24,11 @@
    if(existing)existing.remove();
    const layer=document.createElement('div');
    layer.className='baobab-lightbox';layer.setAttribute('role','dialog');layer.setAttribute('aria-modal','true');
-   layer.setAttribute('aria-label','Bildergalerie '+project.title);
+   layer.setAttribute('aria-label','Bildergalerie '+displayTitle(project.title));
    layer.innerHTML='<div class="baobab-lightbox-panel"><button type="button" class="baobab-lightbox-close" aria-label="Bildergalerie schliessen">✕</button>'+
-     '<h3>'+esc(project.title)+'</h3><p>'+esc(date(project.date||project.event_date))+(project.caption?' · '+esc(project.caption):'')+'</p>'+
+     '<h3>'+esc(displayTitle(project.title))+'</h3><p>'+esc(date(project.date||project.event_date))+(project.caption?' · '+esc(project.caption):'')+'</p>'+
      '<div class="baobab-lightbox-picture"><button type="button" data-photo-step="-1" aria-label="Vorheriges Foto">‹</button>'+
-     '<img alt="'+esc(project.title)+'" src="'+esc(project.image)+'">'+
+     '<img alt="'+esc(displayTitle(project.title))+'" src="'+esc(project.image)+'">'+
      '<button type="button" data-photo-step="1" aria-label="Nächstes Foto">›</button></div>'+
      '<div class="baobab-lightbox-footer"><span data-photo-counter aria-live="polite">Foto 1 von 1</span><div class="baobab-photo-thumbs"></div></div>'+
      '<p class="baobab-photo-loading" role="status">Zusätzliche Bilder werden geladen …</p></div>';
@@ -39,7 +40,7 @@
    const img=layer.querySelector('.baobab-lightbox-picture img');
    const update=()=>{
      if(closed)return;
-     img.src=photos[index];img.alt=project.title+' – Foto '+(index+1)+' von '+photos.length;
+     img.src=photos[index];img.alt=displayTitle(project.title)+' – Foto '+(index+1)+' von '+photos.length;
      layer.querySelector('[data-photo-counter]').textContent='Foto '+(index+1)+' von '+photos.length;
      layer.querySelectorAll('[data-photo-step]').forEach(b=>b.disabled=photos.length<2);
      layer.querySelector('.baobab-photo-thumbs').innerHTML=photos.map((photo,i)=>
@@ -61,7 +62,7 @@
  }
  async function render(host){
   if(!host)return;
-  host.innerHTML='<div class="baobab-projects-intro"><h2>📸 Unsere Lieblingsprojekte</h2><p>Unsere schönsten Erlebnisse auf einem Zeitstrahl – von früher bis heute.</p></div>'+
+  host.innerHTML='<div class="baobab-projects-intro"><h2>📸 Erlebnisse</h2><p>Unsere schönsten Erlebnisse auf einem Zeitstrahl – von früher bis heute.</p></div>'+
     '<div id="baobabProjectGallery" class="baobab-projects-loading" role="status">Unser Fotoalbum wird geöffnet …</div>';
   const gallery=host.querySelector('#baobabProjectGallery');
   try{
@@ -104,7 +105,7 @@
  }
  function adminMount({mount,call}){
   if(!mount)return;
-  mount.innerHTML='<section class="pd-panel"><h4>📸 Projekte und Erlebnisse</h4><p>Füge ein Foto mit Datum und einem kurzen Rückblick hinzu. Nach dem Veröffentlichen erscheint der Beitrag im Baobab-Baum als Polaroid.</p>'+
+  mount.innerHTML='<section class="pd-panel"><h4>📸 Erlebnisse</h4><p>Füge ein Foto mit Datum und einem kurzen Rückblick hinzu. Nach dem Veröffentlichen erscheint der Beitrag im Baobab-Baum als Polaroid.</p>'+
    '<form id="adminProjectForm" class="pd-form" hidden>'+
    '<label>Titelbild<input type="file" name="image" accept="image/jpeg,image/png,image/webp" required></label>'+
    '<label>Weitere Bilder (optional, höchstens 8)<input type="file" name="extra_images" accept="image/jpeg,image/png,image/webp" multiple><small>Mehrere Bilder gleichzeitig auswählen. Sie erscheinen beim Klick auf das Polaroid.</small></label>'+
@@ -126,7 +127,7 @@
     available=true;form.hidden=false;
     status.textContent='✅ Fotoalbum mit Cloudflare verbunden. Fotos werden erst nach Veröffentlichung sichtbar.';
     list.innerHTML=data.projects.length?'<h5>Veröffentlichte Rückblicke</h5><div class="admin-project-list">'+
-     data.projects.map(p=>'<article class="admin-project-entry"><strong>'+esc(p.title)+'</strong><span>'+esc(date(p.event_date||p.date))+' · '+Number(p.photo_count||1)+' Fotos</span><button type="button" class="pd-secondary" data-add-project-photos="'+Number(p.id)+'" '+(Number(p.photo_count||1)>=9?'disabled':'')+'>📷 Fotos hinzufügen</button><button type="button" class="pd-secondary" data-delete-project="'+Number(p.id)+'">Löschen</button>'+
+     data.projects.map(p=>'<article class="admin-project-entry"><strong>'+esc(displayTitle(p.title))+'</strong><span>'+esc(date(p.event_date||p.date))+' · '+Number(p.photo_count||1)+' Fotos</span><button type="button" class="pd-secondary" data-add-project-photos="'+Number(p.id)+'" '+(Number(p.photo_count||1)>=9?'disabled':'')+'>📷 Fotos hinzufügen</button><button type="button" class="pd-secondary" data-delete-project="'+Number(p.id)+'">Löschen</button>'+
      '<div class="admin-extra-photo-form" data-photo-form="'+Number(p.id)+'" hidden><label>Weitere Bilder auswählen<input type="file" accept="image/jpeg,image/png,image/webp" multiple></label><label class="admin-project-permission"><input type="checkbox"> Ich bestätige, dass ich alle ausgewählten Fotos veröffentlichen darf.</label><button type="button" class="pd-action" data-save-project-photos="'+Number(p.id)+'">Fotos hochladen</button><p role="status"></p></div></article>').join('')+'</div>':'<p>Noch keine veröffentlichten Rückblicke.</p>';
     list.querySelectorAll('[data-add-project-photos]').forEach(button=>button.onclick=()=>{
       const panel=list.querySelector('[data-photo-form="'+Number(button.dataset.addProjectPhotos)+'"]');
