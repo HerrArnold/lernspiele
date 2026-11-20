@@ -4,6 +4,7 @@
 (function(root){
  const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
  const areas=[
+  {id:'mathplan',icon:'📘',name:'Matheplan',desc:'Alle Aufgaben und Häkchen der Klasse oder einzelner Tiere'},
   {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Tagesaufgaben, Fächer, Themen und Spiele zuweisen'},
   {id:'progress',icon:'📈',name:'Lernfortschritte',desc:'Punkte und Lernversuche nach Kind und Thema'},
   {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Wer ist online? Wer erledigt gerade einen Auftrag?'},
@@ -60,6 +61,12 @@
    shell.append(sec);sections[item.id]=sec;
    sec.querySelector('.admin-home').addEventListener('click',()=>open('home'));
   }
+  let mathPlanControl=null;
+  if(sections.mathplan&&root.LernSafariMathPlanUI){
+    const target=document.createElement('div');target.id='adminMathplanMount';
+    sections.mathplan.append(target);
+    mathPlanControl=root.LernSafariMathPlanUI.adminMount({host:target,call,kids});
+  }
   if(assignmentPanel)sections.assignments.append(assignmentPanel);
   if(jobPanel)sections.assignments.append(jobPanel);
   if(verifyPanel)sections.assignments.append(verifyPanel);
@@ -75,6 +82,7 @@
    banner.classList.toggle('admin-banner-compact',name!=='home');
    shell.scrollIntoView({block:'start',behavior:'smooth'});
    if(name==='progress')renderProgress();
+   if(name==='mathplan')mathPlanControl?.refresh();
    // Live activity is fetched only after an explicit click.
    if(name==='agenda')renderAgendaEditor();
    // Messaging is checked only if the teacher explicitly opens it.

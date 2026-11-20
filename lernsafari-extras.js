@@ -86,19 +86,20 @@
    const awards=sorted(messages).filter(x=>x.kind==='success');
    return awards.length?awards.map(x=>'<article class="ls-award"><span aria-hidden="true">🏅</span><div><strong>'+esc(x.subject)+'</strong><small>'+esc(format(x.created_at))+'</small><p>'+esc(x.body||'')+'</p></div></article>').join(''):'<p>Noch keine Auszeichnungen erhalten. Deine Lehrperson kann dir hier besondere Erfolge verleihen.</p>';
  }
- function logbook({host,plan,highscores,messages,onOpen,onDone,onRefresh}){
+ function logbook({host,plan,highscores,messages,onOpen,onDone,onRefresh,call}){
    const assignments=safeRows(plan.assignments);
    const done=new Set(safeRows(plan.done).map(Number));
    const scores=safeRows(highscores.highscores);
-   let selected='tasks',achievementTab='awards';
+   let selected='math',achievementTab='awards';
    const awards=safeRows(messages).filter(x=>x.kind==='success');
    const doneTotal=assignments.filter(a=>done.has(Number(a.id))).length;
    host.innerHTML='<div class="pd-shell cloud-shell ls-logbook"><header class="pd-banner"><div><span class="pd-eyebrow">📖 Mein persönliches Logbuch</span><h3>Mein Logbuch</h3><p>Meine Aufgaben und Erfolge – alles an einem Ort.</p></div><div class="pd-total"><strong>'+doneTotal+' / '+assignments.length+'</strong><span>erledigt</span></div></header>'+
-     '<nav class="ls-logbook-tabs" aria-label="Logbuch-Bereiche"><button type="button" data-logbook-tab="tasks" aria-selected="true">📌 Meine Aufgaben</button><button type="button" data-logbook-tab="achievements" aria-selected="false">🏆 Erfolge</button></nav><div id="lsLogbookContent"></div></div>';
+     '<nav class="ls-logbook-tabs" aria-label="Logbuch-Bereiche"><button type="button" data-logbook-tab="math" aria-selected="true">📘 Matheplan</button><button type="button" data-logbook-tab="tasks" aria-selected="false">📌 Aufträge</button><button type="button" data-logbook-tab="achievements" aria-selected="false">🏆 Erfolge</button></nav><div id="lsLogbookContent"></div></div>';
    const outlet=host.querySelector('#lsLogbookContent');
    const render=()=>{
      host.querySelectorAll('[data-logbook-tab]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.logbookTab===selected)));
-     if(selected==='tasks'){
+     if(selected==='math'){if(root.LernSafariMathPlanUI)root.LernSafariMathPlanUI.child({host:outlet,call,onOpen});else outlet.innerHTML='<p>Matheplan wird vorbereitet.</p>';}
+     else if(selected==='tasks'){
        outlet.innerHTML='<p class="ls-logbook-intro">Hier siehst du deine aktuellen Aufträge. Ein Häkchen bedeutet «Ich bin fertig» und ist keine automatische Korrektur.</p>'+
        (assignments.length?assignments.map(a=>'<article class="pd-task '+(done.has(Number(a.id))?'is-done':'')+'"><div class="pd-task-head"><span>📌</span><div><strong>'+esc(a.title)+'</strong><small>'+(a.kind==='zusatz'?'Zusatzaufgabe':'Pflichtaufgabe')+'</small></div><span class="pd-task-status">'+(done.has(Number(a.id))?'✓ Erledigt':'Offen')+'</span></div>'+
          '<div class="pd-task-actions"><button type="button" class="pd-action" data-logbook-open="'+Number(a.id)+'">Aufgabe öffnen</button><label class="pd-inline-check"><input type="checkbox" data-logbook-done="'+Number(a.id)+'" '+(done.has(Number(a.id))?'checked':'')+'> Erledigt</label></div></article>').join(''):'<div class="pd-panel">Momentan hast du keine zugewiesenen Aufgaben.</div>');
