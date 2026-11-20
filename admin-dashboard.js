@@ -5,10 +5,9 @@
  const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
  const areas=[
   {id:'mathplan',icon:'📘',name:'Matheplan',desc:'Alle Aufgaben und Häkchen der Klasse oder einzelner Tiere'},
-  {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Tagesaufgaben, Fächer, Themen und Spiele zuweisen'},
-  {id:'matrix',icon:'📊',name:'Lernaktivität nach Inhalt',desc:'Lern-Lagune, Oase, Baobab: Durchläufe, erste und beste Ergebnisse'},
-  {id:'progress',icon:'📈',name:'Lernfortschritte',desc:'Punkte und Lernversuche nach Kind und Thema'},
-  {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Wer ist online? Wer erledigt gerade einen Auftrag?'},
+  {id:'matrix',icon:'📊',name:'Lernaktivität nach Inhalt',desc:'Lern-Lagune, Oase, Baobab: Durchläufe, erster und bester Wert'},
+  {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Aufträge planen, Exit-Tickets und Tagesaufgaben ansehen'},
+  {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Auf Knopfdruck sehen, welches Tier wo arbeitet'},
   {id:'agenda',icon:'📅',name:'Agenda',desc:'Wochenübersicht und Hausaufgaben, Lernkontrollen, Schulfrei bearbeiten'},
   {id:'memories',icon:'📷',name:'Erinnerungen',desc:'Fotos, Datum und Rückblicke als Polaroids beim Baobab veröffentlichen'}
  ];
@@ -37,17 +36,14 @@
  }
  function createSelect(label,id,choices){return '<label>'+label+'<select id="'+id+'">'+choices.map(x=>'<option value="'+html(x[0])+'">'+html(x[1])+'</option>').join('')+'</select></label>'}
  function mount(opts){
-  const {host,kids=[],jobs=[],pres=[],done=[],verified=[],targets=[],call,renderAdminProgress}=opts;
+  const {host,kids=[],jobs=[],done=[],verified=[],targets=[],call}=opts;
   if(!host?.isConnected||!host.querySelector('#cloudAssignmentForm'))return;
   const shell=host.querySelector('.cloud-shell');
   const banner=shell?.querySelector('.pd-banner');
   if(!shell||!banner)return;
   const oldParts=[...shell.children].filter(el=>el!==banner);
   const assignForm=shell.querySelector('#cloudAssignmentForm'),assignmentPanel=assignForm.closest('section');
-  const modeNode=shell.querySelector('#cloudClassroomModeContainer');
   const jobPanel=shell.querySelector('#cloudRefreshAdmin')?.closest('section');
-  const progressPanel=shell.querySelector('#cloudProgressPanel');
-  const activityPanel=shell.querySelector('#cloudOpenLegacy')?.closest('section');
   const verifyPanel=shell.querySelector('#cloudTeacherVerification');
   const lockPanel=shell.querySelector('#cloudLoginLocks');
   const deck=document.createElement('div');deck.className='admin-deck';
@@ -71,6 +67,14 @@
   if(assignmentPanel)sections.assignments.append(assignmentPanel);
   if(jobPanel)sections.assignments.append(jobPanel);
   if(verifyPanel)sections.assignments.append(verifyPanel);
+  if(root.LernSafariExitAdmin){
+   const exitHost=document.createElement('div');exitHost.id='adminNativeExitTickets';sections.assignments.append(exitHost);
+   root.LernSafariExitAdmin.mount({host:exitHost,call,kids});
+  }
+  if(root.LernSafariDailyAdmin){
+   const dailyHost=document.createElement('div');dailyHost.id='adminDailyOverview';sections.assignments.append(dailyHost);
+   root.LernSafariDailyAdmin.mount(dailyHost);
+  }
   // Classroom-mode editor removed.
   let learningMatrixControl=null;
   if(sections.matrix&&root.LernSafariLearningMatrix){
@@ -78,9 +82,7 @@
    sections.matrix.append(spot);
    learningMatrixControl=root.LernSafariLearningMatrix.mount({host:spot,call});
   }
-  if(progressPanel)sections.progress.append(progressPanel);
-  if(activityPanel)sections.activity.append(activityPanel);
-  if(lockPanel)sections.activity.append(lockPanel);
+  if(lockPanel)sections.assignments.append(lockPanel);
   // Any unidentified old panel remains accessible in assignments; no controls are lost.
   for(const el of oldParts)if(el.parentElement===shell)sections.assignments.append(el);
   function open(name){
@@ -88,11 +90,11 @@
    Object.entries(sections).forEach(([key,el])=>el.hidden=name!==key);
    banner.classList.toggle('admin-banner-compact',name!=='home');
    shell.scrollIntoView({block:'start',behavior:'smooth'});
-   if(name==='progress')renderProgress();
    if(name==='matrix')learningMatrixControl?.refresh();
    if(name==='mathplan')mathPlanControl?.refresh();
    // Live activity is fetched only after an explicit click.
    if(name==='agenda')renderAgendaEditor();
+   if(name==='memories')openMemories();
    // Messaging is checked only if the teacher explicitly opens it.
   }
   deck.querySelectorAll('[data-admin-section]').forEach(b=>b.addEventListener('click',()=>open(b.dataset.adminSection)));
@@ -201,8 +203,6 @@
     if(error){status.textContent=saved+' Aufträge gespeichert; danach Fehler: '+String(error.message||error);btn.disabled=false;}
     else{status.textContent=saved+' Lernaufträge gespeichert.';await opts.renderCloudAdmin();}
   },true);
-  // Always keep the legacy editor and its own authentication working.
-  // New activity / messages panels are intentionally explicit about missing APIs.
   const livePanel=document.createElement('div');livePanel.className='pd-panel';
   livePanel.innerHTML='<h4>👀 Aktivität auf Anfrage</h4><p class="admin-small-note">Die Übersicht wird ausschliesslich durch deinen Klick geladen. Du siehst, wo sich die Kinder zuletzt gemeldet haben.</p>';
   sections.activity.prepend(livePanel);
@@ -234,7 +234,7 @@
      (outstanding.length?'<details><summary>'+outstanding.length+' noch nicht überprüfte Aufträge</summary><ul>'+outstanding.map(j=>'<li>'+html(j.title||j.target||'Auftrag')+'</li>').join('')+'</ul></details>':'')+
      '</article>';
    }).join('')+'</div>';
-  sections.activity.append(activityProgress);
+  sections.assignments.append(activityProgress);
 
   const liveRefresh=document.createElement('div');
   liveRefresh.className='admin-live-refresh';liveRefresh.innerHTML='<button type="button" class="pd-secondary" id="adminLiveReload">🔄 Jetzt abfragen: Wer ist wo?</button><p class="admin-small-note" role="status" id="adminLiveStatus">Noch keine Abfrage durchgeführt.</p>';
@@ -259,129 +259,16 @@
     }catch(_){status.textContent='Live-Aktivität noch nicht freigeschaltet: Cloudflare muss den geschützten Aktivitätsdienst bereitstellen.'}
   }
   livePanel.querySelector('#adminLiveReload').onclick=renderLiveActivity;
-  const messagePanel=document.createElement('div');messagePanel.className='pd-panel';
-  messagePanel.innerHTML='<h4>✉️ Nachricht an die Kinder</h4><p>Mitteilungen werden nur über die geprüfte Cloudflare-Lehrpersonen-Sitzung versendet.</p><label>Empfänger<select id="adminMessageRecipient"><option value="all">Ganze Klasse</option>'+kids.map(k=>'<option value="'+html(k.username)+'">'+html(k.username)+'</option>').join('')+'</select></label><label>Betreff<input id="adminMessageSubject" maxlength="100" placeholder="z. B. Morgen mitbringen"></label><label>Nachricht<textarea id="adminMessageText" rows="5" maxlength="1500" placeholder="Deine Nachricht an die Kinder …"></textarea></label><div class="admin-message-actions"><button type="button" class="pd-action" id="adminMessageSend" disabled>Sicher versenden</button><button type="button" class="pd-secondary" id="adminMessageCopy">Text kopieren</button><button type="button" class="pd-secondary" id="adminMessageLegacy">Bestehende Verwaltung öffnen</button></div><p id="adminMessageStatus" role="status">Nachrichtenfunktion wird beim Öffnen geprüft.</p><section id="adminSentMessages" aria-label="Zuletzt versendete Nachrichten"></section>';
-  // Keep the previously requested messaging tools accessible without adding a seventh landing card.
-  const messagingDetails=document.createElement('details');
-  messagingDetails.className='admin-detail-attempt';
-  messagingDetails.innerHTML='<summary>✉️ Nachrichten an die Kinder (zusätzliche Verwaltung)</summary>';
-  messagingDetails.append(messagePanel);
-  messagingDetails.addEventListener('toggle',()=>{if(messagingDetails.open)checkMessagesAvailability();});
-  sections.activity.append(messagingDetails);
-  if(sections.memories&&root.LernSafariProjects?.adminMount){
-    const projectMount=document.createElement('div');projectMount.id='adminProjectsMount';sections.memories.append(projectMount);
-    root.LernSafariProjects.adminMount({mount:projectMount,call});
-  }
-  let messageServiceAvailable=false;
-  async function checkMessagesAvailability(){
-    const status=messagePanel.querySelector('#adminMessageStatus');
-    status.textContent='Geschützte Nachrichtenfunktion wird geprüft …';
-    try{
-      const data=await call('/admin-messages',{admin:true});
-      if(data.available!==true||!Array.isArray(data.messages))throw Error('Keine Nachrichten-API');
-      messageServiceAvailable=true;
-      messagePanel.querySelector('#adminMessageSend').disabled=false;
-      status.textContent='Nachrichten können sicher über Cloudflare versendet werden.';
-      const list=messagePanel.querySelector('#adminSentMessages');
-      list.innerHTML='<h5>Zuletzt versendet</h5>'+(data.messages.length?
-        '<div class="admin-sent-list">'+data.messages.slice(0,20).map(m=>'<article><strong>'+html(m.subject)+'</strong><span>'+html(m.audience==='all'?'Ganze Klasse':m.recipient||'Ein Kind')+'</span><small>'+html(m.created_at||'')+'</small></article>').join('')+'</div>':
-        '<p>Es wurden noch keine Nachrichten versendet.</p>');
-    }catch(_){
-      messageServiceAvailable=false;
-      messagePanel.querySelector('#adminMessageSend').disabled=true;
-      status.textContent='Senden noch nicht möglich: Die Cloudflare-Nachrichten-API ist nicht aktiviert. Du kannst den Text weiterhin kopieren.';
-    }
-  }
-  messagePanel.querySelector('#adminMessageSend').onclick=async()=>{
-    if(!messageServiceAvailable)return;
-    const recipient=messagePanel.querySelector('#adminMessageRecipient').value;
-    const subject=messagePanel.querySelector('#adminMessageSubject').value.trim();
-    const body=messagePanel.querySelector('#adminMessageText').value.trim();
-    const status=messagePanel.querySelector('#adminMessageStatus');
-    if(!subject||!body){status.textContent='Bitte Betreff und Nachricht eingeben.';return;}
-    const audience=recipient==='all'?'all':'child';
-    const label=recipient==='all'?'die ganze Klasse':recipient;
-    if(!confirm('Nachricht wirklich an '+label+' senden?'))return;
-    const button=messagePanel.querySelector('#adminMessageSend');button.disabled=true;
-    try{
-      const result=await call('/admin-messages',{method:'POST',admin:true,body:{audience,recipient:audience==='child'?recipient:undefined,subject,body}});
-      if(result.ok!==true)throw Error('Keine Serverbestätigung');
-      status.textContent='✅ Nachricht wurde auf Cloudflare gespeichert und ist für '+label+' sichtbar.';
-      messagePanel.querySelector('#adminMessageSubject').value='';
-      messagePanel.querySelector('#adminMessageText').value='';
-      await checkMessagesAvailability();
-    }catch(err){status.textContent='Nicht gesendet: '+html(err.message||err);button.disabled=false;}
+  // Photo albums can contain large image payloads. Do not load them every
+  // time Flamingo opens the dashboard; mount only when «Erinnerungen» is chosen.
+  let memoriesMounted=false;
+  const openMemories=()=>{
+   if(memoriesMounted||!sections.memories||!root.LernSafariProjects?.adminMount)return;
+   memoriesMounted=true;
+   const projectMount=document.createElement('div');projectMount.id='adminProjectsMount';
+   sections.memories.append(projectMount);
+   root.LernSafariProjects.adminMount({mount:projectMount,call});
   };
-  messagePanel.querySelector('#adminMessageCopy').onclick=async()=>{
-    const subject=messagePanel.querySelector('#adminMessageSubject').value.trim(),body=messagePanel.querySelector('#adminMessageText').value.trim();
-    if(!body){messagePanel.querySelector('#adminMessageStatus').textContent='Bitte zuerst einen Nachrichtentext eingeben.';return}
-    try{await navigator.clipboard.writeText((subject?subject+'\n\n':'')+body);messagePanel.querySelector('#adminMessageStatus').textContent='Text kopiert – noch nicht versendet.'}
-    catch(_){messagePanel.querySelector('#adminMessageStatus').textContent='Kopieren im Browser nicht erlaubt. Du kannst den Text markieren und kopieren.'}
-  };
-  messagePanel.querySelector('#adminMessageLegacy').onclick=()=>host.querySelector('#cloudOpenLegacy')?.click();
-  async function renderProgress(){
-    const mountPoint=sections.progress;
-    let wrapper=mountPoint.querySelector('#adminDrilldown');
-    if(!wrapper){wrapper=document.createElement('section');wrapper.className='pd-panel';wrapper.id='adminDrilldown';mountPoint.prepend(wrapper);}
-    wrapper.innerHTML='<h4>📊 Detaillierte Lernfortschritte</h4><p role="status">Daten werden sicher aus Cloudflare geladen …</p>';
-    try{
-      const report=await call('/admin-report',{admin:true});
-      if(!wrapper.isConnected)return;
-      if(root.LernSafariProgress){root.LernSafariProgress.render(wrapper,report,kids,topics,SUBJECTS);return;}
-      const attempts=Array.isArray(report.attempts)?report.attempts:[];
-      const highs=Array.isArray(report.highscores)?report.highscores:[];
-      wrapper.innerHTML='<h4>📊 Detaillierte Lernfortschritte</h4><div class="admin-progress-filters">'+
-        createSelect('Kind','adminProgressKid',[['','Alle Kinder'],...kids.map(k=>[k.username,k.username])])+
-        createSelect('Fach','adminProgressSubject',[['','Alle Fächer'],...SUBJECTS.map(s=>[s,s])])+
-        createSelect('Thema','adminProgressTopic',[['','Alle Themen']])+
-        '</div><div id="adminProgressDetails"></div><p class="admin-small-note">Die Zahlen beruhen ausschliesslich auf vorhandenen Cloudflare-Spielversuchen. Nicht übermittelte Ergebnisse werden nicht geschätzt.</p>';
-      const filters={kid:wrapper.querySelector('#adminProgressKid'),subject:wrapper.querySelector('#adminProgressSubject'),topic:wrapper.querySelector('#adminProgressTopic')},output=wrapper.querySelector('#adminProgressDetails');
-      const topicGames=()=> (topics[filters.subject.value]||[]);
-      function updateTopics(){
-        const old=filters.topic.value;
-        filters.topic.innerHTML='<option value="">Alle Themen</option>'+topicGames().map(t=>'<option value="'+html(t.name)+'">'+html(t.name)+'</option>').join('');
-        filters.topic.value=topicGames().some(t=>t.name===old)?old:'';
-      }
-      const selectedGames=()=>{
-        if(!filters.subject.value)return null;
-        const candidates=topicGames().filter(t=>!filters.topic.value||t.name===filters.topic.value);
-        return new Set(candidates.flatMap(t=>t.games.map(g=>g.file?.replace(/\.html$/,'')).filter(Boolean)));
-      };
-      const numeric=x=>{const n=Number(x);return Number.isFinite(n)?n:null};
-      function draw(){
-        const games=selectedGames(),kid=filters.kid.value;
-        const rec=attempts.filter(a=>(!kid||a.username===kid)&&(!games||games.has(String(a.game||a.game_id||''))));
-        const scores=highs.filter(a=>(!kid||a.username===kid)&&(!games||games.has(String(a.game||a.game_id||''))));
-        const completedGames=new Set(rec.map(x=>x.game||x.game_id).filter(Boolean));
-        const labels=new Map();
-        for(const subject of SUBJECTS)for(const topic of topics[subject])for(const g of topic.games){
-          if(g.file)labels.set(g.file.replace(/\.html$/,''),subject+' · '+topic.name+' · '+g.title);
-        }
-        const grouped=new Map();
-        for(const a of rec){
-          const id=String(a.game||a.game_id||'unbekannt');
-          const row=grouped.get(id)||{id,count:0,values:[]};
-          row.count++;
-          const score=numeric(a.score??a.points??a.correct_count??a.correctCount);
-          if(score!==null)row.values.push(score);
-          grouped.set(id,row);
-        }
-        const points=rec.map(a=>numeric(a.score??a.points??a.correct_count??a.correctCount)).filter(x=>x!==null);
-        const best=scores.map(a=>numeric(a.score??a.highscore??a.best_score)).filter(x=>x!==null);
-        output.innerHTML='<div class="admin-metrics"><article><strong>'+rec.length+'</strong><span>gespeicherte Versuche</span></article><article><strong>'+completedGames.size+'</strong><span>verschiedene Spiele</span></article><article><strong>'+(points.length?Math.max(...points):'—')+'</strong><span>höchste Versuchspunkte*</span></article><article><strong>'+(best.length?Math.max(...best):'—')+'</strong><span>bester Highscore*</span></article></div>'+
-          '<p class="admin-small-note">* Punkte nur, sofern die Cloudflare-Daten diesen Wert enthalten; verschiedene Spiele haben unterschiedliche Maximalpunktzahlen.</p>'+
-          (grouped.size?'<h5 class="admin-game-results-title">Ergebnisse nach Lernspiel</h5><div class="admin-game-result-list">'+[...grouped.values()].sort((a,b)=>b.count-a.count).map(g=>'<article><strong>'+html(labels.get(g.id)||g.id.replace(/-/g,' '))+'</strong><span>'+g.count+' Versuche</span><span>'+(g.values.length?'Bester Wert: '+Math.max(...g.values):'Keine Punkte übermittelt')+'</span></article>').join('')+'</div>':'')+
-          (rec.length?'<div class="admin-result-rows">'+rec.slice(0,75).map(a=>{
-            const rawDate=a.created_at||a.at||a.timestamp||'';
-            const rawPoints=numeric(a.score??a.points??a.correct_count??a.correctCount);
-            return '<article><strong>'+html(a.username||'')+'</strong><span>'+html(a.game||a.game_id||'Lernspiel')+'</span><span>'+(rawPoints===null?'Punkte nicht übermittelt':rawPoints+' Punkte')+'</span><small>'+html(rawDate)+'</small></article>';
-          }).join('')+'</div>':'<p>Für diese Auswahl liegen keine gespeicherten Versuche vor.</p>');
-      }
-      filters.subject.onchange=()=>{updateTopics();draw()};
-      filters.kid.onchange=draw;filters.topic.onchange=draw;draw();
-    }catch(err){wrapper.innerHTML='<h4>📊 Detaillierte Lernfortschritte</h4><p>Cloudflare-Bericht nicht verfügbar: '+html(err.message||err)+'</p>'}
-  }
-
   // Built-in teacher agenda: edits the existing authenticated Worker endpoint
   // with the SAME payload shape as the existing original/admin agenda editor.
   let agendaOffset=0,agendaLoaded=[],agendaEditing=null,agendaLoadSeq=0;

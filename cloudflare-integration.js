@@ -110,26 +110,6 @@
  const scoreText=(value)=>Number.isFinite(value)?`⭐ Bester Punktestand: ${Math.max(0,Math.floor(value))}`:'Noch kein gespeicherter Highscore';
  const safeCounts=rows=>Array.isArray(rows)?rows:[];
  const recentAttemptCount=(attempts,username)=>safeCounts(attempts).filter(x=>x.username===username).length;
- async function renderAdminProgress(){
-   const panel=DOM.modalBody.querySelector('#cloudProgressPanel');if(!panel||!loggedTeacher())return;
-   panel.innerHTML='<p role="status">Spielergebnisse werden aus Cloudflare geladen …</p>';
-   try{
-     const data=await call('/admin-report',{admin:true});
-     if(!loggedTeacher()||!panel.isConnected)return;
-     const students=safeCounts(data.students), attempts=safeCounts(data.attempts), highs=safeCounts(data.highscores);
-     // A learner may have multiple score entries; count different games, not rows.
-     const rows=students.map(u=>{
-       const name=String(u.username||'');
-       const ownScores=highs.filter(x=>x.username===name);
-       const games=new Set(ownScores.map(x=>String(x.game||''))).size;
-       const attemptsTotal=recentAttemptCount(attempts,name);
-       const correct=attempts.filter(x=>x.username===name&&(x.is_correct===true||x.is_correct===1||x.is_correct==='1')).length;
-       return {name,games,attemptsTotal,correct};
-     });
-     panel.innerHTML=`<div class="cloud-panel-head"><h4>🎯 Lernfortschritt aus Spielen</h4><button type="button" class="pd-secondary" id="cloudReloadResults">Aktualisieren</button></div><p class="cloud-progress-intro">Die Übersicht zeigt gespeicherte Lernversuche und Bestwerte. Ein Lernversuch ist keine abgeschlossene Pflichtaufgabe.</p><div class="cloud-progress-table" role="table" aria-label="Spielergebnisse pro Tierkonto"><div class="cloud-progress-row cloud-progress-header" role="row"><span role="columnheader">Tierkonto</span><span role="columnheader">Spiele mit Highscore</span><span role="columnheader">Lernversuche</span><span role="columnheader">Davon richtig</span></div>${rows.map(r=>`<div class="cloud-progress-row" role="row"><strong role="cell">${html(r.name)}</strong><span role="cell">${r.games}</span><span role="cell">${r.attemptsTotal}</span><span role="cell">${r.correct}</span></div>`).join('')}</div>${rows.length?'':'<p>Noch keine Tierkonten im Klassenbericht.</p>'}<p class="pd-warning">Detaillierte Antworten und zeitliche Verläufe findest du weiterhin im bestehenden Klassenbericht unter «Erweiterte Cloudflare-Verwaltung öffnen».</p>`;
-     panel.querySelector('#cloudReloadResults')?.addEventListener('click',renderAdminProgress);
-   }catch(e){if(panel.isConnected){panel.innerHTML=`<h4>🎯 Lernfortschritt</h4><p>${html(errorText(e))}</p><button type="button" class="pd-secondary" id="cloudRetryResults">Erneut laden</button>`;panel.querySelector('#cloudRetryResults')?.addEventListener('click',renderAdminProgress);}}
- }
  const STEP_LABELS={word:'Zahl als Wort',parity:'Gerade oder ungerade?',place:'Stellentafel mit Punkten',decomp:'Zerlegung',art:'Hunderter, Zehner und Einer',line:'Zahlenstrahl'};
  function targetName(target){
   if(target.startsWith('game:'))return safeGame(target.slice(5))?.title||target.slice(5).replace(/-/g,' ');
@@ -240,7 +220,7 @@
    const pres=Array.isArray(report.presence)?report.presence:[];
    const done=Array.isArray(report.done)?report.done:[];
    const now=new Date(),later=new Date(now.getTime()+7*86400000);
-   host.innerHTML=`<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🔐 Cloudflare · Lehrperson</span><h3>Verwaltung 🛠️</h3><p>Die Aufträge werden in deiner bestehenden Cloudflare-Verwaltung gespeichert.</p></div><div class="pd-total"><strong>${kids.length}</strong><span>Tierkonten</span></div></div><section class="pd-panel"><h4>Neuen Lernauftrag zuweisen</h4><form id="cloudAssignmentForm" class="pd-form"><label>Aufgabe oder Lernspiel<select name="target" required>${selectOptions(targets())}</select></label><label>Titel<input name="title" maxlength="110" placeholder="z. B. Die 6er-Reihe üben" required></label><div class="cloud-form-grid"><label>Art<select name="kind"><option value="pflicht">Pflichtaufgabe</option><option value="zusatz">Zusatzaufgabe</option></select></label><label>Für wen?<select name="audience"><option value="all">Ganze Klasse</option><option value="child">Ein Kind</option></select></label></div><label id="cloudChildWrap" hidden>Tierkonto<select name="username">${selectOptions(kids,'username','username')}</select></label><div class="cloud-form-grid"><label>Beginn<input type="datetime-local" name="start" value="${html(localDateTime(now))}" required></label><label>Ende<input type="datetime-local" name="end" value="${html(localDateTime(later))}" required></label></div><button type="submit" class="pd-action">Auftrag in Cloudflare speichern</button><p role="status" id="cloudAdminMessage"></p></form></section><section class="pd-panel"><div class="cloud-panel-head"><h4>Geplante Aufträge (${jobs.length})</h4><button class="pd-secondary" id="cloudRefreshAdmin">Aktualisieren</button></div><div class="pd-items">${jobs.length?jobs.map(a=>{const c=done.filter(d=>Number(d.assignment_id)===Number(a.id)).length;return `<article class="pd-task"><div class="pd-task-head"><span>📌</span><div><strong>${html(a.title)}</strong><small>${html(targetName(String(a.target||'')))} · ${a.audience==='all'?'Ganze Klasse':html(a.username)}</small><small>${html(dateFormat(a.start_at))} – ${html(dateFormat(a.end_at))} · ${c} Erledigt-Häkchen</small></div></div><div class="pd-task-actions"><button class="pd-secondary" data-cloud-edit="${html(a.id)}">Bearbeiten</button><button class="pd-secondary" data-cloud-remove="${html(a.id)}">Löschen</button></div></article>`}).join(''):'Noch keine Aufträge geplant.'}</div></section><section class="pd-panel" id="cloudProgressPanel"><h4>🎯 Lernfortschritt aus Spielen</h4><button type="button" class="pd-secondary" id="cloudLoadResults">Spielergebnisse laden</button><p>Gespeicherte Lernversuche und Highscores für jedes Tierkonto. Wird nur für angemeldete Lehrpersonen abgerufen.</p></section><section class="pd-panel"><h4>Aktivität</h4><p>${pres.length} aktive Konten gemäss Cloudflare. Hier werden bewusst keine umfangreichen individuellen Daten veröffentlicht.</p><button type="button" class="pd-secondary" id="cloudOpenLegacy">Erweiterte Cloudflare-Verwaltung öffnen</button><p class="pd-warning">Die ausführliche bisherige Verwaltung enthält Lernsteuerung, Fokus-Modus, Agenda, Klassenbericht und weitere Funktionen. Sie wird unverändert weiterverwendet.</p></section></div>`;
+   host.innerHTML=`<div class="pd-shell cloud-shell"><div class="pd-banner"><div><span class="pd-eyebrow">🔐 Cloudflare · Lehrperson</span><h3>Verwaltung 🛠️</h3><p>Die Aufträge werden in deiner bestehenden Cloudflare-Verwaltung gespeichert.</p></div><div class="pd-total"><strong>${kids.length}</strong><span>Tierkonten</span></div></div><section class="pd-panel"><h4>Neuen Lernauftrag zuweisen</h4><form id="cloudAssignmentForm" class="pd-form"><label>Aufgabe oder Lernspiel<select name="target" required>${selectOptions(targets())}</select></label><label>Titel<input name="title" maxlength="110" placeholder="z. B. Die 6er-Reihe üben" required></label><div class="cloud-form-grid"><label>Art<select name="kind"><option value="pflicht">Pflichtaufgabe</option><option value="zusatz">Zusatzaufgabe</option></select></label><label>Für wen?<select name="audience"><option value="all">Ganze Klasse</option><option value="child">Ein Kind</option></select></label></div><label id="cloudChildWrap" hidden>Tierkonto<select name="username">${selectOptions(kids,'username','username')}</select></label><div class="cloud-form-grid"><label>Beginn<input type="datetime-local" name="start" value="${html(localDateTime(now))}" required></label><label>Ende<input type="datetime-local" name="end" value="${html(localDateTime(later))}" required></label></div><button type="submit" class="pd-action">Auftrag in Cloudflare speichern</button><p role="status" id="cloudAdminMessage"></p></form></section><section class="pd-panel"><div class="cloud-panel-head"><h4>Geplante Aufträge (${jobs.length})</h4><button class="pd-secondary" id="cloudRefreshAdmin">Aktualisieren</button></div><div class="pd-items">${jobs.length?jobs.map(a=>{const c=done.filter(d=>Number(d.assignment_id)===Number(a.id)).length;return `<article class="pd-task"><div class="pd-task-head"><span>📌</span><div><strong>${html(a.title)}</strong><small>${html(targetName(String(a.target||'')))} · ${a.audience==='all'?'Ganze Klasse':html(a.username)}</small><small>${html(dateFormat(a.start_at))} – ${html(dateFormat(a.end_at))} · ${c} Erledigt-Häkchen</small></div></div><div class="pd-task-actions"><button class="pd-secondary" data-cloud-edit="${html(a.id)}">Bearbeiten</button><button class="pd-secondary" data-cloud-remove="${html(a.id)}">Löschen</button></div></article>`}).join(''):'Noch keine Aufträge geplant.'}</div></section></div>`;
    if(oldClassroomRetirementError){
     const banner=host.querySelector('.pd-banner');
     const caution=document.createElement('p');caution.className='pd-warning';caution.setAttribute('role','alert');
@@ -250,18 +230,8 @@
    if(window.LernSafariExtras){
      const messageMount=document.createElement('div');
      messageMount.id='cloudTeacherPostMount';
-     const progress=host.querySelector('#cloudProgressPanel');
-     if(progress)progress.insertAdjacentElement('beforebegin',messageMount);
-     else host.appendChild(messageMount);
-     window.LernSafariExtras.adminPanel({host:messageMount,call,kids});
-   }
-   if(window.LernSafariProjects){
-     const projectMount=document.createElement('div');
-     projectMount.id='cloudTeacherProjectsMount';
-     const before=host.querySelector('#cloudProgressPanel');
-     if(before)before.insertAdjacentElement('beforebegin',projectMount);
-     else host.appendChild(projectMount);
-     window.LernSafariProjects.adminMount({mount:projectMount,call});
+     host.appendChild(messageMount);
+     const trigger=document.createElement('button');trigger.type='button';trigger.className='pd-secondary';trigger.textContent='✉️ Nachrichtenverwaltung laden';messageMount.append(trigger);trigger.onclick=()=>{trigger.remove();window.LernSafariExtras.adminPanel({host:messageMount,call,kids});};
    }
    // Explicit teacher verification is available only when the upgraded Worker
    // includes a server-confirmed verified list. Legacy Worker: never fake approval.
@@ -292,8 +262,7 @@
         </article>`).join('')||'<p>Derzeit keine vom Kind als erledigt markierten Pflichtaufträge zur Überprüfung.</p>'}</div>
         ${candidates.length>100?'<p>Die ersten 100 Einträge werden angezeigt. Weitere folgen in der Klassenübersicht.</p>':''}
         <p id="cloudVerifyStatus" role="status"></p>`;
-    const progressPanel=host.querySelector('#cloudProgressPanel');
-    if(progressPanel)progressPanel.insertAdjacentElement('beforebegin',verificationPanel);
+    host.appendChild(verificationPanel);
     verificationPanel.querySelectorAll('[data-cloud-verify]').forEach(button=>button.onclick=async()=>{
      const c=candidates[Number(button.dataset.cloudVerify)];
      if(!c||!loggedTeacher())return;
@@ -321,8 +290,7 @@
         <div class="pd-task-actions"><button type="button" class="pd-secondary" data-cloud-unlock="${i}">🔓 Entsperren</button></div>
         </article>`).join(''):'<p>Aktuell ist kein Tierkonto wegen zu vieler Passwortversuche gesperrt.</p>'}</div>
       <p id="cloudLoginUnlockStatus" role="status"></p>`;
-    const before=host.querySelector('#cloudProgressPanel');
-    if(before)before.insertAdjacentElement('beforebegin',lockPanel);
+    host.appendChild(lockPanel);
     lockPanel.querySelectorAll('[data-cloud-unlock]').forEach(b=>b.onclick=async()=>{
       const chosen=entries[Number(b.dataset.cloudUnlock)];
       if(!chosen||!loggedTeacher()||!confirm('Anmeldesperre für '+chosen.username+' aufheben? Bitte vorher prüfen, ob das Kind selbst die Anmeldung versucht hat.'))return;
@@ -336,16 +304,17 @@
     });
    }
 
-   host.querySelector('#cloudLoadResults')?.addEventListener('click',renderAdminProgress);
+
    const form=host.querySelector('#cloudAssignmentForm');form.elements.audience.onchange=()=>{host.querySelector('#cloudChildWrap').hidden=form.elements.audience.value!=='child'};
    form.onsubmit=async e=>{e.preventDefault();const start=new Date(form.elements.start.value),end=new Date(form.elements.end.value);const msg=host.querySelector('#cloudAdminMessage');if(!(end>start)){msg.textContent='Ende muss nach dem Beginn liegen.';return}const payload={id:form.dataset.id?Number(form.dataset.id):undefined,audience:form.elements.audience.value,username:form.elements.audience.value==='child'?form.elements.username.value:'',start_at:start.toISOString(),end_at:end.toISOString(),target:form.elements.target.value,title:form.elements.title.value.trim(),kind:form.elements.kind.value};const submit=form.querySelector('[type=submit]');submit.disabled=true;try{await call('/admin-assignments',{admin:true,method:'POST',body:payload});await renderCloudAdmin();notify('Auftrag in Cloudflare gespeichert.')}catch(err){msg.textContent=errorText(err);submit.disabled=false}};
    host.querySelectorAll('[data-cloud-edit]').forEach(b=>b.onclick=()=>{const a=jobs.find(x=>Number(x.id)===Number(b.dataset.cloudEdit));if(!a)return;form.dataset.id=String(a.id);for(const key of ['target','title','kind','audience','username'])if(form.elements[key])form.elements[key].value=a[key]||'';form.elements.start.value=localDateTime(new Date(a.start_at));form.elements.end.value=localDateTime(new Date(a.end_at));form.elements.audience.onchange();form.querySelector('[type=submit]').textContent='Änderung in Cloudflare speichern';form.scrollIntoView({block:'start',behavior:'smooth'})});
    host.querySelectorAll('[data-cloud-remove]').forEach(b=>b.onclick=async()=>{if(!confirm('Diesen Auftrag wirklich aus Cloudflare löschen?'))return;try{await call('/admin-assignments',{admin:true,method:'DELETE',body:{id:Number(b.dataset.cloudRemove)}});await renderCloudAdmin()}catch(e){notify(errorText(e))}});
    host.querySelector('#cloudRefreshAdmin').onclick=renderCloudAdmin;
-   host.querySelector('#cloudOpenLegacy').onclick=()=>{host.innerHTML='<div class="cloud-legacy-header"><button type="button" id="cloudBackAdmin" class="pd-secondary">← Zur Aufgabenverwaltung</button><p>Bestehende Cloudflare-Verwaltung (aus der bisherigen LernSafari)</p></div><iframe class="cloud-admin-frame" title="Bisherige Cloudflare-Verwaltung" src="original/index.html#admin"></iframe>';host.querySelector('#cloudBackAdmin').onclick=renderCloudAdmin};
+
+
    // Present the existing authenticated Cloudflare controls as five navigable workspaces.
    // All write actions above retain their server-side checks and existing handlers.
-   window.LernSafariAdminDashboard?.mount({host,kids,jobs,pres,done,verified:report.verified||[],targets:targets(),call,renderAdminProgress,renderCloudAdmin});
+   window.LernSafariAdminDashboard?.mount({host,kids,jobs,done,verified:report.verified||[],targets:targets(),call,renderCloudAdmin});
   }catch(e){host.innerHTML=`<div class="pd-panel"><h3>Verwaltung nicht erreichbar</h3><p>${html(errorText(e))}</p><button class="pd-action" id="retryCloudAdmin">Erneut versuchen</button></div>`;host.querySelector('#retryCloudAdmin').onclick=renderCloudAdmin;}
  }
  function mondayOfZurich(){const day=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Zurich',weekday:'short'}).format(new Date());const idx={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[day]||0;const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const utc=new Date(today+'T12:00:00Z');utc.setUTCDate(utc.getUTCDate()-((idx+6)%7));return utc.toISOString().slice(0,10)}

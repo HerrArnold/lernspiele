@@ -61,4 +61,6 @@ Bestehende Aufträge, Erfolge, Polaroids, Highscores und Schülerdaten werden ni
 
 ## Neueste gemeinsame Worker-ZIP
 
-Für Matheplan **und** Lernaktivitätsübersicht gemeinsam die spätere ZIP `lernsafari-worker-matheplan-lernauswertung-2026-11-20.zip` aus dem Chat verwenden. Sie enthält die Matheplan-Speicherung, die sicheren Klassenübersichten und die bisher vorbereiteten Erfolge. Die alte Matheplan-ZIP bitte nicht zusätzlich installieren.
+Für Matheplan **und** Lernaktivitätsübersicht gemeinsam die spätere ZIP `lernsafari-worker-verwaltung-vereinheitlicht-2026-11-20.zip` aus dem Chat verwenden. Sie enthält die Matheplan-Speicherung, die sicheren Klassenübersichten und die bisher vorbereiteten Erfolge. Die alte Matheplan-ZIP bitte nicht zusätzlich installieren.
+
+**Aktuelle gemeinsame ZIP:** `lernsafari-worker-verwaltung-vereinheitlicht-2026-11-20.zip`. Sie ersetzt die älteren Matheplan- und Lernaktivitäts-ZIPs. Die D1-Tabellen bleiben unverändert.

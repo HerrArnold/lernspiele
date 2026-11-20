@@ -36,7 +36,7 @@ Die Daten stehen ausschliesslich in der **Flamingo-Verwaltung** und nicht als Ab
 
 ## Cloudflare-Worker (noch nicht automatisch veröffentlicht)
 
-Kombiniertes ZIP: `lernsafari-worker-matheplan-lernauswertung-2026-11-20.zip` aus dieser Unterhaltung. Es **ersetzt die ältere Matheplan-Worker-ZIP** und baut auf deren Worker-Version auf.
+Kombiniertes ZIP: `lernsafari-worker-verwaltung-vereinheitlicht-2026-11-20.zip` aus dieser Unterhaltung. Es **ersetzt die ältere Matheplan-Worker-ZIP** und baut auf deren Worker-Version auf.
 
 Das Paket enthält die bereits vorbereiteten Matheplan-, Polaroid-, Briefkasten- und Erfolgsfunktionen sowie:
 
@@ -64,3 +64,19 @@ Keine Zeitsteuerung, keine automatische Klassenabfrage im Hintergrund. Eine kurz
 ### Unterrichtsmodus-Bereinigung
 
 In der kombinierten Worker-Version entfallen ausserdem die alten serverseitigen Fokus-Sperrprüfungen bei Spielversuchen. Die Kinder-Lernplanabfrage muss damit keine alten Fokusregeln und Unterrichtsmodi mehr aus D1 laden. Frühere Admin-Endpunkte bleiben vorerst zur Kompatibilität bestehen.
+
+## Admin-Vereinheitlichung vom 20. November
+
+Im Hauptmenü von Flamingo sind nur noch sechs Bereiche: Matheplan, Lernaktivität nach Inhalt, Lernaufträge, Aktivitätsübersicht, Agenda und Erinnerungen.
+
+Der früher separate Lernfortschritt ist in die Lernaktivität integriert: Neben Durchläufen und Prozenten werden die bisherigen **Highscore-Punkte** aus der `highscores`-Tabelle angezeigt. Fehlende Maximalpunktzahlen werden nicht als Prozentzahl geschätzt.
+
+Die neuen Worker-Endpunkte sind `GET /admin-learning-matrix` (inklusive `highscores`) und `GET /admin-learning-history?username=…&game=…` für die letzten 40 **gezielt ausgewählten** Einzelantworten. Die bisherigen Daten bleiben unverändert gespeichert.
+
+Unter Lernaufträge ist neu die vollständige native Exit-Ticket-Verwaltung (Erstellen, Bearbeiten, Löschen, Antworten ansehen) integriert. Die datumsbezogene Tagesaufgaben-Übersicht kommt ausschliesslich aus der in GitHub hinterlegten Konfiguration und benötigt keine Datenbank. Die separate alte Besucherstatistik und die alte Cloudflare-Verwaltung werden nicht mehr in der Flamingo-Oberfläche angezeigt.
+
+**Ressourcen:** Keine automatische /admin-report-Abfrage mehr. Die Historie wird nur pro Tier und Spiel auf Klick geladen. Fotoalben erst beim Öffnen von Erinnerungen, Nachrichten erst beim Öffnen ihrer Verwaltung; Live-Aktivität weiterhin nur mit «Jetzt abfragen». Vorhandene Datenbanktabellen werden nicht gelöscht.
+
+### Neue API-Schnittstelle
+
+`GET /admin-learning-history?username=Elefant&game=einmaleins-siebener` ist nur mit der gültigen Flamingo-Adminsitzung erlaubt und liefert die höchstens 40 neuesten gespeicherten Einzelaufgaben und Abschlüsse dieses einen Spiels. Keine Ganzklassen-Antworten im Standardbericht.

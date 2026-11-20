@@ -50,7 +50,7 @@
   const lookup=new Map();
   const ensure=(name,area,content)=>{
    const k=name+'|'+area+'|'+content;
-   if(!lookup.has(k))lookup.set(k,{user:name,area,content,opens:0,answers:0,runs:[],first:null,best:null});
+   if(!lookup.has(k))lookup.set(k,{user:name,area,content,opens:0,answers:0,runs:[],first:null,best:null,highscore:null});
    return lookup.get(k);
   };
   for(const v of raw.visits||[]){
@@ -63,6 +63,16 @@
    const area=gameArea(v.game),content=area==='baobab'&&String(v.game).startsWith('tierwelt-')?'animal:'+String(v.game).slice(9):v.game==='tier-namen'?'spelling':v.game==='tier-memory'?'memory':v.game;
    const x=ensure(v.username,area,content);
    x.answers=Math.max(0,Number(v.answers)||0);
+  }
+  // Historical raw highscores from the former progress report remain visible as points.
+  // A highscore is NOT automatically a percentage or proof of a completed round.
+  for(const h of raw.highscores||[]){
+   if(typeof h.username!=='string')continue;
+   const score=Number(h.score);
+   if(!Number.isFinite(score)||score<0)continue;
+   const area=gameArea(h.game),content=area==='baobab'&&String(h.game).startsWith('tierwelt-')?'animal:'+String(h.game).slice(9):h.game==='tier-namen'?'spelling':h.game==='tier-memory'?'memory':h.game;
+   const entry=ensure(h.username,area,content);
+   entry.highscore=Math.max(entry.highscore??0,score);
   }
   const ordered=(raw.completions||[]).slice().sort((a,b)=>String(a.happened_at||'').localeCompare(String(b.happened_at||''))||Number(a.id||0)-Number(b.id||0));
   for(const v of ordered){
@@ -88,20 +98,24 @@
   return 'ls-matrix-red';
  }
  function cell(x){
-  if(!x||(!x.opens&&!x.answers&&!x.runs.length))return '<td class="ls-matrix-empty" title="Noch keine Daten">–</td>';
+  if(!x||(!x.opens&&!x.answers&&!x.runs.length&&x.highscore===null))return '<td class="ls-matrix-empty" title="Noch keine Daten">–</td>';
   let label=x.runs.length?
    '<strong>'+x.runs.length+'×</strong><small>1.: '+x.first+'% · Best: '+x.best+'%</small>':
-   '<strong>'+x.opens+' Aufruf'+(x.opens===1?'':'e')+'</strong><small>'+ (x.answers?x.answers+' Einzelprüfungen · ':'')+'keine abgeschlossene Wertung</small>';
+   '<strong>'+(x.opens?x.opens+' Aufruf'+(x.opens===1?'':'e'):x.answers?x.answers+' Einzelprüfungen':'Historischer Highscore')+'</strong><small>'+ (x.answers&&x.opens?x.answers+' Einzelprüfungen · ':'')+'keine abgeschlossene Wertung</small>';
   if(x.runs.length&&x.opens)label+='<small>'+x.opens+' Aufrufe</small>';
+  if(x.highscore!==null)label+='<small>⭐ '+x.highscore+' Punkte (Highscore)</small>';
   return '<td class="ls-matrix-cell '+band(x.best)+'" title="'+esc(x.runs.length?'Bester Durchlauf: '+x.best+' Prozent':'Keine bewertbare Gesamtauswertung')+'">'+label+'</td>';
  }
- function detail(x){
-  if(!x||(!x.opens&&!x.answers&&!x.runs.length))return '<td class="ls-matrix-empty">–</td>';
+ function detail(x,user,item){
+  if(!x||(!x.opens&&!x.answers&&!x.runs.length&&x.highscore===null))return '<td class="ls-matrix-empty">–</td>';
   return '<td class="ls-matrix-cell '+band(x.best)+'">'+
-   '<strong>'+(x.runs.length?x.runs.length+' abgeschlossene Durchläufe':x.opens+' Aufrufe')+'</strong>'+
+   '<strong>'+(x.runs.length?x.runs.length+' abgeschlossene Durchläufe':x.opens?x.opens+' Aufrufe':x.answers?x.answers+' Einzelprüfungen':'Historischer Highscore')+'</strong>'+
    '<small>Erster Durchlauf: '+(x.first===null?'–':x.first+'%')+'</small>'+
    '<small>Bester Durchlauf: '+(x.best===null?'–':x.best+'%')+'</small>'+
-   '<small>'+x.opens+' Aufrufe · '+x.answers+' gespeicherte Einzelprüfungen</small></td>';
+   '<small>'+x.opens+' Aufrufe · '+x.answers+' gespeicherte Einzelprüfungen</small>'+
+   (x.highscore===null?'':'<small>⭐ Highscore: '+x.highscore+' Punkte</small>')+
+   ((x.answers||x.runs.length||x.highscore!==null)&&item
+    ?'<button type="button" class="ls-matrix-history-btn" data-lm-history-user="'+esc(user)+'" data-lm-history-game="'+esc(item.content.startsWith('animal:')?'tierwelt-'+item.content.slice(7):item.content==='memory'?'tier-memory':item.content==='spelling'?'tier-namen':item.content)+'">Einzelversuche ansehen</button>':'')+'</td>';
  }
  function mount({host,call}){
   host.innerHTML='<div class="ls-matrix-head"><p>📊 Was haben die Tiere ausprobiert? Grün bedeutet mindestens 80 % im besten vollständigen Durchlauf, Gelb 50–79 %, Rot unter 50 %. Unbewertete Inhalte bleiben neutral.</p>'+
@@ -110,7 +124,7 @@
    '<label>Ansicht<select data-lm-view><option value="all">Ganze Klasse</option><option value="one">Einzelnes Tier</option></select></label>'+
    '<label data-lm-child-wrap hidden>Tierkonto<select data-lm-child></select></label>'+
    '<button type="button" class="pd-secondary" data-lm-refresh>🔄 Ergebnisse abfragen</button></div>'+
-   '<p class="ls-matrix-note">Die Tabelle wird nur beim Öffnen und auf Knopfdruck aktualisiert. Ein Aufruf ist kein gelöster Durchlauf; Prozentwerte erscheinen nur für tatsächlich gespeicherte Gesamtauswertungen.</p></div>'+
+   '<p class="ls-matrix-note">Die Tabelle wird nur beim Öffnen und auf Knopfdruck aktualisiert. Frühere Spielpunkte und Highscores erscheinen ebenfalls. Ein Highscore allein beweist keinen abgeschlossenen Durchlauf und wird nicht in Prozent umgerechnet.</p></div>'+
    '<div data-lm-content role="status" aria-live="polite">Noch keine Abfrage durchgeführt.</div>';
   const $=q=>host.querySelector(q);
   const area=$('[data-lm-area]'),subject=$('[data-lm-subject]'),subjectWrap=$('[data-lm-subject-wrap]');
@@ -126,7 +140,17 @@
    const students=(snapshot.students||[]).map(x=>x.username).filter(Boolean).sort((a,b)=>a.localeCompare(b,'de-CH'));
    const projects=(snapshot.projects||[]).map(p=>({area:'baobab',group:'Erlebnisse',topic:'Erlebnisse',content:'project:'+p.id,
     title:p.title==='Schulreise'?'Herbstwanderung':p.title}));
-   const rows=a==='baobab'?entries.concat(projects):entries;
+   const extra=[];
+   const known=new Set(entries.concat(projects).map(e=>e.area+'|'+e.content));
+   for(const x of records.values()){
+    const key=x.area+'|'+x.content;
+    if(x.area!==a||known.has(key))continue;
+    known.add(key);
+    // Keep old progress values from games no longer listed in the current catalog.
+    extra.push({area:a,group:'Weitere gespeicherte Spiele',topic:'Ältere Lernspiele',
+      content:x.content,title:x.content.replace(/[-_:]/g,' ')});
+   }
+   const rows=(a==='baobab'?entries.concat(projects):entries).concat(!sg||a!=='lagoon'?extra:[]);
    const chosen=view.value==='one'?(students.includes(child.value)?child.value:students[0]||''):null;
    const groupMap=new Map();
    for(const x of rows){const group=a==='lagoon'?x.group+' · '+x.topic:x.group;
@@ -139,13 +163,43 @@
    const tableRows=[...groupMap].map(([group,items])=>
     '<tr class="ls-matrix-group"><th scope="rowgroup" colspan="'+(chosen?2:1+students.length)+'">'+esc(group)+'</th></tr>'+
     items.map(item=>'<tr><th scope="row">'+esc(item.title)+(item.archived?'<small>Archiv</small>':'')+'</th>'+
-      (chosen?detail(records.get(chosen+'|'+item.area+'|'+item.content)):
+      (chosen?detail(records.get(chosen+'|'+item.area+'|'+item.content),chosen,item):
        students.map(name=>cell(records.get(name+'|'+item.area+'|'+item.content))).join(''))+'</tr>').join('')
    ).join('');
    result.innerHTML='<div class="ls-matrix-legend"><span class="ls-matrix-green">≥ 80 %</span><span class="ls-matrix-yellow">50–79 %</span><span class="ls-matrix-red">&lt; 50 %</span><span class="ls-matrix-neutral">Keine bewertbare Gesamtauswertung</span></div>'+
     '<p class="ls-matrix-total">'+(chosen?'Tierkonto: '+esc(chosen):students.length+' Tierkonten')+' · '+rows.length+' Inhalte</p>'+
     '<div class="ls-matrix-scroll"><table class="ls-matrix-table"><thead><tr>'+head+'</tr></thead><tbody>'+tableRows+'</tbody></table></div>'+
-    (snapshot.limitReached?'<p class="ls-matrix-warning">Achtung: Die historischen Durchläufe wurden bei '+snapshot.limitReached+' Einträgen begrenzt. Frühere Ergebnisse können fehlen.</p>':'');
+    (snapshot.limitReached?'<p class="ls-matrix-warning">Achtung: Die historischen Durchläufe wurden bei '+snapshot.limitReached+' Einträgen begrenzt. Frühere Ergebnisse können fehlen.</p>':'')+
+    '<div class="ls-matrix-history" data-lm-history hidden aria-live="polite"></div>';
+  };
+  // Detailed former progress answers are downloaded only for the explicitly
+  // selected animal and game – never with the initial class-wide report.
+  result.onclick=async event=>{
+   const button=event.target.closest('[data-lm-history-user]');
+   if(!button||!result.contains(button))return;
+   const username=button.dataset.lmHistoryUser,game=button.dataset.lmHistoryGame;
+   const panel=result.querySelector('[data-lm-history]');if(!panel)return;
+   panel.hidden=false;panel.textContent='Einzelversuche werden geladen …';
+   button.disabled=true;
+   try{
+    const q='?username='+encodeURIComponent(username)+'&game='+encodeURIComponent(game);
+    const response=await call('/admin-learning-history'+q,{admin:true});
+    if(response?.available!==true||!Array.isArray(response.attempts))throw Error('Der Detaildienst ist im Worker noch nicht verfügbar.');
+    panel.innerHTML='<h4>📋 '+esc(username)+' · '+esc(game)+'</h4>'+
+      '<p>Die letzten '+response.attempts.length+' gespeicherten Einzelprüfungen und Abschlüsse. Nur für die Lehrperson sichtbar.</p>'+
+      (response.attempts.length?response.attempts.map(a=>{
+       const pts=Number(a.total)>0?Number(a.correct_count)+' / '+Number(a.total):'–';
+       return '<details class="ls-matrix-history-entry"><summary>'+esc(a.task_ref||'Einzelaufgabe')+' · '+esc(pts)+'</summary>'+
+        '<p><strong>Antwort:</strong> '+esc(a.answer||'–')+'</p>'+
+        '<p><strong>Erwartet:</strong> '+esc(a.expected||'–')+'</p>'+
+        (a.details?'<p><strong>Hinweis:</strong> '+esc(a.details)+'</p>':'')+
+        '<small>'+esc(a.happened_at||'')+'</small></details>';
+      }).join(''):'<p>Keine Einzelversuche für diese Auswahl gespeichert.</p>')+
+      '<button type="button" class="pd-secondary" data-lm-history-close>Schliessen</button>';
+    panel.querySelector('[data-lm-history-close]').onclick=()=>{panel.hidden=true;panel.textContent=''};
+    panel.scrollIntoView({block:'nearest',behavior:'smooth'});
+   }catch(err){panel.textContent='Nicht geladen: '+String(err.message||err)}
+   finally{button.disabled=false}
   };
   const filter=()=>{subjectWrap.hidden=area.value!=='lagoon';childWrap.hidden=view.value!=='one';draw()};
   area.onchange=filter;subject.onchange=draw;view.onchange=filter;child.onchange=draw;

@@ -470,3 +470,19 @@
 .ls-matrix-empty{background:#f7f7f5;color:#9eaaa0}
 .ls-matrix-error,.ls-matrix-warning{color:#aa3327;font-weight:700}
 @media(max-width:650px){.ls-matrix-head{padding:10px}.ls-matrix-table th:first-child{min-width:170px;max-width:205px}.ls-matrix-table th,.ls-matrix-table td{min-width:90px;padding:7px 5px}}
+
+/* Flamingo: Exit-Tickets and timetable in Lernaufträge (no legacy iframe). */
+.admin-exit-native,.admin-daily-view{margin:16px 0}
+.admin-exit-form,.admin-exit-form label{display:grid;gap:9px}
+.admin-exit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}
+.admin-exit-form input,.admin-exit-form select,.admin-exit-form textarea,.admin-daily-controls select{font:inherit;max-width:100%;min-width:0;border:1px solid #becdb4;background:#fff;color:#304833;border-radius:8px;padding:9px}
+.admin-exit-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.admin-exit-record{border:1px solid #d5e1d2;background:#fff;border-radius:12px;padding:13px;margin:10px 0}
+.admin-exit-record>strong{display:block;font-size:16px}
+.admin-exit-record>p{font-size:13px;color:#60715e}
+.admin-exit-answer{padding:10px;border-top:1px solid #e2eadf;display:grid;gap:7px}
+.admin-exit-answer>small{color:#6b7369}
+.admin-exit-drawing{width:100%;height:160px;background:#fbfbfb;border:1px solid #e0e0e0;border-radius:8px}
+.admin-daily-controls label{display:grid;gap:7px;font-weight:700;max-width:480px}
+.admin-daily-view ol{line-height:1.75}
+@media(max-width:600px){.admin-exit-grid{grid-template-columns:1fr}}
