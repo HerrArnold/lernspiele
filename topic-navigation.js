@@ -145,6 +145,7 @@
   function launchGame(index){
     const topic=currentTopic(),entry=topic?.games[index];
     if(!entry||!entry[1])return;
+    window.LernSafariTrackVisit?.('lagoon',entry[1].replace(/\.html$/,''));
     if(entry[1].startsWith('english:')){
       activeLagoonSubject='english';
       englishMode=null;

@@ -74,7 +74,7 @@
     '<div class="baobab-projects-empty">🖼️ Unser Album wartet auf das erste Projekt oder Erlebnis.</div>';
    gallery.querySelectorAll('[data-open-project]').forEach(btn=>btn.addEventListener('click',()=>{
      const project=json.projects.find(p=>Number(p.id)===Number(btn.dataset.openProject));
-     if(project)openGallery(gallery,project);
+     if(project){window.LernSafariTrackVisit?.('baobab','project:'+project.id);openGallery(gallery,project);}
    }));
    gallery.querySelectorAll('[data-project-scroll]').forEach(btn=>btn.addEventListener('click',()=>{
      const timeline=gallery.querySelector('.baobab-timeline');

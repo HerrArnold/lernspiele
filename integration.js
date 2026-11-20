@@ -122,6 +122,7 @@ renderBaobab=function(){
  </section>`;
  root.querySelectorAll('[data-baobab-new]').forEach(button=>button.addEventListener('click',()=>{
    const id=button.dataset.baobabNew;
+   if(id!=='advent')window.LernSafariTrackVisit?.('baobab',id);
    if(id==='animals'){
      originalFrame('original/index.html#tiere','Unsere Klassentiere',{areaId:'baobab',contextLabel:'Tierwelt'});
    }else if(id==='advent'){

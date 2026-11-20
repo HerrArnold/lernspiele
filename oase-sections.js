@@ -38,6 +38,7 @@
       const group=groups[Number(button.dataset.oaseSection)],game=group?.games[Number(button.dataset.oaseGame)];if(!game)return;
       // Only the unfinished computer simulator is reserved for the Flamingo administrator.
       if(game.adminOnly&&state.role!=='cloudflare-admin')return;
+      window.LernSafariTrackVisit?.('oasis',game.file.replace(/\.html$/,'')+(game.view?':'+game.view:''));
       safariGame=null;
       const relative='original/spiele/'+encodeURIComponent(game.file)+(game.view?'?view='+encodeURIComponent(game.view):'');
       originalFrame(relative,game.title,{areaId:'oasis',contextLabel:group.title});

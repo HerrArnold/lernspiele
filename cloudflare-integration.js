@@ -146,6 +146,7 @@
    let game=safeGame(target.slice(5));
    if(!game){const filename=target.slice(5)+'.html';for(const [subject,topics] of Object.entries(window.LernSafariTopicCatalog||{})){for(const topic of topics){const item=(topic.games||[]).find(x=>x[1]===filename);if(item){game={file:filename,title:item[0],subject};break;}}if(game)break;}}
    if(!game){notify('Dieses Lernspiel ist im neuen Katalog noch nicht vorhanden.');return;}
+   window.LernSafariTrackVisit?.(game.subject==='Allgemein'?'oasis':'lagoon',game.file.replace(/\.html$/,''));
    if(game.subject==='Allgemein'){travelTo('oasis');originalFrame('original/spiele/'+encodeURIComponent(game.file),game.title,{areaId:'oasis',contextLabel:'Freie Angebote'});return;}
    travelTo('lagoon');safariSubject=game.subject;safariGame=game;safariGameOrigin=game.subject;renderLagoon();return;
   }

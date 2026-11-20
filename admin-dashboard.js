@@ -6,6 +6,7 @@
  const areas=[
   {id:'mathplan',icon:'📘',name:'Matheplan',desc:'Alle Aufgaben und Häkchen der Klasse oder einzelner Tiere'},
   {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Tagesaufgaben, Fächer, Themen und Spiele zuweisen'},
+  {id:'matrix',icon:'📊',name:'Lernaktivität nach Inhalt',desc:'Lern-Lagune, Oase, Baobab: Durchläufe, erste und beste Ergebnisse'},
   {id:'progress',icon:'📈',name:'Lernfortschritte',desc:'Punkte und Lernversuche nach Kind und Thema'},
   {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Wer ist online? Wer erledigt gerade einen Auftrag?'},
   {id:'agenda',icon:'📅',name:'Agenda',desc:'Wochenübersicht und Hausaufgaben, Lernkontrollen, Schulfrei bearbeiten'},
@@ -71,6 +72,12 @@
   if(jobPanel)sections.assignments.append(jobPanel);
   if(verifyPanel)sections.assignments.append(verifyPanel);
   // Classroom-mode editor removed.
+  let learningMatrixControl=null;
+  if(sections.matrix&&root.LernSafariLearningMatrix){
+   const spot=document.createElement('div');spot.id='adminLearningMatrixMount';
+   sections.matrix.append(spot);
+   learningMatrixControl=root.LernSafariLearningMatrix.mount({host:spot,call});
+  }
   if(progressPanel)sections.progress.append(progressPanel);
   if(activityPanel)sections.activity.append(activityPanel);
   if(lockPanel)sections.activity.append(lockPanel);
@@ -82,6 +89,7 @@
    banner.classList.toggle('admin-banner-compact',name!=='home');
    shell.scrollIntoView({block:'start',behavior:'smooth'});
    if(name==='progress')renderProgress();
+   if(name==='matrix')learningMatrixControl?.refresh();
    if(name==='mathplan')mathPlanControl?.refresh();
    // Live activity is fetched only after an explicit click.
    if(name==='agenda')renderAgendaEditor();
