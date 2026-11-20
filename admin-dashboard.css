@@ -172,3 +172,23 @@
 .admin-agenda-entry[data-type="special"]{background:#f4ceca!important;border-color:#d68d87!important;color:#682f2b!important}
 .admin-agenda-entry[data-new-date]{background:#faf3e2!important;border-color:#c7b697!important;color:#5d4c37!important}
 .admin-agenda-entry:focus-visible{outline:3px solid #23658c!important;outline-offset:2px}
+
+/* Nachrichten erhalten einen eigenständigen Verwaltungsbereich. */
+.admin-mail-section{display:grid;grid-template-columns:minmax(270px,1fr) minmax(320px,1.4fr);gap:18px}
+.admin-mail-form,.admin-mail-history{min-width:0;border:1px solid #d6c39d;background:#fffaf0;border-radius:16px;padding:17px}
+.admin-mail-form{display:grid;align-content:start;gap:10px}
+.admin-mail-form h4,.admin-mail-history h4{margin:0 0 6px;font-size:19px;color:#315a43}
+.admin-mail-form label{display:grid;gap:5px;font-size:14px;font-weight:650}
+.admin-mail-form label[hidden]{display:none}
+.admin-mail-form select,.admin-mail-form input,.admin-mail-form textarea{width:100%;max-width:100%;border:1px solid #b9b59d;border-radius:9px;padding:10px;background:#fff;color:#302c22;font:inherit}
+.admin-mail-form textarea{resize:vertical}
+.admin-mail-history-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+#ls-admin-post-list{display:grid;gap:9px;max-height:600px;overflow-y:auto}
+.admin-mail-item{background:#f5f0df;padding:11px 13px;border:1px solid #ddd0af;border-radius:12px}
+.admin-mail-item div{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;justify-content:space-between}
+.admin-mail-item strong{color:#315a43}
+.admin-mail-item small{color:#665f50}
+.admin-mail-item p{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0;font-size:13px}
+.admin-mail-read{font-size:12px;color:#6c6046}
+.admin-mail-counter{font-size:12px;color:#73644d}
+@media(max-width:760px){.admin-mail-section{grid-template-columns:1fr}}
