@@ -36,7 +36,7 @@ Die Daten stehen ausschliesslich in der **Flamingo-Verwaltung** und nicht als Ab
 
 ## Cloudflare-Worker (noch nicht automatisch veröffentlicht)
 
-Kombiniertes ZIP: `lernsafari-worker-lernauswertung-2026-11-20.zip` aus dieser Unterhaltung. Es **ersetzt die ältere Matheplan-Worker-ZIP** und baut auf deren Worker-Version auf.
+Kombiniertes ZIP: `lernsafari-worker-matheplan-lernauswertung-2026-11-20.zip` aus dieser Unterhaltung. Es **ersetzt die ältere Matheplan-Worker-ZIP** und baut auf deren Worker-Version auf.
 
 Das Paket enthält die bereits vorbereiteten Matheplan-, Polaroid-, Briefkasten- und Erfolgsfunktionen sowie:
 
@@ -60,3 +60,7 @@ Keine Zeitsteuerung, keine automatische Klassenabfrage im Hintergrund. Eine kurz
 - Erste/beste Trefferquote und Zuordnung der Tierquizze geprüft.
 - Neun Mock-Tests des vollständigen Worker-Routings: Anmeldung, Zugriffsrechte, eigenes Tierkonto, Aufrufzähler, Klassenübersicht und Datenminimierung.
 - Ein Live-Test an Cloudflare-D1 ist erst nach dem einmaligen Worker-Deploy möglich.
+
+### Unterrichtsmodus-Bereinigung
+
+In der kombinierten Worker-Version entfallen ausserdem die alten serverseitigen Fokus-Sperrprüfungen bei Spielversuchen. Die Kinder-Lernplanabfrage muss damit keine alten Fokusregeln und Unterrichtsmodi mehr aus D1 laden. Frühere Admin-Endpunkte bleiben vorerst zur Kompatibilität bestehen.

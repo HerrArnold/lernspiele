@@ -58,3 +58,7 @@ Solange die Serverfunktion nicht live ist, sind die Matheplan-Aufgaben und Spiel
 - Realer Browsertest und Cloudflare-D1-Schreibtest erst nach dem Worker-Deploy möglich
 
 Bestehende Aufträge, Erfolge, Polaroids, Highscores und Schülerdaten werden nicht gelöscht.
+
+## Neueste gemeinsame Worker-ZIP
+
+Für Matheplan **und** Lernaktivitätsübersicht gemeinsam die spätere ZIP `lernsafari-worker-matheplan-lernauswertung-2026-11-20.zip` aus dem Chat verwenden. Sie enthält die Matheplan-Speicherung, die sicheren Klassenübersichten und die bisher vorbereiteten Erfolge. Die alte Matheplan-ZIP bitte nicht zusätzlich installieren.
