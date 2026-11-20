@@ -1,0 +1,24 @@
+/* LernSafari Musikplayer – bleibt ausserhalb dynamisch ersetzter Screens. */
+#ls-music-widget{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:2147482000;font:inherit;pointer-events:none}
+#ls-music-widget *{box-sizing:border-box}
+#ls-music-widget button,#ls-music-widget input{pointer-events:auto}
+.ls-music-fab{display:grid;place-items:center;margin-left:auto;border:2px solid #f8e6bd;background:#315d49;color:#fff;box-shadow:0 3px 16px #17291d77;width:56px;height:56px;border-radius:50%;font-size:32px;cursor:pointer}
+.ls-music-fab.is-playing{background:#bd7636}
+.ls-music-fab:focus-visible,.ls-music-panel button:focus-visible{outline:3px solid #e9a440;outline-offset:3px}
+.ls-music-panel[hidden]{display:none!important}
+.ls-music-panel{pointer-events:auto;width:min(340px,calc(100vw - 28px));max-height:min(74dvh,540px);overflow:auto;margin-bottom:10px;padding:15px;background:#fffaf0;color:#2e4433;border:2px solid #c7a879;border-radius:19px;box-shadow:0 10px 30px #18251966}
+.ls-music-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:19px}
+.ls-music-heading button{border:0;background:transparent;font-size:20px;color:inherit;cursor:pointer}
+.ls-music-tip{line-height:1.45;font-size:13px;margin:10px 0 13px;color:#655640}
+.ls-music-tracks{display:grid;gap:7px}
+.ls-music-track{width:100%;padding:11px 14px;border-radius:12px;border:1px solid #b0bda3;background:#f0f3e5;text-align:left;color:#2c513d;font:inherit;font-weight:700;cursor:pointer}
+.ls-music-track::before{content:'▶';font-size:12px;margin-right:10px}
+.ls-music-track.is-selected{border:2px solid #346c4d;background:#e2eddc}
+.ls-music-controls{display:flex;align-items:center;gap:9px;margin-top:13px;padding-top:10px;border-top:1px solid #d7c6a7}
+#ls-music-pause{border:0;border-radius:9px;background:#315d49;color:white;min-width:37px;min-height:37px;cursor:pointer}
+#ls-music-pause:disabled{opacity:.4}
+#ls-music-playing{font-size:12px;flex:1;min-width:0}
+.ls-music-volume{display:flex;align-items:center;gap:3px;max-width:104px;font-size:14px}
+.ls-music-volume input{width:65px;accent-color:#315d49}
+.ls-music-error{font-size:12px;color:#a52924;margin-top:5px}
+@media(max-width:500px){.ls-music-fab{width:50px;height:50px;font-size:29px}}
