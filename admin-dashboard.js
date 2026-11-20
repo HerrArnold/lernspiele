@@ -67,9 +67,10 @@
   if(assignmentPanel)sections.assignments.append(assignmentPanel);
   if(jobPanel)sections.assignments.append(jobPanel);
   if(verifyPanel)sections.assignments.append(verifyPanel);
+  let exitAdminControl=null,exitOverviewLoaded=false;
   if(root.LernSafariExitAdmin){
    const exitHost=document.createElement('div');exitHost.id='adminNativeExitTickets';sections.assignments.append(exitHost);
-   root.LernSafariExitAdmin.mount({host:exitHost,call,kids});
+   exitAdminControl=root.LernSafariExitAdmin.mount({host:exitHost,call,kids});
   }
   if(root.LernSafariDailyAdmin){
    const dailyHost=document.createElement('div');dailyHost.id='adminDailyOverview';sections.assignments.append(dailyHost);
@@ -90,6 +91,7 @@
    Object.entries(sections).forEach(([key,el])=>el.hidden=name!==key);
    banner.classList.toggle('admin-banner-compact',name!=='home');
    shell.scrollIntoView({block:'start',behavior:'smooth'});
+   if(name==='assignments'&&!exitOverviewLoaded){exitOverviewLoaded=true;exitAdminControl?.refresh();}
    if(name==='matrix')learningMatrixControl?.refresh();
    if(name==='mathplan')mathPlanControl?.refresh();
    // Live activity is fetched only after an explicit click.

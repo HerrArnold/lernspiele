@@ -52,6 +52,7 @@
    try{localStorage.setItem(CHILD_KEY,childToken)}catch(_){/* browser storage unavailable */}
    document.querySelector('#password').value='';
    enter('cloudflare-child',String(identity.username||response.username||username));
+   heartbeat();
    setTimeout(refreshUnreadBadge,950);
   }catch(e){notify('Anmeldung fehlgeschlagen: '+errorText(e));}
   finally{pending=false}
@@ -83,7 +84,7 @@
    catch(_){adminToken='';try{sessionStorage.removeItem(ADMIN_KEY)}catch(_){}}
   }
   if(childToken){
-   try{const identity=await call('/me');if(!['child','class'].includes(identity.role))throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));setTimeout(refreshUnreadBadge,950);return}
+   try{const identity=await call('/me');if(!['child','class'].includes(identity.role))throw Error('Unzulässige Rolle');person=identity;enter('cloudflare-child',String(identity.username||'Tierkonto'));heartbeat();setTimeout(refreshUnreadBadge,950);return}
    catch(_){childToken='';try{sessionStorage.removeItem(CHILD_KEY);localStorage.removeItem(CHILD_KEY)}catch(_){}}
   }
  }
@@ -386,7 +387,7 @@
  // All authenticated learning areas remain accessible; assignments still appear in the logbook.
  // Minimal, authenticated, short-lived presence reports. Never send guest data,
  // answer text, keyboard input, device identifiers or browser location.
- let activityEndpointUnavailable=false;
+ let activityEndpointUnavailable=false,lastHeartbeatAt=0,lastHeartbeatLocation='';
  async function heartbeat(){
    if(!loggedChild()||document.hidden||activityEndpointUnavailable)return;
    let area='camp',game='';
@@ -400,10 +401,12 @@
      }
    }
    if(!['camp','map','logbook','lagoon','valley','baobab','oasis','agenda','mail','help','game'].includes(area))area='camp';
-   try{await call('/activity-heartbeat',{method:'POST',body:{area,game}});}
+   const locationKey=area+'|'+game;
+   if(locationKey===lastHeartbeatLocation&&Date.now()-lastHeartbeatAt<75000)return;
+   try{await call('/activity-heartbeat',{method:'POST',body:{area,game}});lastHeartbeatAt=Date.now();lastHeartbeatLocation=locationKey;}
    catch(err){if(/404|405|Not Found|not found|Methode nicht erlaubt/.test(String(err.message||err)))activityEndpointUnavailable=true;}
  }
- setInterval(heartbeat,45000);
+ setInterval(heartbeat,90000); // Halb so viele unveränderte Anwesenheitsmeldungen.
  window.addEventListener('focus',()=>{activityEndpointUnavailable=false;heartbeat()});
 
 

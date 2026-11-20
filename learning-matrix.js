@@ -50,7 +50,7 @@
   const lookup=new Map();
   const ensure=(name,area,content)=>{
    const k=name+'|'+area+'|'+content;
-   if(!lookup.has(k))lookup.set(k,{user:name,area,content,opens:0,answers:0,runs:[],first:null,best:null,highscore:null});
+   if(!lookup.has(k))lookup.set(k,{user:name,area,content,opens:0,answers:0,runs:[],runsCount:null,first:null,best:null,highscore:null});
    return lookup.get(k);
   };
   for(const v of raw.visits||[]){
@@ -83,6 +83,18 @@
    if(score===null)continue;
    x.runs.push(score);x.first=x.runs[0];x.best=Math.max(...x.runs);
   }
+  // New Worker returns compact per-child summaries: no thousands of rows
+  // or arbitrary 12,000-completion truncation transmitted to the browser.
+  for(const v of raw.runSummaries||[]){
+   if(typeof v.username!=='string')continue;
+   const area=gameArea(v.game);
+   const content=area==='baobab'&&String(v.game).startsWith('tierwelt-')?'animal:'+String(v.game).slice(9):
+      v.game==='tier-namen'?'spelling':v.game==='tier-memory'?'memory':v.game;
+   const x=ensure(v.username,area,content);
+   const count=Number(v.tries),first=Number(v.first_percent),best=Number(v.best_percent);
+   if(!Number.isSafeInteger(count)||count<1||![first,best].every(n=>Number.isFinite(n)&&n>=0&&n<=100))continue;
+   x.runsCount=count;x.first=first;x.best=best;
+  }
   return lookup;
  }
  function gameArea(game){
@@ -97,24 +109,25 @@
   if(percent>=50)return 'ls-matrix-yellow';
   return 'ls-matrix-red';
  }
+ const runTotal=x=>x?.runsCount??x?.runs.length??0;
  function cell(x){
-  if(!x||(!x.opens&&!x.answers&&!x.runs.length&&x.highscore===null))return '<td class="ls-matrix-empty" title="Noch keine Daten">–</td>';
-  let label=x.runs.length?
-   '<strong>'+x.runs.length+'×</strong><small>1.: '+x.first+'% · Best: '+x.best+'%</small>':
+  if(!x||(!x.opens&&!x.answers&&!runTotal(x)&&x.highscore===null))return '<td class="ls-matrix-empty" title="Noch keine Daten">–</td>';
+  let label=runTotal(x)?
+   '<strong>'+runTotal(x)+'×</strong><small>1.: '+x.first+'% · Best: '+x.best+'%</small>':
    '<strong>'+(x.opens?x.opens+' Aufruf'+(x.opens===1?'':'e'):x.answers?x.answers+' Einzelprüfungen':'Historischer Highscore')+'</strong><small>'+ (x.answers&&x.opens?x.answers+' Einzelprüfungen · ':'')+'keine abgeschlossene Wertung</small>';
-  if(x.runs.length&&x.opens)label+='<small>'+x.opens+' Aufrufe</small>';
+  if(runTotal(x)&&x.opens)label+='<small>'+x.opens+' Aufrufe</small>';
   if(x.highscore!==null)label+='<small>⭐ '+x.highscore+' Punkte (Highscore)</small>';
-  return '<td class="ls-matrix-cell '+band(x.best)+'" title="'+esc(x.runs.length?'Bester Durchlauf: '+x.best+' Prozent':'Keine bewertbare Gesamtauswertung')+'">'+label+'</td>';
+  return '<td class="ls-matrix-cell '+band(x.best)+'" title="'+esc(runTotal(x)?'Bester Durchlauf: '+x.best+' Prozent':'Keine bewertbare Gesamtauswertung')+'">'+label+'</td>';
  }
  function detail(x,user,item){
-  if(!x||(!x.opens&&!x.answers&&!x.runs.length&&x.highscore===null))return '<td class="ls-matrix-empty">–</td>';
+  if(!x||(!x.opens&&!x.answers&&!runTotal(x)&&x.highscore===null))return '<td class="ls-matrix-empty">–</td>';
   return '<td class="ls-matrix-cell '+band(x.best)+'">'+
-   '<strong>'+(x.runs.length?x.runs.length+' abgeschlossene Durchläufe':x.opens?x.opens+' Aufrufe':x.answers?x.answers+' Einzelprüfungen':'Historischer Highscore')+'</strong>'+
+   '<strong>'+(runTotal(x)?runTotal(x)+' abgeschlossene Durchläufe':x.opens?x.opens+' Aufrufe':x.answers?x.answers+' Einzelprüfungen':'Historischer Highscore')+'</strong>'+
    '<small>Erster Durchlauf: '+(x.first===null?'–':x.first+'%')+'</small>'+
    '<small>Bester Durchlauf: '+(x.best===null?'–':x.best+'%')+'</small>'+
    '<small>'+x.opens+' Aufrufe · '+x.answers+' gespeicherte Einzelprüfungen</small>'+
    (x.highscore===null?'':'<small>⭐ Highscore: '+x.highscore+' Punkte</small>')+
-   ((x.answers||x.runs.length||x.highscore!==null)&&item
+   ((x.answers||runTotal(x)||x.highscore!==null)&&item
     ?'<button type="button" class="ls-matrix-history-btn" data-lm-history-user="'+esc(user)+'" data-lm-history-game="'+esc(item.content.startsWith('animal:')?'tierwelt-'+item.content.slice(7):item.content==='memory'?'tier-memory':item.content==='spelling'?'tier-namen':item.content)+'">Einzelversuche ansehen</button>':'')+'</td>';
  }
  function mount({host,call}){
