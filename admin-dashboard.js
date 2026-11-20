@@ -9,7 +9,8 @@
   {id:'assignments',icon:'📌',name:'Lernaufträge',desc:'Aufträge planen, Exit-Tickets und Tagesaufgaben ansehen'},
   {id:'activity',icon:'👀',name:'Aktivitätsübersicht',desc:'Auf Knopfdruck sehen, welches Tier wo arbeitet'},
   {id:'agenda',icon:'📅',name:'Agenda',desc:'Wochenübersicht und Hausaufgaben, Lernkontrollen, Schulfrei bearbeiten'},
-  {id:'memories',icon:'📷',name:'Erinnerungen',desc:'Fotos, Datum und Rückblicke als Polaroids beim Baobab veröffentlichen'}
+  {id:'memories',icon:'📷',name:'Erinnerungen',desc:'Fotos, Datum und Rückblicke als Polaroids beim Baobab veröffentlichen'},
+  {id:'messages',icon:'✉️',name:'Nachrichten',desc:'Briefe an alle oder einzelne Kinder senden und Lesestatus ansehen'}
  ];
  const SUBJECTS=['Mathe','Deutsch','NMG','Musik','Englisch'];
  const TARGET_AREAS=[
@@ -83,6 +84,11 @@
    sections.matrix.append(spot);
    learningMatrixControl=root.LernSafariLearningMatrix.mount({host:spot,call});
   }
+  let messagesControl=null;
+  if(sections.messages&&root.LernSafariAdminMessages){
+   const messagesHost=document.createElement('div');messagesHost.id='adminMessagesMount';sections.messages.append(messagesHost);
+   messagesControl=root.LernSafariAdminMessages.mount({host:messagesHost,call,kids});
+  }
   if(lockPanel)sections.assignments.append(lockPanel);
   // Any unidentified old panel remains accessible in assignments; no controls are lost.
   for(const el of oldParts)if(el.parentElement===shell)sections.assignments.append(el);
@@ -93,6 +99,7 @@
    shell.scrollIntoView({block:'start',behavior:'smooth'});
    if(name==='assignments'&&!exitOverviewLoaded){exitOverviewLoaded=true;exitAdminControl?.refresh();}
    if(name==='matrix')learningMatrixControl?.refresh();
+   if(name==='messages')messagesControl?.refresh();
    if(name==='mathplan')mathPlanControl?.refresh();
    // Live activity is fetched only after an explicit click.
    if(name==='agenda')renderAgendaEditor();
