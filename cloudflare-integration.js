@@ -252,7 +252,7 @@
     const verificationPanel=document.createElement('section');
     verificationPanel.className='pd-panel';
     verificationPanel.id='cloudTeacherVerification';
-    verificationPanel.innerHTML=`<h4>✅ Pflichtaufträge überprüfen</h4><p>«Erledigt» ist die Rückmeldung des Kindes. Erst deine Bestätigung zählt als überprüfte Erledigung für den Unterrichtsmodus.</p>
+    verificationPanel.innerHTML=`<h4>✅ Pflichtaufträge überprüfen</h4><p>«Erledigt» ist die Rückmeldung des Kindes. Deine Bestätigung zeigt an, welche Rückmeldungen du bereits überprüft hast.</p>
       <div class="pd-items">${candidates.slice(0,100).map((c,i)=>`<article class="pd-task">
         <div class="pd-task-head"><span>${c.isVerified?'✅':'📝'}</span><div>
         <strong>${html(c.username)} · ${html(c.task.title)}</strong>
