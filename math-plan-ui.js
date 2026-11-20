@@ -27,6 +27,7 @@
   let response;
   try{
    response=await call('/math-plan');
+   if(!host.isConnected||host.closest('.ls-logbook')?.querySelector('[data-logbook-tab="math"]')?.getAttribute('aria-selected')!=='true')return;
    if(response?.available!==true||!Array.isArray(response.completed))throw Error('Die Matheplan-Speicherung ist noch nicht im Cloudflare-Worker aktiviert.');
   }catch(err){
    host.innerHTML='<section class="pd-panel"><h4>📘 Matheplan</h4><p>Deine Aufgaben sind vorbereitet. Das dauerhafte Abhaken wird noch auf Cloudflare eingerichtet. Bis dahin kannst du die Spiele öffnen, aber keine Häkchen speichern.</p><p class="mathplan-error" role="status">'+esc(err.message||err)+'</p>'+sections.map(x=>tableSection(x,new Set(),false)).join('')+'</section>';

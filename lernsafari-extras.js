@@ -93,7 +93,7 @@
    let selected='math',achievementTab='awards';
    const awards=safeRows(messages).filter(x=>x.kind==='success');
    const doneTotal=assignments.filter(a=>done.has(Number(a.id))).length;
-   host.innerHTML='<div class="pd-shell cloud-shell ls-logbook"><header class="pd-banner"><div><span class="pd-eyebrow">📖 Mein persönliches Logbuch</span><h3>Mein Logbuch</h3><p>Meine Aufgaben und Erfolge – alles an einem Ort.</p></div><div class="pd-total"><strong>'+doneTotal+' / '+assignments.length+'</strong><span>erledigt</span></div></header>'+
+   host.innerHTML='<div class="pd-shell cloud-shell ls-logbook"><header class="pd-banner"><div><span class="pd-eyebrow">📖 Mein persönliches Logbuch</span><h3>Mein Logbuch</h3><p>Meine Aufgaben und Erfolge – alles an einem Ort.</p></div><div class="pd-total"><strong>'+doneTotal+' / '+assignments.length+'</strong><span>Aufträge erledigt</span></div></header>'+
      '<nav class="ls-logbook-tabs" aria-label="Logbuch-Bereiche"><button type="button" data-logbook-tab="math" aria-selected="true">📘 Matheplan</button><button type="button" data-logbook-tab="tasks" aria-selected="false">📌 Aufträge</button><button type="button" data-logbook-tab="achievements" aria-selected="false">🏆 Erfolge</button></nav><div id="lsLogbookContent"></div></div>';
    const outlet=host.querySelector('#lsLogbookContent');
    const render=()=>{
