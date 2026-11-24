@@ -51,7 +51,7 @@ function verify(){if(checked)return;checked=true;let score=0;
 for(const row of $('items').children){const input=row.querySelector('input'),feedback=row.querySelector('.feedback'),given=input.value.trim().toLowerCase(),correct=row.dataset.answer;
 const ok=given===correct;input.disabled=true;feedback.classList.add(ok?'good':'bad');
 feedback.textContent=ok?'✓ Richtig!':'Lösung: '+correct+(row.dataset.note?' · '+row.dataset.note:'');if(ok)score++;
-record({task:'Plural '+row.dataset.word,correct:ok,correctCount:ok?1:0,total:1,answer:given,expected:correct,details:row.dataset.note||''});
+// Einzelantworten bleiben lokal; nur das Endergebnis wird gespeichert.
 }
 points+=score;start+=Math.min(8,order.length-start);$('points').textContent=points+' Punkte';$('bar').style.width=(start/order.length*100)+'%';$('check').hidden=true;
 if(start<order.length){$('next').hidden=false;return;}
