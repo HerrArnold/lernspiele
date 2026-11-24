@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de-CH"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Singular – Plural · LernSafari</title>
+<link rel="stylesheet" href="../assets/game-theme.css">
+<script defer src="../assets/analytics-config.js"></script>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#284533;background:#fbf8ee}
+*{box-sizing:border-box}body{margin:0;padding:18px}main{max-width:960px;margin:auto}
+h1{color:#315b46;margin:5px 0;font-size:clamp(24px,4vw,36px)}.intro{color:#6b5d48;margin:5px 0 20px}
+.panel{background:white;border:2px solid #d1dcbf;padding:18px;border-radius:20px;box-shadow:0 6px 18px #2236150d}
+.progress{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:15px;font-weight:700}
+.track{height:12px;background:#e6eadc;border-radius:20px;flex:1;overflow:hidden}.fill{height:100%;width:0;background:#518a59;transition:width .2s}
+.grid{display:grid;gap:12px}.item{display:grid;grid-template-columns:minmax(110px,1fr) minmax(145px,1.2fr) minmax(100px,1.1fr);gap:12px;align-items:center;border:1px solid #dddfd0;border-radius:14px;padding:12px;background:#fcfdf8}
+.item strong{font-size:21px}.answer{width:100%;padding:12px;border:2px solid #a1b9a1;border-radius:11px;font-size:19px;color:#203c2c;background:white}
+.answer:disabled{background:#f0f4e9;color:#53685b}
+.feedback{font-size:14px;font-weight:650;line-height:1.35;min-width:0}.feedback.good{color:#24653c}.feedback.bad{color:#ab3f32}
+button{cursor:pointer;font:inherit;border:0;border-radius:12px;padding:12px 18px;font-weight:800;background:#34674b;color:white}
+button:disabled{opacity:.5;cursor:default}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.secondary{background:#e9f2e6;color:#325744;border:2px solid #b7cdb2}
+.notice{background:#fff2d8;border:1px solid #e6c98c;padding:11px 15px;border-radius:12px;font-size:14px;margin-bottom:16px}
+.done{background:#edf7e7;border-radius:15px;padding:18px;margin-top:18px} [hidden]{display:none!important}
+@media(max-width:650px){.item{grid-template-columns:1fr 1.3fr;gap:6px}.feedback{grid-column:1/-1}.item strong{font-size:18px}body{padding:10px}}
+</style></head><body><main>
+<h1>Singular – Plural</h1>
+<p class="intro">Schreibe die Mehrzahl auf Englisch. Prüfe deine Antworten. Aus Fehlern kannst du lernen!</p>
+<div class="notice"><b>Tipp:</b> Viele Wörter erhalten <b>-s</b>. Manche verändern sich – zum Beispiel <b>foot → feet</b>. Bei <i>hair</i> und <i>paper</i> kommt es auf die Bedeutung an.</div>
+<section class="panel"><div class="progress"><span id="counter">1 / 8</span><div class="track"><div class="fill" id="bar"></div></div><span id="points">0 Punkte</span></div>
+<div class="grid" id="items"></div><div class="actions"><button id="check">Antworten prüfen</button><button class="secondary" id="next" hidden>Nächste Runde →</button><button class="secondary" id="restart" hidden>Nochmals üben</button></div>
+<div class="done" id="summary" hidden></div></section></main>
+<script>
+(function(){
+const WORDS=[
+['head','heads'],['eye','eyes'],['ear','ears'],['mouth','mouths'],['nose','noses'],['hair','hairs','Besonderheit: hair ist meistens nicht zählbar (z. B. long hair). hairs meint einzelne Haare.'],
+['leg','legs'],['foot','feet','Unregelmässige Mehrzahl'],['toe','toes'],['hand','hands'],['arm','arms'],['finger','fingers'],
+['chair','chairs'],['paper','papers','Besonderheit: paper ist als Material nicht zählbar. papers kann mehrere Dokumente bedeuten.'],
+['rubber','rubbers'],['chest','chests'],['shoulder','shoulders'],['knee','knees'],['pencil','pencils'],['neck','necks'],['elbow','elbows'],['tooth','teeth','Unregelmässige Mehrzahl'],['book','books'],['desk','desks'],['blackboard','blackboards'],['pen','pens'],['girl','girls'],['boy','boys'],['language','languages'],['window','windows'],['house','houses'],['pizza','pizzas']
+];
+const $=x=>document.getElementById(x);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+let order=[],start=0,points=0,checked=false,results=[];
+function record(data){try{window.SafariTelemetry?.record(data)}catch(_){}}
+function begin(){order=shuffle(WORDS.slice());start=0;points=0;checked=false;results=[];$('summary').hidden=true;$('restart').hidden=true;render()}
+function render(){checked=false;const end=Math.min(start+8,order.length),set=order.slice(start,end);$('items').innerHTML='';
+$('counter').textContent=(start+1)+'–'+end+' / '+order.length;$('points').textContent=points+' Punkte';$('bar').style.width=(start/order.length*100)+'%';
+for(const [word,plural,note] of set){const row=document.createElement('div');row.className='item';
+const term=document.createElement('strong');term.textContent=word;const field=document.createElement('input');field.className='answer';field.type='text';field.autocomplete='off';field.spellcheck=false;field.placeholder='Mehrzahl';field.setAttribute('aria-label','Mehrzahl von '+word);
+const feedback=document.createElement('div');feedback.className='feedback';row.append(term,field,feedback);row.dataset.word=word;row.dataset.answer=plural;row.dataset.note=note||'';$('items').append(row)}
+$('check').hidden=false;$('next').hidden=true;const first=$('items').querySelector('input');first?.focus();
+}
+function verify(){if(checked)return;checked=true;let score=0;
+for(const row of $('items').children){const input=row.querySelector('input'),feedback=row.querySelector('.feedback'),given=input.value.trim().toLowerCase(),correct=row.dataset.answer;
+const ok=given===correct;input.disabled=true;feedback.classList.add(ok?'good':'bad');
+feedback.textContent=ok?'✓ Richtig!':'Lösung: '+correct+(row.dataset.note?' · '+row.dataset.note:'');if(ok)score++;
+record({task:'Plural '+row.dataset.word,correct:ok,correctCount:ok?1:0,total:1,answer:given,expected:correct,details:row.dataset.note||''});
+}
+points+=score;start+=Math.min(8,order.length-start);$('points').textContent=points+' Punkte';$('bar').style.width=(start/order.length*100)+'%';$('check').hidden=true;
+if(start<order.length){$('next').hidden=false;return;}
+$('summary').hidden=false;$('summary').innerHTML='<strong>Geschafft! '+points+' von '+order.length+' Wörtern richtig.</strong><p>Du kannst alle Wörter erneut in einer anderen Reihenfolge üben.</p>';
+$('restart').hidden=false;record({task:'Singular Plural Abschluss',correct:points===order.length,correctCount:points,total:order.length,answer:points+'/'+order.length,expected:order.length+'/'+order.length});
+}
+$('check').onclick=verify;$('next').onclick=render;$('restart').onclick=begin;
+$('items').addEventListener('keydown',e=>{if(e.key==='Enter'&&!checked)verify()});begin();
+})();
+</script><script src="../assets/new-safari-bridge.js"></script></body></html>
