@@ -44,7 +44,7 @@ if(pic!==id){wrong.add(pic);$('message').className='message wrong';$('message').
 done.add(id);correct++;if(!wrong.has(id))firstTry++;$('message').className='message good';$('message').textContent='✓ Richtig: '+id+'!';
 document.querySelectorAll('.card,.name').forEach(b=>{if(b.dataset.id===id){b.classList.add('solved');b.disabled=true}});
 $('points').textContent=correct+' / '+cards.length+' Paare';$('bar').style.width=(correct/cards.length*100)+'%';
-record({task:'Körperteil '+id,correct:!wrong.has(id),correctCount:wrong.has(id)?0:1,total:1,answer:id,expected:id,details:wrong.has(id)?'Nach einem Fehler richtig zugeordnet':'Beim ersten Versuch richtig'});
+// Einzelzuordnungen bleiben lokal; nur das Endergebnis wird gespeichert.
 if(done.size===Math.min(5,cards.length-start)){
 start+=done.size;
 if(start<cards.length){$('next').hidden=false;$('message').textContent='Super! Alle Paare dieser Runde gefunden.'}
