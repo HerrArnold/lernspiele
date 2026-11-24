@@ -48,7 +48,7 @@
       ]}
     ],
     NMG:[
-      {name:'Rabenvögel',icon:'🐦‍⬛',games:[
+      {name:'Rabenvögel',icon:'🐦‍⬛',archived:true,games:[
         ['Rabenvögel erkennen','verschiedene-rabenvoegel.html'],
         ['Lebensraum der Vögel','lebensraum-voegel.html'],
         ['Arten von Federn','federtypen.html'],
@@ -70,6 +70,8 @@
     ],
     Englisch:[
       {name:'Unit 2 "My body"',icon:'<img class="safari-uk-flag" src="assets/uk-flag.svg" alt="" aria-hidden="true">',games:[
+        ['Singular - Plural','englisch-singular-plural.html'],
+        ['Körperteile benennen','englisch-koerperteile-benennen.html'],
         ['Vocabulary: Wörter zuordnen','english:match'],
         ['Vocabulary: Karteikarten','english:cards']
       ]}
