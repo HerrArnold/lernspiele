@@ -36,6 +36,11 @@
       ]}
     ],
     Deutsch:[
+      {name:'Wortarten',icon:'🔤',archived:true,games:[
+        ['Begleiter und Mehrzahl von Nomen','deutsch-nomen-begleiter-mehrzahl.html'],
+        ['Personalpronomen und Grundform von Verben','deutsch-verben-personalpronomen-grundform.html'],
+        ['Nomen, Verb oder keines von beidem?','deutsch-wortarten-erkennen.html']
+      ]},
       {name:'Briefe',icon:'✉️',games:[['Briefe entdecken','briefe-entdecken.html']]},
       {name:'Vom Hören zum Sprechen',icon:'💬',games:[['Gefühle und direkte Rede','gefuehle-direkte-rede.html']]},
       {name:'Hörverständnis',icon:'👂',games:[
