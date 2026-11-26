@@ -5,7 +5,8 @@ const cfg=window.WORTARTEN_GAME;if(!cfg||!Array.isArray(cfg.items))return;
 const $=id=>document.getElementById(id);
 const normalize=s=>String(s||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('de-CH').replace(/[.!?]$/,'');
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-const POOL=shuffle(cfg.items.slice());
+// Kurze, altersgerechte Übung: 12 zufällige Wörter aus dem gesamten Wortpool.
+const POOL=shuffle(cfg.items.slice()).slice(0,12);
 let index=0,stage=0,points=0,questions=0,answered=0,allFirst=true,choice=null;
 const stages=cfg.kind==='class'?1:2, maximum=POOL.length*stages;
 function put(id,text){$(id).textContent=text}
@@ -33,6 +34,7 @@ return 'Achte auf die Gross- und Kleinschreibung. «spielen» ist ein Verb, «da
 }
 function renderStage(){
 const item=POOL[index];$('check').hidden=false;$('continue').hidden=true;
+put('word',cfg.kind==='noun'?(stage===0?'___ '+item.word:item.article+' '+item.word+' → die ___'):cfg.kind==='verb'?(stage===0?'___ '+item.word:item.word+' → ___'):item.word);
 put('step-title',stageLabel());put('step-help',stageHelp());textFeedback('',true);
 $('input-stage').hidden=cfg.kind==='class';$('choice-stage').hidden=cfg.kind!=='class';
 if(cfg.kind==='class'){
